@@ -1,7 +1,7 @@
 <?php
 $connect = mysqli_connect("localhost", "root", "", "lavadero", "3306");
 if (!$connect) {
-    die("NO SE CONECTÓ" . mysqli_connect_error());
+    die("NO SE CONECTÓ ish" . mysqli_connect_error());
 }
 ?>
 
