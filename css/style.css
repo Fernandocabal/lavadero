@@ -1,0 +1,464 @@
+:root {
+    --bgcolor: #6a6a6a;
+    --bgtarget: #faf9f9;
+    --shadow: rgba(107, 100, 100, 0.575);
+    --colorletra: rgb(17, 16, 16);
+    --bluebtn: #4bcffa;
+    --hoverfc: #5a6589;
+    --headercolor: #1e272e;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    background-color: var(--bgtarget);
+    backdrop-filter: blur(20px);
+}
+
+.tarjeta-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 20px;
+    width: 425px;
+    height: 425px;
+    border-radius: 16px;
+    background: var(--bgtarget);
+    box-shadow: 0px 0px 7px 3px var(--shadow);
+    position: relative;
+}
+
+.logo {
+    top: -150px;
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+}
+
+.contenedor-input {
+    display: flex;
+    flex-direction: column;
+    min-width: 90%;
+    min-height: 40%;
+    justify-content: space-around;
+}
+
+.input {
+    outline: none;
+    min-width: 75%;
+    padding: 10px 0px;
+    background-color: transparent;
+    border: none;
+}
+
+#boton {
+    padding: 2px 50px;
+    border-radius: 8px;
+    transition: all .3s;
+    font-size: 25px;
+    margin: 0;
+}
+
+.ctninput {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background-color: rgb(228, 228, 238);
+    border-radius: 5px;
+    position: relative;
+}
+
+.icon {
+    font-size: 20px;
+}
+
+.eyed {
+    position: absolute;
+    right: 6px;
+    cursor: pointer;
+    font-size: 25px;
+}
+
+
+/*Estilos del spinner*/
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    position: absolute;
+    min-height: 100vh;
+    min-width: 100vw;
+    animation: blur 2s linear;
+}
+
+#spinner::before {
+    content: '';
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 5px solid rgb(217, 217, 217);
+    border-right-color: var(--headercolor);
+    animation: girar 1s linear infinite;
+}
+
+.spinner.ocultar {
+    display: none;
+}
+
+@keyframes girar {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+}
+
+@keyframes blur {
+    0% {
+        backdrop-filter: blur(10px);
+    }
+
+    50% {
+        backdrop-filter: blur(8px);
+    }
+
+    100% {
+        backdrop-filter: blur(.5px);
+    }
+}
+
+/*Fin de estilos de spinner*/
+/*Estilos de dashboard*/
+/*Estilos del contenedor*/
+.contentdash {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    position: relative;
+}
+
+.ctnpage {
+    display: flex;
+    justify-content: center;
+    min-height: 93vh;
+    overflow-y: auto;
+}
+
+/*Fin Estilos del contenedor*/
+/*Estilos del header*/
+.ctnheader {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    height: 5vh;
+    background-color: var(--headercolor);
+}
+
+.hambur {
+    position: relative;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 20px;
+    width: 40px;
+    height: 100%;
+    color: white;
+    font-size: 40px;
+    font-weight: lighter;
+}
+
+.perfil {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+}
+
+.perfil .user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 100%;
+    color: white;
+}
+
+.perfil-nombre {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white;
+}
+
+.icondrop {
+    font-size: 20px;
+    color: white;
+    transition: all .2s;
+}
+
+.icondrop.active {
+    transition: all .2s;
+    transform: rotate(180deg);
+}
+
+.btndrop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 100%;
+    cursor: pointer;
+}
+
+/*Estilos del menudrop*/
+.boxdrop {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 180px;
+    height: 40px;
+    right: 1px;
+    bottom: -41px;
+    box-shadow: 0px 0px 7px 3px var(--shadow);
+    border-radius: 5px;
+    background-color: white;
+}
+
+.boxdrop.active {
+    display: flex;
+    z-index: 1000;
+}
+
+.dropmenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.sign-out {
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: 50%;
+    gap: 10px;
+    border-radius: 5px;
+}
+
+.sign-out i,
+.sign-out div {
+    display: flex;
+    align-items: center;
+    color: black;
+    height: 100%;
+}
+
+/*Fin Estilos del menudrop*/
+
+/*Fin Estilos del header*/
+/* /* Estilos del footer */
+.ctnfooter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 0%;
+    height: 2vh;
+    background-color: var(--headercolor);
+}
+
+.text-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff47;
+    height: 100%;
+    font-size: 10px;
+}
+
+/* Fin Estilos del footer */
+/*Estilos de la barra lateral*/
+
+.sidebarop {
+    width: 100%;
+    color: var(--colorletra);
+}
+
+
+.ctnform {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 3%;
+    justify-content: center;
+    transition: all .7s;
+    width: 88vw;
+    height: calc(100vh - 7vh);
+}
+
+.ctnform.active {
+    transform: translateX(-52px);
+    position: absolute;
+    margin: auto;
+    right: 0px;
+    width: 94vw;
+    transition: all .7s;
+}
+
+.targetform {
+    width: 90%;
+}
+
+/*Estilos del centro*/
+.centro {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    transition: all .2s;
+    width: 100vw;
+    height: calc(100vh - 7vh);
+    gap: 20px;
+    padding: 20px;
+}
+
+
+/* Estilos del componente tarjeta */
+.targetdash {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    box-shadow: 0px 0px 20px 5px var(--shadow);
+    overflow: hidden;
+}
+
+.tarjeta-logo {
+    width: 100%;
+    height: 50%;
+}
+
+.tarjeta-body {
+    width: 100%;
+    height: 100%;
+}
+
+.targettitle {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+    height: auto;
+    border: 1px solid red;
+}
+
+.targetcontenido {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+    height: auto;
+    border: 1px solid red;
+}
+
+.navar {
+    display: none;
+}
+
+/*Estilos para la tabla de clientes*/
+
+
+.ctnacciones {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.btnacciones {
+    border-radius: 4px;
+    font-size: 30px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background-color: var(--bluebtn);
+    color: white;
+}
+
+#listitem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/*estios para elformulario facturas */
+.ctnfact {
+    display: flex;
+    align-items: flex-start;
+    padding-top: 1%;
+    justify-content: center;
+    transition: all .7s;
+    width: 100vw;
+    height: calc(100vh - 7vh);
+}
+
+.targetfact {
+    width: 97%;
+}
+
+/*Estilos para smartphones*/
+@media screen and (min-width:320px) and (max-width: 768px) {
+
+
+    .tarjeta-login {
+        width: 340px;
+        height: 340px;
+        gap: 15px;
+    }
+
+
+    .ctnheader {
+        position: sticky;
+        top: 0px;
+    }
+
+    .targetform {
+        width: 100%;
+    }
+
+    .targetfact {
+        width: 96%;
+    }
+
+    .containerta {
+        width: 100%;
+        overflow-y: scroll;
+    }
+
+    .ctnbtns {
+        width: 100%;
+    }
+
+    .factuinput {
+        width: 100%;
+    }
+
+}
+
+/*Estilos para tablets y algunos telefonos*/
+@media screen and (min-width:769px) and (max-width: 1024px) {}
