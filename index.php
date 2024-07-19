@@ -28,7 +28,7 @@ if (isset($_SESSION['nombre'])) {
         <?php
         include "./action/verificar.php";
         ?>
-        <h1>Bienvenido</h1>
+        <h1>Bienvenidos</h1>
         <h4>Iniciar Sesion</h4>
         <div class="contenedor-input">
             <div class="ctninput">
