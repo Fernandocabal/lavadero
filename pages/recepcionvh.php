@@ -5,7 +5,7 @@ $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];
 $id_tipo = $_SESSION["id_tipo"];
 if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
-    header("location:../login.php");
+    header("location:../index.php");
 }
 ?>
 <!DOCTYPE html>
