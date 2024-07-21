@@ -3,13 +3,12 @@
     <i class='bx bx-menu' id="hamburicon"></i>
 </a>
 <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-        <a href="../pages/dashboard.php" class="offcanvas-title" id="offcanvasExampleLabel">CarWash Lavadero</a>
+    <div class="offcanvas-header" style="border-bottom: 1px solid black;">
+        <a href="../pages/dashboard.php" class="offcanvas-title" id="offcanvasExampleLabel" style="text-decoration: none;font-size: xx-large;">CarWash Lavadero</a>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body d-flex flex-column g-20" style="border: 1px solid red;">
+    <div class="offcanvas-body d-flex flex-column">
         <a href="../pages/recepcionvh.php" class="sidebarop">Recepcion de Vehiculos</a>
-        <a href="http://" class="sidebarop">Lista de espera</a>
         <a href="../pages/factura.php" class="sidebarop">Facturación</a>
         <a href="../pages/registrar_clientes.php" class="sidebarop">Registrar Clientes</a>
         <?php

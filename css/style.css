@@ -293,10 +293,31 @@
 
 /* Fin Estilos del footer */
 /*Estilos de la barra lateral*/
+#sidebar {
+    background: rgb(255, 255, 255);
+    border-radius: 0px 12px 12px 0px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(11.2px);
+}
 
 .sidebarop {
     width: 100%;
+    height: 60px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    margin-top: 10px;
+    transition: all .2s;
     color: var(--colorletra);
+}
+
+
+.sidebarop:hover {
+    border-radius: 10px;
+    color: var(--bgtarget);
+    transition: all .1s;
+    background-color: var(--headercolor);
 }
 
 
@@ -379,6 +400,9 @@
 .navar {
     display: none;
 }
+
+/*Estilos para offcanvas sidebar*/
+
 
 /*Estilos para la tabla de clientes*/
 

@@ -1,6 +1,6 @@
 <?php
 include "../connet/conexion.php";
-session_start();
+include "../connet/sessionstart.php";
 $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];
 $id_tipo = $_SESSION["id_tipo"];

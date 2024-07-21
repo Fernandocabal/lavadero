@@ -5,7 +5,8 @@ if (!empty($_POST["ingresar"])) {
         $usuario = $_POST["usuario"];
         $password = md5($_POST["password"]);
         $consultabd = ("SELECT * FROM usuarios WHERE nombre_usuario='$usuario'");
-        if ($result = $connect->query($consultabd)) {
+        $result = $connect->query($consultabd);
+        if ($result) {
             while ($row = $result->fetch_assoc()) {
                 $nameuser = $row["nombre_usuario"];
                 $userpass = $row["password"];
@@ -28,6 +29,7 @@ if (!empty($_POST["ingresar"])) {
                 $_SESSION["apellido"] = $userlastname;
                 $_SESSION["password"] = $userpass;
                 $_SESSION["id_tipo"] = $usertype;
+                $_SESSION['last_activity'] = time();
                 header("location:./pages/dashboard.php");
             }
         } else {
@@ -41,24 +43,6 @@ if (!empty($_POST["ingresar"])) {
                  });
                  </script>';
         }
-        // $sql = $connect->query("SELECT * FROM usuarios WHERE nombre_usuario='$usuario' AND password='$password'");
-        // if ($datos = $sql->fetch_object()) {
-        //     $_SESSION["nombre"] = $datos->nombre;
-        //     $_SESSION["apellido"] = $datos->apellido;
-        //     $_SESSION["password"] = $datos->password;
-        //     $_SESSION["id_tipo"] = $datos->id_tipo;
-        //     header("location:./pages/dashboard.php");
-        // } else {
-        //     echo '<script>
-        //         Swal.fire({
-        //         icon: "error",
-        //         title: "Oops...",
-        //         confirmButtonText: "Reintentar",
-        //         text: "Usuario y contraseña incorrectos",
-        //         confirmButtonColor: "#3b5998",
-        //         });
-        //         </script>';
-        // }
     } else {
         echo '<script>
                 Swal.fire({
