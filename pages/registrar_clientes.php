@@ -18,8 +18,8 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.11.4/datatables.min.css" />
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/datatables/datatables.min.css">
     <title>Registrar Clientes</title>
 </head>
 
@@ -149,14 +149,20 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
         <?php
         include "../componetes/footer.php"; ?>
     </footer>
-    <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.11.4/datatables.min.js"></script>
+    <script src="../js/datatables/datatables.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({
-                "language": idioma_espanol
+                "language": idioma_espanol,
+                layout: {
+                    bottomEnd: {
+                        paging: {
+                            firstLast: false
+                        }
+                    }
+                }
             });
         });
         var idioma_espanol = {
@@ -168,6 +174,12 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
             "infoFiltered": "(filtrado de un total de _MAX_ registros)",
             "search": "Buscar:",
             "loadingRecords": "Cargando...",
+            "decimal": ".",
+            "emptyTable": "No hay datos disponibles en la tabla",
+            "zeroRecords": "No se encontraron coincidencias",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
+            "lengthMenu": "Mostrar _MENU_ entradas",
             "paginate": {
                 "first": "Primero",
                 "last": "Último",
