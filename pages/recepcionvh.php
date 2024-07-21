@@ -19,12 +19,11 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.11.4/datatables.min.css" />
+    <link rel="stylesheet" href="../css/datatables/datatables.min.css">
     <title>Recepcion de vehiculos</title>
 </head>
 
 <body>
-
     <header class="ctnheader">
         <?php
         include "../componetes/header.php";
@@ -124,8 +123,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     </footer>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.11.4/datatables.min.js">
-    </script>
+    <script src="../js/datatables/datatables.min.js"></script>
     <script src="../js/registerverif.js">
     </script>
 

@@ -23,7 +23,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     <title>Registrar Clientes</title>
 </head>
 
-<body class="contentdash">
+<body>
     <header class="ctnheader">
         <?php
         include "../componetes/header.php";
