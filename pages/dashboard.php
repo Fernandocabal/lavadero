@@ -17,6 +17,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     <link rel="stylesheet" href="../css/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="icon" href="../img/Logo.png">
     <title>Dashboard</title>
 </head>
 
@@ -67,7 +68,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
         include "../componetes/footer.php";
         ?>
     </footer>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="../js/app2.js"></script>
 </body>
 

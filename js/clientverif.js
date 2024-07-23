@@ -10,7 +10,7 @@ let inputname = document.getElementById('inputname'),
     form_edit_client = document.getElementById("form_edit_client");
 
 function validardireccion() {
-    const regex = /^[a-zA-Z\s]{3,24}$/;
+    const regex = /^[a-zA-Z\u00C0-\u017F\p{L}0-9\s\p]{3,24}$/;
     const name = inputdireccion.value;
     if (!regex.test(name)) {
         return true;
@@ -19,7 +19,7 @@ function validardireccion() {
     }
 };
 function validarname() {
-    const regex = /^[a-zA-Z\s]{3,24}$/;
+    const regex = /^[a-zA-Z\u00C0-\u017F\s]{3,24}$/;
     const name = inputname.value;
     if (!regex.test(name)) {
         return true;

@@ -8,7 +8,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column">
-        <a href="../pages/recepcionvh.php" class="sidebarop">Recepcion de Vehiculos</a>
+        <a href="../pages/recepcionvh.php" class="sidebarop">Recepción de Vehiculos</a>
         <a href="../pages/factura.php" class="sidebarop">Facturación</a>
         <a href="../pages/registrar_clientes.php" class="sidebarop">Registrar Clientes</a>
         <?php

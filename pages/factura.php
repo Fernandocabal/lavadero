@@ -20,6 +20,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.11.4/datatables.min.css" />
+    <link rel="icon" href="../img/Logo.png">
     <title>Facturación</title>
 </head>
 
@@ -31,78 +32,75 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     </header>
     <div class="ctnpage">
         <div class="ctnfact" id="targetcenter">
-            <div class="targetfact">
-                <form action="" method="post" class="row g-3" id="forminsertclient">
-                    <div class="col-12">
-                        <div class="col-md-6 d-grid mx-auto">
-                            <p class="col-12 display-10 d-flex justify-content-center">
-                                Datos de factura
-                            </p>
+            <form action="" method="post" class="row" id="formfactura">
+                <div class="col-12 m-0" style="background-color: rgb(184, 229, 247, 0.5);">
+                    <div class="col-md-6 d-grid mx-auto">
+                        <p class="col-12 display-10 d-flex justify-content-center">
+                            Datos de factura
+                        </p>
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-around m-0 mb-3 p-0 headerfact">
+                    <div class="datosfactura m-0">
+                        <label for="" class="form-label">N° de Factura</label>
+                        <div type="text" class="form-control">001-002-000001</div>
+                        <label for="" class="form-label">Timbrado</label>
+                        <div type="date" class="form-control">13345675</div>
+                    </div>
+                    <div class="datosfactura">
+                        <label for="" class="form-label">Fecha de inicio</label>
+                        <div type="date" class="form-control">13/05/2024</div>
+                        <label for="" class="form-label">Fecha fin de Vigencia</label>
+                        <div type="text" class="form-control">13/05/2024</div>
+                    </div>
+                    <div class="datosfactura">
+                        <label for="" class="form-label">Nombre Cliente: </label>
+                        <input type="text" class="form-control">
+                        <label for="" class="form-label">Ruc o Ci: </label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="datosfactura">
+                        <label for="" class="form-label">Direccion: </label>
+                        <input type="text" class="form-control">
+                        <label for="" class="form-label">Celular: </label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="datosfactura">
+                        <label for="" class="form-label">Correo: </label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="datosfactura">
+                        <p class="form-label">Condicion de venta: </p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="contado" checked>
+                            <label class="form-check-label" for="contado">
+                                Contado
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="credito" disabled>
+                            <label class="form-check-label" for="credito">
+                                Credito
+                            </label>
                         </div>
                     </div>
-                    <div class="col-12 d-flex display-10" style="border: 1px solid red; height:180px">
-                        <div class="col-md-2" style="border: 1px solid red;">
-                            <label for="" class="form-label">N° de Factura</label>
-                            <input type="text" class="form-control">
-                            <label for="" class="form-label">Timbrado</label>
-                            <div type="date" class="form-control">13345675</div>
-                        </div>
-                        <div class="col-md-2" style="border: 1px solid red;">
-                            <label for="" class="form-label">Fecha de inicio</label>
-                            <div type="date" class="form-control">13/05/2024</div>
-                            <label for="" class="form-label">Fecha fin de Vigencia</label>
-                            <div type="text" class="form-control">13/05/2024</div>
-                        </div>
-                        <div class="col-md-2" style="border: 1px solid red;">
-                            <label for="" class="form-label">Nombre Cliente: </label>
-                            <input type="text" class="form-control">
-                            <label for="" class="form-label">Ruc o Ci: </label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-md-2" style="border: 1px solid red;">
-                            <label for="" class="form-label">Direccion: </label>
-                            <input type="text" class="form-control">
-                            <label for="" class="form-label">Celular: </label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="col-md-2" style="border: 1px solid red;">
-                            <label for="" class="form-label">Correo: </label>
-                            <input type="text" class="form-control">
+                </div>
+                <div class="col-12 mb-3" style="border: 1px solid red; height:500px">
 
+                </div>
 
-                        </div>
-                        <div class="col-md-2">
-                            <p class="form-label">Condicion de venta: </p>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="contado" checked>
-                                <label class="form-check-label" for="contado">
-                                    Contado
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="credito" disabled>
-                                <label class="form-check-label" for="credito">
-                                    Credito
-                                </label>
-                            </div>
-                        </div>
+                <div class="col-md-6 d-grid">
+                    <div class="col-md-6 mx-auto ctnbtns">
+                        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;" name="insertclient" id="insertclient">Imprimir</button>
                     </div>
-                    <div class="col-12" style="border: 1px solid red; height:500px">
+                </div>
+                <div class="col-md-6 d-grid">
+                    <div class="col-md-6 d-grid mx-auto ctnbtns">
+                        <a href="../pages/recepcionvh.php" class="btn btn-secondary btn-lg" style="width: 100%;" name="insertclient" id="insertclient">Cancelar</a>
+                    </div>
+                </div>
+            </form>
 
-                    </div>
-
-                    <div class="col-md-6 d-grid">
-                        <div class="col-md-6 mx-auto ctnbtns">
-                            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;" name="insertclient" id="insertclient">Imprimir</button>
-                        </div>
-                    </div>
-                    <div class="col-md-6 d-grid">
-                        <div class="col-md-6 d-grid mx-auto ctnbtns">
-                            <a href="../pages/recepcionvh.php" class="btn btn-secondary btn-lg" style="width: 100%;" name="insertclient" id="insertclient">Cancelar</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
     <footer class="ctnfooter">

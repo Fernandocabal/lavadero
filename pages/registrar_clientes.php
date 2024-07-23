@@ -20,6 +20,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/datatables/datatables.min.css">
+    <link rel="icon" href="../img/Logo.png">
     <title>Registrar Clientes</title>
 </head>
 
@@ -149,8 +150,8 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
         <?php
         include "../componetes/footer.php"; ?>
     </footer>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../node_modules/jquery/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../js/datatables/datatables.min.js"></script>
     <script>
         $(document).ready(function() {

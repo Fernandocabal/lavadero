@@ -20,6 +20,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.11.4/datatables.min.css" />
+    <link rel="icon" href="../img/Logo.png">
     <title>Editar clientes</title>
 </head>
 
@@ -135,7 +136,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
         <?php
         include "../componetes/footer.php"; ?>
     </footer>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="../js/editclientverif.js"></script>
 </body>
 
