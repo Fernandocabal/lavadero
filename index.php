@@ -18,6 +18,7 @@ if (isset($_SESSION['nombre'])) {
     <script src="./node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="./node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="icon" href="./img/Logo.png">
     <title>Inicio</title>
 </head>
 
@@ -46,8 +47,8 @@ if (isset($_SESSION['nombre'])) {
         </div>
     </form>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    </script>
     <script src="./js/app.js"></script>
-
 </body>
 
 </html>
