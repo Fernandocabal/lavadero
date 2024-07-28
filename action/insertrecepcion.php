@@ -10,7 +10,7 @@ if (isset($_POST["insertclient"])) {
     $nombre = $_POST["inputname"];
     $tipo_vehiculo = $_POST["inputvehiculo"];
     $totalvalor = 0;
-    $queryid = "SELECT MAX(nro_recepcion) + 1 AS proximonumero FROM recepcion;";
+    $queryid = "SELECT COALESCE(MAX(id_recepcion), 0) + 1 AS proximonumero FROM recepcion;";
     $result = $connect->query($queryid);
     $row = $result->fetch_assoc();
     $proximonumero = $row['proximonumero'];

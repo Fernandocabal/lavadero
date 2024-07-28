@@ -64,7 +64,8 @@ if ($result = $connect->query($consulta)) {
                                     title: "Borrado!",
                                     text: "El registro se ha borrado correctamente",
                                     icon: 'success',
-                                    confirmButtonText: "Aceptar"
+                                    confirmButtonText: "Aceptar",
+                                    timer: "2000"
                                 }).then((result) => {
                                     // redireccion con javascript
                                     window.location.href = "../pages/registrar_clientes.php";

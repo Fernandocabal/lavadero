@@ -31,7 +31,8 @@ if (isset($_POST["insertclient"])) {
                     icon: "success",
                     title: "Se ha registrado el cliente",
                     timer: 2000,
-                    confirmButtonColor: "#3b5998",
+                    confirmButtonColor: "#0be881",
+                    confirmButtonText:`Aceptar`
                     });
                     </script>';
             } else {

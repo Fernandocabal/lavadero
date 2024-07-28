@@ -1,41 +1,26 @@
 let
     inputname = document.getElementById('inputname'),
     formregis = document.getElementById('formregis'),
-    boxvalor = document.getElementById('viewvalor');
+    inputvehiculo = document.getElementById('inputvehiculo'),
+    option_container = document.getElementById('option-container'),
+    totalValueElement = document.getElementById('viewvalor');
 const optionbox = document.querySelectorAll('input[type="checkbox"]');
+const optionboxArray = Array.from(optionbox);
 formregis.addEventListener("submit", function (event) {
     const value = inputname.value;
     if (value === '') {
         event.preventDefault();
         inputname.classList.toggle('is-invalid');
-        Swal.fire({
-            icon: "error",
-            text: "Favor completa los datos",
-        })
-        return;
+        inputname.focus();
+    } else {
+        if (inputvehiculo.selectedIndex == 0) {
+            event.preventDefault();
+            inputvehiculo.classList.toggle('is-invalid');
+            inputvehiculo.focus();
+        }
+
     }
-});
 
-// Update total value on checkbox click or change
-function updateTotalValue() {
-    const checkedOptions = optionbox.filter(checkbox => checkbox.checked);
-    let totalValue = 0;
-
-    checkedOptions.forEach(checkbox => {
-        const price = parseFloat(checkbox.value); // Ensure numeric conversion
-        totalValue += price;
-    });
-
-    // Format total value for display (optional)
-    const formattedTotal = totalValue.toFixed(2); // Display with two decimal places
-
-    boxvalor.value = formattedTotal + ' GS'; // Update display with total and currency
-}
-
-// Event listener for checkbox click or change
-optionbox.forEach(checkbox => {
-    checkbox.addEventListener('click', updateTotalValue);
-    checkbox.addEventListener('change', updateTotalValue);
 });
 
 //Sección para mostar las opciones de acuerdo al tipo de vehiculo seleccionado

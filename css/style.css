@@ -6,7 +6,7 @@
     --bluebtn: #4bcffa;
     --hoverfc: #5a6589;
     --headercolor: #1e272e;
-    --bgfactura: rgb(184 229 247 / 50%);
+    --bgfactura: #d2dae2;
 }
 
 .contenedor {
@@ -443,11 +443,14 @@
 
 #formfactura {
     width: 99%;
-    border: 1px solid red;
 }
 
 .datosfactura {
     width: 16%;
+}
+
+.titlefact {
+    background-color: var(--bgfactura);
 }
 
 .headerfact {

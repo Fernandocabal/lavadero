@@ -121,8 +121,9 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
         <?php
         include "../componetes/footer.php"; ?>
     </footer>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
     <script src="../js/datatables/datatables.min.js"></script>
     <script src="../js/registerverif.js">
     </script>
