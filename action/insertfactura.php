@@ -16,9 +16,11 @@ if (isset($_POST["insertfactura"])) {
     $fecha = date('d-m-Y H:i');
     $precio = $_POST["precio"];
     $descripcion = $_POST["descripcion"];
-    // $cant_check = count($precio);
+    $cant_check = count($precio);
     $cantidad = $_POST["cantidad"];
-    $nombrecliente = $_POST["nombrecliente"];
+    $nombres = $_POST["nombres"];
+    $totalfactura = $_POST['totaloperacion'];
+    $iva10 = $_POST['iva10'];
     $totalvalor = 0;
     //Seleccionamos los datos de la condición
     $sqlcondicion = "SELECT * FROM `condicion` WHERE id_condicion = 1 ";
@@ -64,30 +66,30 @@ if (isset($_POST["insertfactura"])) {
     }
     $numeroFactura = siguientenumero($sucursal, $caja);
 
-    $insertfacturas = "INSERT INTO `header_factura`(`nro_factura`, `timbrado`,`fecha_horas`, `id_cliente`,`cajero`, `id_condicion`) VALUES (?,?,?,?,?,?)";
+    $insertfacturas = "INSERT INTO `header_factura`(`nro_factura`, `timbrado`,`fecha_horas`, `id_cliente`,`cajero`, `id_condicion`,`subtotal`, `iva`, `total`) VALUES (?,?,?,?,?,?,?,?,?)";
     $stminsertfacturas = $connect->prepare($insertfacturas);
-    $stminsertfacturas->bind_param("sisisi", $numeroFactura, $nro_timbrado, $fecha, $nombrecliente, $_SESSION["nombre"], $id_condicion);
+    $stminsertfacturas->bind_param("sisisiddd", $numeroFactura, $nro_timbrado, $fecha, $nombres, $_SESSION["nombre"], $id_condicion, $totalfactura, $iva10, $totalfactura);
     $stminsertfacturas->execute();
 
     $idinsertado = $stminsertfacturas->insert_id;
 
-    // foreach ($descripcion as $name) {
-    //     $valordescription[] = $name;
-    // }
-    // foreach ($precio as $valor) {
-    //     $valoreselect[] = $valor;
-    // }
+    foreach ($descripcion as $name) {
+        $valordescription[] = $name;
+    }
+    foreach ($precio as $valor) {
+        $valoreselect[] = $valor;
+    }
 
-    // for ($i = 0; $i < $cant_check; $i++) {
-    //     $precio = $valoreselect[$i];
-    //     $descripcion = $valordescription[$i];
+    for ($i = 0; $i < $cant_check; $i++) {
+        $precio = $valoreselect[$i];
+        $descripcion = $valordescription[$i];
 
-    $insertdetalle = "INSERT INTO `detalle_factura`(`id_header`, `nombre`, `cantidad`,`precio`) VALUES (?,?,?,?)";
-    $stminsertdetalle = $connect->prepare($insertdetalle);
-    $stminsertdetalle->bind_param("isii", $idinsertado, $descripcion, $cantidad, $precio);
+        $insertdetalle = "INSERT INTO `detalle_factura`(`id_header`, `detalle`, `cantidad`,`precio`) VALUES (?,?,?,?)";
+        $stminsertdetalle = $connect->prepare($insertdetalle);
+        $stminsertdetalle->bind_param("isii", $idinsertado, $descripcion, $cantidad, $precio);
 
-    $stminsertdetalle->execute();
-    // }
+        $stminsertdetalle->execute();
+    }
     if ($connect->error) {
         $connect->rollback(); // Revertir la transacción si ocurre algún error
         echo "Error al insertar datos: " . $db->error;
@@ -99,10 +101,14 @@ if (isset($_POST["insertfactura"])) {
             Swal.fire({
             icon: "success",
             title: "Recepcionado!",
-            timer: 2000,
+            allowOutsideClick : false,
+            allowEscapeKey: false,
             confirmButtonColor: "#0be881",
-            confirmButtonText:`Aceptar`,
-            });
+            confirmButtonText:`Imprimir factura`}).then((result) => {
+                    if (result.value) {
+                    window.location.href =`../componetes/facturapdf.php?id=' . $idinsertado . '`
+                    }
+                    }); 
             </script>';
 } ?>
 <script>

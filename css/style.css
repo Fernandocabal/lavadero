@@ -446,6 +446,7 @@
 }
 
 .datosfactura {
+    border: 1px solid red;
     width: 16%;
 }
 
@@ -454,8 +455,40 @@
 }
 
 .headerfact {
-    height: 180px;
+    height: 92px;
     background-color: var(--bgfactura);
+}
+
+.lablefact {
+    font-size: 11px;
+}
+
+.inputform {
+    display: block;
+    width: 100%;
+    padding: 4px 3.5px;
+    line-height: 1.5;
+    color: #212529;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dee2e6;
+    border-radius: 2px;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    font-size: 10px;
+}
+
+.datosIVA {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 16%;
+}
+
+.baseizquierda {
+    width: 80%;
 }
 
 
