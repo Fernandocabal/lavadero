@@ -19,6 +19,7 @@
     </div>
 </div>
 <div class="perfil">
+
     <i class='bx bxs-user user'></i>
     <p class="perfil-nombre"><?php echo $nombre . " " . $apellido; ?></p>
     <!--Sección dropdown-->

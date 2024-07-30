@@ -446,7 +446,7 @@
 }
 
 .datosfactura {
-    border: 1px solid red;
+
     width: 16%;
 }
 
@@ -491,6 +491,23 @@
     width: 80%;
 }
 
+.body_factura {
+    border: 1px solid red;
+    height: 465px;
+    font-size: 10px;
+}
+
+.datostotal {
+    display: flex;
+    justify-content: end;
+    height: 100%;
+    width: 16%;
+}
+
+/* estilo para el pdf */
+.containerpdf {
+    width: 500px;
+}
 
 /*Estilos para smartphones*/
 @media screen and (min-width:320px) and (max-width: 768px) {
@@ -536,9 +553,10 @@
     }
 
     .headerfact {
-        height: 713px;
+        height: 440px;
         background-color: var(--bgfactura);
         flex-direction: column;
+        align-items: center;
 
     }
 

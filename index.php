@@ -23,7 +23,6 @@ if (isset($_SESSION['nombre'])) {
 </head>
 
 <body class="contenedor">
-
     <form action="" method="post" class="tarjeta-login" id="formlogin">
         <img src="./img/Logo.png" class="logo"></img>
         <?php

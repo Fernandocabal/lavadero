@@ -19,8 +19,8 @@ if (isset($_POST["insertfactura"])) {
     $cant_check = count($precio);
     $cantidad = $_POST["cantidad"];
     $nombres = $_POST["nombres"];
-    $totalfactura = $_POST['totaloperacion'];
-    $iva10 = $_POST['iva10'];
+    $totalfactura = $_POST['totalfactura'];
+    $iva10 = $_POST['sendiva'];
     $totalvalor = 0;
     //Seleccionamos los datos de la condición
     $sqlcondicion = "SELECT * FROM `condicion` WHERE id_condicion = 1 ";

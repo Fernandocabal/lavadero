@@ -40,7 +40,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                 ?>
                 <div class="col-12 m-0 titlefact">
                     <div class="col-md-6 d-grid mx-auto">
-                        <p class="col-12 display-10 d-flex justify-content-center">
+                        <p class="col-12 display-8 d-flex justify-content-center">
                             Datos de factura
                         </p>
                     </div>
@@ -77,7 +77,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                         <div class="form-label mb-0 lablefact">Correo: </div>
                         <input type="text" class="inputform" id="email" readonly>
                     </div>
-                    <div class="datosfactura">
+                    <div class="datosfactura" style="font-size: 10px;">
                         <p class="form-label mb-0 lablefact">Condicion de venta: </p>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="contado" checked>
@@ -93,7 +93,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                         </div>
                     </div>
                 </div>
-                <div class="col-12 mb-3 d-flex flex-column justify-content-between" style="border: 1px solid red; height:500px; font-size:10px;">
+                <div class="col-12 mb-3 d-flex flex-column justify-content-between body_factura">
                     <div>
                         <table class="table mb-0 table-sm table-striped table-hover table-bordered" style="font-size: 10px;">
                             <thead>
@@ -143,7 +143,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end baseizquierda">
-                                <div class="datostotal" id="totaloperacion">El total Obvio</div>
+                                <div class="datostotal" id="totaloperacion">0</div>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
@@ -153,7 +153,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end baseizquierda">
-                                <div class="datostotal" id="totalguaranies" name="totaloperacion">El total Obvio</div>
+                                <div class="datostotal" id="totalguaranies" name="totaloperacion">0</div>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
@@ -166,11 +166,13 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                                 <div class="datosIVA">5%</div>
                                 <div class="datosIVA">0</div>
                                 <div class="datosIVA">10%</div>
-                                <input class="datosIVA" id="iva10" value="0">
+                                <div class="datosIVA" id="iva10"></div>
                                 <div class="datosIVA">Total Iva</div>
-                                <div class="datostotal" id="totaliva">El total Obvio</div>
+                                <div class="datostotal" id="totaliva">0</div>
                             </div>
-
+                            <!-- SECCION OCULTA PARA ENVIAR VALORES A LA BASE DE DATOS -->
+                            <input type="hidden" value="" name="totalfactura" id="totalfactura">
+                            <input type="hidden" value="" name="sendiva" id="sendiva">
                         </div>
                     </div>
                 </div>
@@ -242,6 +244,8 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
         let subtotalTotal = document.getElementById('subtotaltotal'),
             totaloperacion = document.getElementById('totaloperacion'),
             totalguaranies = document.getElementById('totalguaranies'),
+            totalfactura = document.getElementById('totalfactura'),
+            sendiva = document.getElementById('sendiva'),
             iva10 = document.getElementById('iva10'),
             totaliva = document.getElementById('totaliva'),
             subt = '';
@@ -257,15 +261,18 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
             subtotalTotal.textContent = total;
             totaloperacion.textContent = total;
             totalguaranies.textContent = total;
+            totalfactura.value = total;
 
         }
 
         function calculariva() {
             let valor = totalguaranies.textContent;
             const intvalor = parseInt(valor);
-            const iva = intvalor * 0.1;
-            totaliva.textContent = parseInt(iva);
-            iva10.value = parseInt(iva);
+            const iva = intvalor / 11;
+            const ivaredondeado = Math.round(iva)
+            totaliva.textContent = ivaredondeado;
+            iva10.textContent = ivaredondeado;
+            sendiva.value = ivaredondeado;
             // console.log(iva)
         }
 
