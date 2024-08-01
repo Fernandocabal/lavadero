@@ -106,7 +106,7 @@ if (isset($_POST["insertfactura"])) {
             confirmButtonColor: "#0be881",
             confirmButtonText:`Imprimir factura`}).then((result) => {
                     if (result.value) {
-                    window.location.href =`../componetes/facturapdf.php?id=' . $idinsertado . '`
+                    window.location.href =`../componetes/pruebapdf.php?id=' . $idinsertado . '`
                     }
                     }); 
             </script>';
