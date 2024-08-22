@@ -40,9 +40,7 @@ if ($result = $connect->query($sqltimbrado)) {
 require('../fpdf/fpdf.php');
 class PDF extends FPDF
 {
-    function Header()
-    {
-    }
+    function Header() {}
 }
 
 $pdf = new PDF();
@@ -64,7 +62,7 @@ $pdf->Cell(40, 5, 'Fecha de vencimiento:', 'L', 0, 'L');
 $pdf->Cell(20, 5, $fecha_vencimiento, 'R', 1, 'R');
 $pdf->Cell(130, 5, 'Factura para Cliente', 'L', 0, 'R');
 $pdf->Cell(40, 5, 'RUC:', 'L', 0, 'L');
-$pdf->Cell(20, 5, '3.215.768-9', 'R', 1, 'R');
+$pdf->Cell(20, 5, '3215768-9', 'R', 1, 'R');
 $pdf->Cell(130, 5, 'Factura para Cliente', 'L', 0, 'R');
 $pdf->SetFont('Arial', 'B', 12);
 $pdf->Cell(60, 5, 'Factura', 'L,R', 1, 'C');
@@ -152,7 +150,7 @@ $pdf->Cell(40, 5, 'Fecha de vencimiento:', 'L', 0, 'L');
 $pdf->Cell(20, 5, $fecha_vencimiento, 'R', 1, 'R');
 $pdf->Cell(130, 5, 'Factura para Cliente', 'L', 0, 'R');
 $pdf->Cell(40, 5, 'RUC:', 'L', 0, 'L');
-$pdf->Cell(20, 5, '3.215.768-9', 'R', 1, 'R');
+$pdf->Cell(20, 5, '3215768-9', 'R', 1, 'R');
 $pdf->Cell(130, 5, 'Factura para Cliente', 'L', 0, 'R');
 $pdf->SetFont('Arial', 'B', 12);
 $pdf->Cell(60, 5, 'Factura', 'L,R', 1, 'C');

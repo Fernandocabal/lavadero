@@ -1,9 +1,7 @@
 <?php
 include "../connet/conexion.php";
 date_default_timezone_set('America/Asuncion');
-session_start();
-$nombrecajero = $_SESSION["nombre"];
-//Seleccionamos el timbrado
+// session_start();
 $sqltimbrado = "SELECT * FROM `timbrado`";
 if ($result = $connect->query($sqltimbrado)) {
     while ($row = $result->fetch_assoc()) {
@@ -13,24 +11,43 @@ if ($result = $connect->query($sqltimbrado)) {
         $fecha_vencimiento = $row["fecha_vencimiento"];
     }
 }
-// if (isset($_POST["insertfactura"])) {
-$connect->begin_transaction();
-$fecha = date('d-m-Y H:i');
-$precio = $_POST["precio"];
-$descripcion = $_POST["descripcion"];
-// $cant_check = count($precio);
-$cantidad = $_POST["cantidad"];
-$nombres = $_POST["nombres"];
-$totalvalor = 0;
-//Seleccionamos los datos de la condición
-$sqlcondicion = "SELECT * FROM `condicion` WHERE id_condicion = 1 ";
-if ($result = $connect->query($sqlcondicion)) {
-    while ($row = $result->fetch_assoc()) {
-        $id_condicion = $row["id_condicion"];
+if (isset($_POST["insertfactura"])) {
+    $connect->begin_transaction();
+    $fecha = date('d-m-Y H:i');
+    $precio = $_POST["precio"];
+    $descripcion = $_POST["descripcion"];
+    $cant_check = count($precio);
+    $cantidad = $_POST["cantidad"];
+    foreach ($descripcion as $name) {
+        $valordescription[] = $name;
     }
+    for ($i = 0; $i < $cant_check; $i++) {
+        $descripcion = $valordescription[$i];
+        echo $descripcion;
+    }
+
+    //Seleccionamos los datos de la condición
+
+    // foreach ($descripcion as $name) {
+    //     $valordescription[] = $name;
+    // }
+    // foreach ($precio as $valor) {
+    //     $valoreselect[] = $valor;
+    // }
+    // foreach ($cantidad as $cant) {
+    //     $valorcantidad[] = $cant;
+    // }
+
+    // for ($i = 0; $i < $cant_check; $i++) {
+    //     $descripcion = $valordescription[$i];
+    //     $precio = $valoreselect[$i];
+    //     $cantidad = $valorcantidad[$i];
+
+    //     $insertdetalle = "INSERT INTO `detalle_factura`(`id_header`, `detalle`, `cantidad`,`precio`) VALUES ('iddefactura','$descripcion','$cantidad','$precio')";
+
+    //     echo $insertdetalle;
+    // }
 }
-$insertfacturas = "INSERT INTO `header_factura`(`nro_factura`, `timbrado`,`fecha_horas`, `id_cliente`,`cajero`, `id_condicion`) VALUES ('nrofactura','$nro_timbrado','$fecha','$nombres','$nombrecajero','$id_condicion')";
-echo $insertfacturas;
 // function siguientenumero($sucursal, $caja)
 // {
 //     global $connect;

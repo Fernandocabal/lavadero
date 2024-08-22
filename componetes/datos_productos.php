@@ -1,10 +1,10 @@
 <?php
 include "../connet/conexion.php";
 
-$id = $_POST["id"];
+$id = $_POST["idproducto"];
 
 
-$sql = "SELECT * FROM clientes WHERE id_cliente = ?";
+$sql = "SELECT * FROM precios WHERE id_precios = ?";
 $stmt = $connect->prepare($sql);
 $stmt->bind_param("i", $id);
 
@@ -13,14 +13,9 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 if ($row) {
     $data = [
-        'id_cliente' => $row['id_cliente'],
-        'nombres' => $row['nombres'],
-        'apellidos' => $row['apellidos'],
-        'nroci' => $row['nroci'],
-        'email' => $row['email'],
-        'direccion' => $row['direccion'],
-        'phonenumber' => $row['phonenumber'],
-
+        'id_precios' => $row['id_precios'],
+        'producto' => $row['producto'],
+        'precio' => $row['precio']
     ];
     echo json_encode($data);
 } else {

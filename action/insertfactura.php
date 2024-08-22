@@ -79,10 +79,14 @@ if (isset($_POST["insertfactura"])) {
     foreach ($precio as $valor) {
         $valoreselect[] = $valor;
     }
+    foreach ($cantidad as $cant) {
+        $valorcantidad[] = $cant;
+    }
 
     for ($i = 0; $i < $cant_check; $i++) {
-        $precio = $valoreselect[$i];
         $descripcion = $valordescription[$i];
+        $precio = $valoreselect[$i];
+        $cantidad = $valorcantidad[$i];
 
         $insertdetalle = "INSERT INTO `detalle_factura`(`id_header`, `detalle`, `cantidad`,`precio`) VALUES (?,?,?,?)";
         $stminsertdetalle = $connect->prepare($insertdetalle);
@@ -92,7 +96,7 @@ if (isset($_POST["insertfactura"])) {
     }
     if ($connect->error) {
         $connect->rollback(); // Revertir la transacción si ocurre algún error
-        echo "Error al insertar datos: " . $db->error;
+        echo "Error al insertar datos: " . $connect->error;
         exit();
     }
 
@@ -100,7 +104,7 @@ if (isset($_POST["insertfactura"])) {
     echo '<script>
             Swal.fire({
             icon: "success",
-            title: "Recepcionado!",
+            title: "La factura se ha generado!",
             allowOutsideClick : false,
             allowEscapeKey: false,
             confirmButtonColor: "#0be881",
