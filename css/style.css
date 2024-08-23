@@ -541,7 +541,15 @@
 
 /*Estilos para smartphones*/
 @media screen and (min-width:320px) and (max-width: 768px) {
+    .ctnproducto {
+        display: flex;
+        flex-direction: row;
 
+    }
+
+    .ctnproducto select {
+        width: 70% !important;
+    }
 
     .tarjeta-login {
         width: 340px;

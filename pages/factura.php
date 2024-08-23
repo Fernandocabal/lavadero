@@ -36,7 +36,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
         <div class="ctnfact" id="targetcenter">
             <form action="" method="POST" class="row" id="formfactura">
                 <?php
-                include "../action/insertfactura.php";
+                include "../componetes/datosfactura.php";
                 ?>
                 <div class="col-12 m-0 titlefact">
                     <div class="col-md-6 d-grid mx-auto">
@@ -48,7 +48,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                 <div class="col-12 d-flex justify-content-around m-0 p-0 headerfact">
                     <div class="datosfactura">
                         <div class="form-label mb-0 lablefact">N° de Factura</div>
-                        <div type="text" class="inputform"><?php include "../componetes/viewnrofactura.php"; ?></div>
+                        <div type="text" class="inputform"><?php echo $formatproximonumero ?></div>
                         <div class="form-label mb-0 lablefact">Timbrado</div>
                         <div type="date" class="inputform"><?php echo $nro_timbrado; ?></div>
                     </div>
@@ -95,7 +95,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                         </div>
                     </div>
                 </div>
-                <div class="headerfact d-flex align-items-center" style="height: 40px; border: 1px solid red;">
+                <div class="ctnproducto d-flex align-items-center" style="height: 40px; border: 1px solid red;">
                     <select id="selectservice" class="buscadorprecio form-select m-0 form-select-sm w-25">
                         <option value="" selected disabled>Selecciona una opcion</option>
                         <?php

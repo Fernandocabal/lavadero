@@ -22,6 +22,7 @@ if ($result = $connect->query($sql)) {
         $nro_factura = $row["nro_factura"];
         $totalfactura = $row['total'];
         $iva = $row['iva'];
+        $cajero = $row['cajero'];
         $total = 0;
     }
 }
@@ -221,5 +222,8 @@ $pdf->Cell(0, 5, number_format($iva, 0, '.', '.'), 'R,T,B', 1, 'R');
 $pdf->Ln(2);
 $pdf->Cell(0, 5, 'Duplicado', 0, 1, 'L');
 
+$pdf->SetTitle('Factura nro: ' . $nro_factura);
 
-$pdf->Output();
+$pdf->SetAuthor('Cajero: ' . $cajero);
+
+$pdf->Output('I', 'FACT' . $nro_factura . '.pdf');

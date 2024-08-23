@@ -1,7 +1,7 @@
 <?php
 include "../connet/conexion.php";
 date_default_timezone_set('America/Asuncion');
-//Seleccionamos el timbrado
+session_start();
 $sqltimbrado = "SELECT * FROM `timbrado`";
 if ($result = $connect->query($sqltimbrado)) {
     while ($row = $result->fetch_assoc()) {
@@ -11,9 +11,9 @@ if ($result = $connect->query($sqltimbrado)) {
         $fecha_vencimiento = $row["fecha_vencimiento"];
     }
 }
-if (isset($_POST["insertfactura"])) {
+try {
     $connect->begin_transaction();
-    $fecha = date('d-m-Y H:i');
+    $fecha = date('d/m/Y H:i');
     $precio = $_POST["precio"];
     $descripcion = $_POST["descripcion"];
     $cant_check = count($precio);
@@ -29,7 +29,6 @@ if (isset($_POST["insertfactura"])) {
             $id_condicion = $row["id_condicion"];
         }
     }
-
     function siguientenumero($sucursal, $caja)
     {
         global $connect;
@@ -50,9 +49,6 @@ if (isset($_POST["insertfactura"])) {
 
         // Formatear el número final
         $formatproximonumero = $sucursal . '-' . $caja . '-' . $parte3;
-
-
-        // Preparar la consulta para prevenir inyecciones SQL
         $stmt = $connect->prepare("UPDATE numeracion_factura SET ultimo_numero=?");
         $stmt->bind_param("i", $proximonumero);
         $stmt->execute();
@@ -60,12 +56,10 @@ if (isset($_POST["insertfactura"])) {
         if ($stmt->affected_rows > 0) {
             return $formatproximonumero;
         } else {
-            // Manejo de error, por ejemplo, lanzar una excepción
             throw new Exception("Error al actualizar el último número");
         }
     }
     $numeroFactura = siguientenumero($sucursal, $caja);
-
     $insertfacturas = "INSERT INTO `header_factura`(`nro_factura`, `timbrado`,`fecha_horas`, `id_cliente`,`cajero`, `id_condicion`,`subtotal`, `iva`, `total`) VALUES (?,?,?,?,?,?,?,?,?)";
     $stminsertfacturas = $connect->prepare($insertfacturas);
     $stminsertfacturas->bind_param("sisisiddd", $numeroFactura, $nro_timbrado, $fecha, $nombres, $_SESSION["nombre"], $id_condicion, $totalfactura, $iva10, $totalfactura);
@@ -101,24 +95,16 @@ if (isset($_POST["insertfactura"])) {
     }
 
     $connect->commit();
-    echo '<script>
-            Swal.fire({
-            icon: "success",
-            title: "La factura se ha generado!",
-            allowOutsideClick : false,
-            allowEscapeKey: false,
-            confirmButtonColor: "#0be881",
-            confirmButtonText:`Imprimir factura`}).then((result) => {
-                    if (result.value) {
-                    window.location.href =`../componetes/pruebapdf.php?id=' . $idinsertado . '`
-                    }
-                    }); 
-            </script>';
-} ?>
-<script>
-    setTimeout(() => {
-        window.history.replaceState(null, null, window.location.pathname);
-    }, 0);
-</script>
-<?php
-?>
+    echo json_encode([
+        'success' => true,
+        'id' => $idinsertado,
+        'message' => 'La factura se ha generado!'
+    ]);
+} catch (Exception $e) {
+    $connect->rollback(); // Revertir la transacción si ocurre algún error
+    echo json_encode([
+        'success' => false,
+        'message' => 'Error al insertar datos: ' . $e->getMessage()
+    ]);
+}
+$connect->close();

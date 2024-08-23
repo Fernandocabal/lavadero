@@ -7,6 +7,7 @@ let subtotalTotal = document.getElementById('subtotaltotal'),
     totaliva = document.getElementById('totaliva'),
     btnaddservice = document.getElementById('addservice'),
     formfactura = document.getElementById('formfactura'),
+    btninsertfactura = document.getElementById('insertfactura'),
     subt = '';
 
 function calcularTotal() {
@@ -33,29 +34,55 @@ function calculariva() {
     iva10.textContent = ivaredondeado;
     sendiva.value = ivaredondeado;
 }
-document.addEventListener('DOMContentLoaded', () => {
+btninsertfactura.addEventListener('click', (evento) => {
+    evento.preventDefault();
     const nroci = document.getElementById('nroci');
-    const productosSelect = document.getElementById('selectservice');
-    const submitButton = document.getElementById('insertfactura');
-    function validarFormulario() {
-        const clienteSeleccionado = nroci.value.trim() !== '';
-        const productoSeleccionado = productosSelect.value.trim() !== ''; // Asume que hay al menos un producto seleccionado
-
-        if (clienteSeleccionado && productoSeleccionado) {
-
-            submitButton.disabled = false;
-
-            // Habilita el botón si se cumplen las condiciones
-        } else {
-            submitButton.disabled = true; // Deshabilita el botón si no se cumplen las condiciones
-        }
+    if (nroci.value == 0) {
+        Swal.fire({
+            title: '¡Atención!',
+            icon: 'warning',
+            text: 'Por favor selecciona un cliente',
+            confirmButtonText: 'Aceptar'
+        });
+        nroci.focus();
+    } else {
+        const formData = new FormData(formfactura);
+        fetch('../action/insertfactura.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: data.message,
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            window.location.href = `../componetes/facturafpdf.php?id=${data.id}`;
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message,
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: error,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            });
     }
-
-    // Ejecuta la validación al cargar la página y cada vez que cambie el estado de selección
-    nroci.addEventListener('change', validarFormulario);
-    productosSelect.addEventListener('change', validarFormulario);
-
-    validarFormulario();
 });
 
 btnaddservice.addEventListener('click', (e) => {
@@ -172,6 +199,7 @@ document.querySelector('tbody').addEventListener('change', (event) => {
         calculariva();
     }
 });
+
 //Sección de select 2
 
 $(document).ready(function () {
