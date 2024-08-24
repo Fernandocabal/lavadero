@@ -481,15 +481,15 @@
     padding: 4px 3.5px;
     line-height: 1.5;
     color: #212529;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #dee2e6;
-    border-radius: 2px;
+    border-radius: 3px;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     font-size: 10px;
+    height: 24px !important;
+    overflow: hidden;
 }
 
 .inputbody {
@@ -522,7 +522,6 @@
 }
 
 .body_factura {
-    border: 1px solid red;
     height: 440px;
     font-size: 10px;
 }
@@ -532,6 +531,33 @@
     justify-content: end;
     height: 100%;
     width: 16%;
+}
+
+.icondelete {
+    font-size: 25px;
+}
+
+.ctnbtns {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.ctnbtns .btns {
+    width: 180px;
+}
+
+.ctnproducto {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--bgfactura);
+}
+
+/* Modificar fondo de swal */
+.swal2-backdrop-show {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
 }
 
 /* estilo para el pdf */
@@ -557,6 +583,9 @@
         gap: 15px;
     }
 
+    .body_factura {
+        margin-bottom: 1px !important;
+    }
 
     .ctnheader {
         position: sticky;
@@ -578,6 +607,14 @@
     }
 
     .ctnbtns {
+        justify-content: center;
+        gap: 4px;
+        align-items: center;
+        height: 107px;
+        flex-direction: column;
+    }
+
+    .ctnbtns .btns {
         width: 100%;
     }
 

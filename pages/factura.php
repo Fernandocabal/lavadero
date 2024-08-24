@@ -58,8 +58,8 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                     </div>
                     <div class="datosfactura">
                         <div class="form-label mb-0 lablefact">Nombre Cliente: </div>
-                        <div class="select2">
-                            <select id="nombres" name="nombres" class="form-select">
+                        <div class="inputform">
+                            <select id="nombres" name="nombres" class="form-control">
                                 <option> </option>
                                 <?php
                                 include "../action/selectclient.php";
@@ -95,7 +95,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                         </div>
                     </div>
                 </div>
-                <div class="ctnproducto d-flex align-items-center" style="height: 40px; border: 1px solid red;">
+                <div class="ctnproducto d-flex align-items-center" style="height: 40px;">
                     <select id="selectservice" class="buscadorprecio form-select m-0 form-select-sm w-25">
                         <option value="" selected disabled>Selecciona una opcion</option>
                         <?php
@@ -105,11 +105,12 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                     <button id="addservice" class="btn btn-sm btn-dark">Agregar</button>
 
                 </div>
-                <div class="col-12 mb-3 p-0 d-flex flex-column justify-content-between body_factura">
+                <div class="col-12 p-0 d-flex flex-column justify-content-between body_factura">
                     <div>
                         <table id="table" class="table mb-0 table-sm table-bordered" style="font-size: 10px;">
                             <thead>
                                 <tr>
+                                    <th style="width: 4%;" scope="col"></th>
                                     <th scope="col">Descripcion</th>
                                     <th style="width: 10%;" scope="col">Cantidad</th>
                                     <th style="width: 10%;" scope="col">Precio Unitario</th>
@@ -178,14 +179,11 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-6 d-grid">
-                    <div class="col-md-6 mx-auto ctnbtns">
-                        <button type="submit" class="btn btn-dark  btn-lg" style="width: 100%;" name="insertfactura" id="insertfactura">Imprimir</button>
+                <div class="ctnbtns bg-body-secondary pt-2 pb-3">
+                    <div class="btns">
+                        <button type=" submit" class="btn btn-dark  btn-lg" style="width: 100%;" name="insertfactura" id="insertfactura">Imprimir</button>
                     </div>
-                </div>
-                <div class="col-md-6 d-grid">
-                    <div class="col-md-6 d-grid mx-auto ctnbtns">
+                    <div class="btns">
                         <a href="../pages/recepcionvh.php" class="btn btn-secondary btn-lg" style="width: 100%;" name="insertclient" id="insertclient">Cancelar</a>
                     </div>
                 </div>

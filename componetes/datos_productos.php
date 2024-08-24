@@ -13,7 +13,7 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 if ($row) {
     $data = [
-        'id_precios' => $row['id_precios'],
+        'id_productos' => $row['id_precios'],
         'producto' => $row['producto'],
         'precio' => $row['precio']
     ];

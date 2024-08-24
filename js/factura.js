@@ -14,10 +14,9 @@ function calcularTotal() {
     let subtotales = document.querySelectorAll('.subtotal'); // Actualizar la lista cada vez
     let total = 0;
 
-    subtotales.forEach(element => {
-        total += parseFloat(element.value);
-    });
-
+    for (const subtotal of subtotales) {
+        total += parseFloat(subtotal.value) || 0;
+    }
     subtotalTotal.textContent = total;
     totaloperacion.textContent = total;
     totalguaranies.textContent = total;
@@ -26,7 +25,7 @@ function calcularTotal() {
 }
 
 function calculariva() {
-    let valor = totalguaranies.textContent;
+    const valor = totalguaranies.textContent;
     const intvalor = parseInt(valor);
     const iva = intvalor / 11;
     const ivaredondeado = Math.round(iva)
@@ -42,7 +41,7 @@ btninsertfactura.addEventListener('click', (evento) => {
             title: '¡Atención!',
             icon: 'warning',
             text: 'Por favor selecciona un cliente',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Aceptar',
         });
         nroci.focus();
     } else {
@@ -55,13 +54,19 @@ btninsertfactura.addEventListener('click', (evento) => {
             .then(data => {
                 if (data.success) {
                     Swal.fire({
-                        title: '¡Éxito!',
+                        title: 'Se generó la factura',
                         text: data.message,
                         icon: 'success',
-                        confirmButtonText: 'Aceptar'
+                        allowEscapeKey: false,
+                        allowOutsideClick: false, // Evita cerrar al hacer clic fuera
+                        showConfirmButton: true,
+                        showCancelButton: false,
+                        focusConfirm: true,
+                        confirmButtonText: 'Imprimir'
                     }).then(result => {
                         if (result.isConfirmed) {
                             window.location.href = `../componetes/facturafpdf.php?id=${data.id}`;
+                            formfactura.reset();
                         }
                     });
                 } else {
@@ -87,6 +92,22 @@ btninsertfactura.addEventListener('click', (evento) => {
 
 btnaddservice.addEventListener('click', (e) => {
     e.preventDefault();
+
+    // Obtener el número actual de filas en la tabla (excluyendo la fila del encabezado)
+    const table = document.getElementById('table');
+    const tableBody = table.querySelector('tbody');
+    const filas = tableBody.querySelectorAll('tr');
+
+    if (filas.length >= 10) {
+        Swal.fire({
+            title: '¡Atención!',
+            text: 'Solo se admiten 10 elementos por factura.',
+            icon: 'warning',
+            confirmButtonText: 'Aceptar'
+        });
+        return; // Salir de la función si ya se alcanzó el límite
+    }
+
     const valueselect = document.getElementById('selectservice').value;
     const xhr = new XMLHttpRequest();
 
@@ -100,9 +121,22 @@ btnaddservice.addEventListener('click', (e) => {
     xhr.onload = function () {
         if (xhr.status === 200) {
             // La solicitud fue exitosa
-            const cliente = JSON.parse(xhr.responseText);
-            crearFilaTabla(cliente);
-            console.log(xhr.responseText);
+            const producto = JSON.parse(xhr.responseText);
+
+            // Verificar si el producto ya está en la tabla
+            if (esProductoRepetido(producto.id_productos)) {
+                Swal.fire({
+                    title: '¡Evite duplicados!',
+                    text: 'Este producto ya está incluida en la factura',
+                    icon: 'warning',
+                    confirmButtonText: 'Aceptar'
+                });
+                return;
+            }
+            crearFilaTabla(producto);
+            calcularTotal();
+            calculariva();
+            // console.log(xhr.responseText);
         } else {
 
             console.error('Error al realizar la solicitud:', xhr.statusText);
@@ -110,18 +144,40 @@ btnaddservice.addEventListener('click', (e) => {
     };
     xhr.send(data);
 
-    function crearFilaTabla(cliente) {
+    function esProductoRepetido(idProducto) {
+        const table = document.getElementById('table');
+        const tableBody = table.querySelector('tbody');
+        const filas = tableBody.querySelectorAll('tr');
+        for (const fila of filas) {
+            const idElemento = fila.dataset.id;
+            if (idElemento == idProducto) {
+                return true; // Producto repetido
+            }
+        }
+        return false; // Producto no repetido
+    }
+
+    function crearFilaTabla(producto) {
 
 
         const table = document.getElementById('table');
         const tableBody = table.querySelector('tbody');
 
         const newRow = document.createElement('tr');
+        newRow.dataset.id = producto.id_productos;
+
+        const columnicondelete = document.createElement('div');
+        const icondelete = document.createElement('i');
+        columnicondelete.classList = 'd-flex align-items-center justify-content-center'
+        icondelete.name = 'icondelete[]';
+        icondelete.classList = 'bx bx-trash btn btn-danger btn-sm';
+        icondelete.readOnly = true;
+        columnicondelete.appendChild(icondelete);
 
         const columndescripcion = document.createElement('td');
         const descripcion = document.createElement('input');
         descripcion.type = 'text';
-        descripcion.value = cliente.producto || "No se encontró descripción";
+        descripcion.value = producto.producto || "No se encontró descripción";
         descripcion.name = 'descripcion[]';
         descripcion.classList = 'inputbody';
         descripcion.readOnly = true;
@@ -138,40 +194,45 @@ btnaddservice.addEventListener('click', (e) => {
         const columnutiraio = document.createElement('td');
         const preciounit = document.createElement('input');
         preciounit.type = 'text';
-        preciounit.value = cliente.precio;
+        preciounit.value = producto.precio;
         preciounit.name = 'precio[]';
-        preciounit.classList = 'inputbody precio'
+        preciounit.classList = 'inputbody precio';
+        preciounit.readOnly = true;
         columnutiraio.appendChild(preciounit);
 
         const columndescuento = document.createElement('td');
         const descuento = document.createElement('input');
         descuento.type = 'text';
-        descuento.value = 'HOLAS';
-        descuento.classList = 'inputbody'
+        descuento.value = '0';
+        descuento.classList = 'inputbody';
+        descuento.readOnly = true;
         columndescuento.appendChild(descuento);
 
         const columnexentas = document.createElement('td');
         const exentas = document.createElement('input');
         exentas.type = 'text';
-        exentas.value = 'HOLAS';
-        exentas.classList = 'inputbody'
+        exentas.value = '0';
+        exentas.classList = 'inputbody';
+        exentas.readOnly = true;
         columnexentas.appendChild(exentas);
 
         const column5 = document.createElement('td');
         const cincoporciento = document.createElement('input');
         cincoporciento.type = 'text';
-        cincoporciento.value = 'HOLAS';
-        cincoporciento.classList = 'inputbody'
+        cincoporciento.value = '0';
+        cincoporciento.classList = 'inputbody';
+        cincoporciento.readOnly = true;
         column5.appendChild(cincoporciento);
 
         const column10 = document.createElement('td');
         const diezporciento = document.createElement('input');
         diezporciento.type = 'text';
-        diezporciento.value = cliente.precio;
+        diezporciento.value = producto.precio;
         diezporciento.classList = 'inputbody subtotal'
         diezporciento.readOnly = true;
         column10.appendChild(diezporciento);
 
+        newRow.appendChild(columnicondelete);
         newRow.appendChild(columndescripcion);
         newRow.appendChild(columncantidad);
         newRow.appendChild(columnutiraio);
@@ -180,10 +241,15 @@ btnaddservice.addEventListener('click', (e) => {
         newRow.appendChild(column5);
         newRow.appendChild(column10);
         tableBody.appendChild(newRow);
+
+        icondelete.addEventListener('click', () => {
+            tableBody.removeChild(newRow);
+            calcularTotal();
+            calculariva();
+        });
     }
 });
 
-// Delegar el evento a un elemento padre común
 document.querySelector('tbody').addEventListener('change', (event) => {
 
     if (event.target.classList.contains('cantidad')) {
