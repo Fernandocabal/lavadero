@@ -11,7 +11,7 @@ let subtotalTotal = document.getElementById('subtotaltotal'),
     subt = '';
 
 function calcularTotal() {
-    let subtotales = document.querySelectorAll('.subtotal'); // Actualizar la lista cada vez
+    let subtotales = document.querySelectorAll('.subtotal');
     let total = 0;
 
     for (const subtotal of subtotales) {
@@ -65,8 +65,8 @@ btninsertfactura.addEventListener('click', (evento) => {
                         confirmButtonText: 'Imprimir'
                     }).then(result => {
                         if (result.isConfirmed) {
-                            window.location.href = `../componetes/facturafpdf.php?id=${data.id}`;
                             formfactura.reset();
+                            window.location.href = `../componetes/facturafpdf.php?id=${data.id}`;
                         }
                     });
                 } else {
@@ -166,12 +166,13 @@ btnaddservice.addEventListener('click', (e) => {
         const newRow = document.createElement('tr');
         newRow.dataset.id = producto.id_productos;
 
-        const columnicondelete = document.createElement('div');
+        const columnicondelete = document.createElement('td');
         const icondelete = document.createElement('i');
-        columnicondelete.classList = 'd-flex align-items-center justify-content-center'
+        // columnicondelete.classList = 'd-flex align-items-center justify-content-center'
         icondelete.name = 'icondelete[]';
         icondelete.classList = 'bx bx-trash btn btn-danger btn-sm';
         icondelete.readOnly = true;
+        icondelete.style = 'height: 25px; font-size:10px';
         columnicondelete.appendChild(icondelete);
 
         const columndescripcion = document.createElement('td');
