@@ -47,9 +47,11 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                     <div class="col-md-6">
                         <?php
                         $idclient = $_GET["id"];
-                        $consulta = $consulta = ("SELECT * FROM `clientes` WHERE id_cliente='$idclient'");
-                        if ($result = $connect->query($consulta)) {
-                            while ($row = $result->fetch_assoc()) {
+                        try {
+                            $query  = ("SELECT * FROM `clientes` WHERE id_cliente='$idclient'");
+                            $stmt = $connect->prepare($query);
+                            $stmt->execute();
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                 $id_cliente = $row["id_cliente"];
                                 $nombres = $row["nombres"];
                                 $apellidos = $row["apellidos"];
@@ -59,6 +61,8 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                                 $direccion = $row["direccion"];
                                 $ciudad = $row["ciudad"];
                             }
+                        } catch (PDOException $e) {
+                            echo 'Error: ' . $e->getMessage();
                         }
                         ?>
                         <input type="text" class="form-control" id="" name="id_cliente" value="<?php echo $id_cliente ?>" autocomplete="off" style="display: none;">
@@ -101,24 +105,34 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                         <label for="inputCity" class="form-label">Ciudad</label>
                         <select class="form-select" id="inputCity" name="inputCity" autocomplete="off">
                             <?php
-                            $query = ("SELECT * FROM `ciudades` WHERE id_ciudad = $ciudad;");
-                            if ($data = $connect->query($query)) {
-                                while ($row = $data->fetch_assoc()) {
+                            try {
+                                $query = ("SELECT * FROM `ciudades` WHERE id_ciudad = :ciudad;");
+                                $stmt = $connect->prepare($query);
+                                $stmt->bindParam(':ciudad', $ciudad, PDO::PARAM_STR);
+                                $stmt->execute();
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     $id_ciudad = $row["id_ciudad"];
                                     $nombre = $row["nombre"];
                                     echo "<option selected value='$id_ciudad'>$nombre</option>";
                                 }
+                            } catch (PDOException $e) {
+                                echo 'Error: ' . $e->getMessage();
                             }
                             ?>
                             <?php
-                            $consulta = ("SELECT * FROM `ciudades`");
-                            if ($result = $connect->query($consulta)) {
-                                while ($row = $result->fetch_assoc()) {
+                            try {
+                                $query = ("SELECT * FROM `ciudades`");
+                                $stmt = $connect->prepare($query);
+                                $stmt->execute();
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                     $id_ciudad = $row["id_ciudad"];
                                     $nombre = $row["nombre"];
                                     echo "<option value='$id_ciudad'>$nombre</option>";
                                 }
+                            } catch (PDOException $e) {
+                                echo 'Error: ' . $e->getMessage();
                             }
+
                             ?>
                         </select>
                     </div>

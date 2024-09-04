@@ -2,17 +2,18 @@
 include "../connet/conexion.php";
 date_default_timezone_set('America/Asuncion');
 session_start();
-$sqltimbrado = "SELECT * FROM `timbrado`";
-if ($result = $connect->query($sqltimbrado)) {
-    while ($row = $result->fetch_assoc()) {
-        $nro_timbrado = $row["nro_timbrado"];
-        $sucursal = $row["sucursal"];
-        $caja = $row["caja"];
-        $fecha_vencimiento = $row["fecha_vencimiento"];
-    }
-}
 try {
-    $connect->begin_transaction();
+    $sqltimbrado = "SELECT * FROM `timbrado`";
+    $stmt = $connect->query($sqltimbrado);
+    $timbrado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($timbrado) {
+        $nro_timbrado = $timbrado["nro_timbrado"];
+        $sucursal = $timbrado["sucursal"];
+        $caja = $timbrado["caja"];
+        $fecha_vencimiento = $timbrado["fecha_vencimiento"];
+    }
+    $connect->beginTransaction();
     $fecha = date('d/m/Y H:i');
     $precio = $_POST["precio"];
     $descripcion = $_POST["descripcion"];
@@ -21,90 +22,66 @@ try {
     $nombres = $_POST["nombres"];
     $totalfactura = $_POST['totalfactura'];
     $iva10 = $_POST['sendiva'];
-    $totalvalor = 0;
-    //Seleccionamos los datos de la condición
-    $sqlcondicion = "SELECT * FROM `condicion` WHERE id_condicion = 1 ";
-    if ($result = $connect->query($sqlcondicion)) {
-        while ($row = $result->fetch_assoc()) {
-            $id_condicion = $row["id_condicion"];
-        }
+    $sqlcondicion = "SELECT * FROM `condicion` WHERE id_condicion = 1";
+    $stmt = $connect->query($sqlcondicion);
+    $condicion = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($condicion) {
+        $id_condicion = $condicion["id_condicion"];
     }
     function siguientenumero($sucursal, $caja)
     {
         global $connect;
-        $respuesta = $connect->query("SELECT COUNT(*) FROM numeracion_factura");
-        $row = $respuesta->fetch_row();
-        $count = $row[0];
+        $stmt = $connect->query("SELECT COUNT(*) FROM numeracion_factura");
+        $count = $stmt->fetchColumn();
 
         if ($count == 0) {
-            // Si la tabla está vacía, insertar el primer registro
             $query = "INSERT INTO numeracion_factura (ultimo_numero) VALUES (0)";
-            $connect->query($query);
+            $connect->exec($query);
         }
-        $queryid = "SELECT COALESCE(MAX(ultimo_numero), 0) + 1 AS proximonumero FROM numeracion_factura";
-        $result = $connect->query($queryid);
-        $row = $result->fetch_assoc();
+
+        $stmt = $connect->query("SELECT COALESCE(MAX(ultimo_numero), 0) + 1 AS proximonumero FROM numeracion_factura");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $proximonumero = $row['proximonumero'] ?? 0;
         $parte3 = str_pad($proximonumero, 7, '0', STR_PAD_LEFT);
 
         // Formatear el número final
         $formatproximonumero = $sucursal . '-' . $caja . '-' . $parte3;
-        $stmt = $connect->prepare("UPDATE numeracion_factura SET ultimo_numero=?");
-        $stmt->bind_param("i", $proximonumero);
-        $stmt->execute();
+        $stmt = $connect->prepare("UPDATE numeracion_factura SET ultimo_numero = ?");
+        $stmt->execute([$proximonumero]);
 
-        if ($stmt->affected_rows > 0) {
+        if ($stmt->rowCount() > 0) {
             return $formatproximonumero;
         } else {
             throw new Exception("Error al actualizar el último número");
         }
     }
     $numeroFactura = siguientenumero($sucursal, $caja);
-    $insertfacturas = "INSERT INTO `header_factura`(`nro_factura`, `timbrado`,`fecha_horas`, `id_cliente`,`cajero`, `id_condicion`,`subtotal`, `iva`, `total`) VALUES (?,?,?,?,?,?,?,?,?)";
-    $stminsertfacturas = $connect->prepare($insertfacturas);
-    $stminsertfacturas->bind_param("sisisiddd", $numeroFactura, $nro_timbrado, $fecha, $nombres, $_SESSION["nombre"], $id_condicion, $totalfactura, $iva10, $totalfactura);
-    $stminsertfacturas->execute();
+    $insertfacturas = "INSERT INTO `header_factura`(`nro_factura`, `timbrado`, `fecha_horas`, `id_cliente`, `cajero`, `id_condicion`, `subtotal`, `iva`, `total`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $connect->prepare($insertfacturas);
+    $stmt->execute([$numeroFactura, $nro_timbrado, $fecha, $nombres, $_SESSION["nombre"], $id_condicion, $totalfactura, $iva10, $totalfactura]);
+    $idinsertado = $connect->lastInsertId();
 
-    $idinsertado = $stminsertfacturas->insert_id;
-
-    foreach ($descripcion as $name) {
-        $valordescription[] = $name;
-    }
-    foreach ($precio as $valor) {
-        $valoreselect[] = $valor;
-    }
-    foreach ($cantidad as $cant) {
-        $valorcantidad[] = $cant;
-    }
-
+    $insertdetalle = "INSERT INTO `detalle_factura`(`id_header`, `detalle`, `cantidad`, `precio`) VALUES (?, ?, ?, ?)";
+    $stmt = $connect->prepare($insertdetalle);
     for ($i = 0; $i < $cant_check; $i++) {
-        $descripcion = $valordescription[$i];
-        $precio = $valoreselect[$i];
-        $cantidad = $valorcantidad[$i];
+        $descripcion = $descripcion[$i];
+        $precio = $precio[$i];
+        $cantidad = $cantidad[$i];
 
-        $insertdetalle = "INSERT INTO `detalle_factura`(`id_header`, `detalle`, `cantidad`,`precio`) VALUES (?,?,?,?)";
-        $stminsertdetalle = $connect->prepare($insertdetalle);
-        $stminsertdetalle->bind_param("isii", $idinsertado, $descripcion, $cantidad, $precio);
-
-        $stminsertdetalle->execute();
+        $stmt->execute([$idinsertado, $descripcion, $cantidad, $precio]);
     }
-    if ($connect->error) {
-        $connect->rollback(); // Revertir la transacción si ocurre algún error
-        echo "Error al insertar datos: " . $connect->error;
-        exit();
-    }
-
     $connect->commit();
+
     echo json_encode([
         'success' => true,
         'id' => $idinsertado,
         'message' => 'La factura se ha generado!'
     ]);
-} catch (Exception $e) {
-    $connect->rollback(); // Revertir la transacción si ocurre algún error
+} catch (PDOException $e) {
+    $connect->rollBack();
     echo json_encode([
         'success' => false,
         'message' => 'Error al insertar datos: ' . $e->getMessage()
     ]);
 }
-$connect->close();
+$connect = null;

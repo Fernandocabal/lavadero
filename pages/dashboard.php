@@ -7,6 +7,7 @@ $id_tipo = $_SESSION["id_tipo"];
 if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     header("location:../index.php");
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -37,11 +38,8 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
             <div class="targetdash">
                 <p id="time"></p>
                 <?php
-                if ($id_tipo > 1) {
-                    include "../componetes/menu_datos.php";
-                } else {
-                    echo "Hola " . $nombre . " eres admin y tienes el nivel " . $id_tipo;
-                }
+
+                echo "Hola " . $nombre . " tienes el nivel " . $id_tipo;
                 ?>
             </div>
             <div class="targetdash" style="justify-content: start;">

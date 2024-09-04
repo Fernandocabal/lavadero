@@ -29,12 +29,8 @@ const optionContainer = document.getElementById('option-container');
 
 vehicleSelect.addEventListener('change', function () {
     const selectedVehicleId = this.value;
-
-    // Limpiar opciones existentes
     optionContainer.innerHTML = '';
-
     if (selectedVehicleId) {
-        // Obtener opciones basadas en el vehículo seleccionado
         fetch(`../action/viewoption.php?vehicleId=${selectedVehicleId}`)
             .then(response => response.json())
             .then(data => {

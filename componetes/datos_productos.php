@@ -3,26 +3,20 @@ include "../connet/conexion.php";
 
 $id = $_POST["idproducto"];
 
-
-$sql = "SELECT * FROM precios WHERE id_precios = ?";
-$stmt = $connect->prepare($sql);
-$stmt->bind_param("i", $id);
-
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-if ($row) {
-    $data = [
-        'id_productos' => $row['id_precios'],
-        'producto' => $row['producto'],
-        'precio' => $row['precio']
-    ];
-    echo json_encode($data);
-} else {
-    // Manejar el caso en que no se encuentre ningún resultado
-    echo json_encode(['error' => 'Cliente no encontrado']);
+try {
+    $sql = "SELECT * FROM precios WHERE id_precios = :id";
+    $stmt = $connect->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $data[] = 0;
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $data = [
+            'id_productos' => $row['id_precios'],
+            'producto' => $row['producto'],
+            'precio' => $row['precio']
+        ];
+        echo json_encode($data);
+    }
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'error' => 'Error en la consulta: ' . $e->getMessage()]);
 }
-
-
-$stmt->close();
-$connect->close();

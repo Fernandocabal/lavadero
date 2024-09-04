@@ -1,67 +1,72 @@
 <?php
 include "../connet/conexion.php";
+
 date_default_timezone_set('America/Asuncion');
+
 if (isset($_POST["insertclient"])) {
-    $connect->begin_transaction();
-    $fecha = date('d-m-Y H:i');
-    $checkboxes = $_POST["opcion"];
-    $decriptioncheck = $_POST["nombre"];
-    $cant_check = count($checkboxes);
-    $nombre = $_POST["inputname"];
-    $tipo_vehiculo = $_POST["inputvehiculo"];
-    $totalvalor = 0;
-    $queryid = "SELECT COALESCE(MAX(id_recepcion), 0) + 1 AS proximonumero FROM recepcion;";
-    $result = $connect->query($queryid);
-    $row = $result->fetch_assoc();
-    $proximonumero = $row['proximonumero'];
+    try {
+        $connect->beginTransaction();
 
-    $formatproximonumero = str_pad($proximonumero, 6, '0', STR_PAD_LEFT);
+        $fecha = date('d-m-Y H:i');
+        $checkboxes = $_POST["opcion"];
+        $decriptioncheck = $_POST["nombre"];
+        $cant_check = count($checkboxes);
+        $nombre = $_POST["inputname"];
+        $tipo_vehiculo = $_POST["inputvehiculo"];
+        $totalvalor = 0;
+        $queryid = "SELECT COALESCE(MAX(id_recepcion), 0) + 1 AS proximonumero FROM recepcion";
+        $stmt = $connect->query($queryid);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $proximonumero = $row['proximonumero'];
 
-    $insertrecepcion = "INSERT INTO `recepcion`(`nro_recepcion`, `fecha_horas`, `id_vehiculos`, `nombre_cliente`) VALUES (?,?,?,?)";
-    $stminsertrecepcion = $connect->prepare($insertrecepcion);
-    $stminsertrecepcion->bind_param("ssis", $formatproximonumero, $fecha, $tipo_vehiculo, $nombre);
-    $stminsertrecepcion->execute();
+        $formatproximonumero = str_pad($proximonumero, 6, '0', STR_PAD_LEFT);
 
-    $idinsertado = $stminsertrecepcion->insert_id;
+        $insertrecepcion = "INSERT INTO `recepcion`(`nro_recepcion`, `fecha_horas`, `id_vehiculos`, `nombre_cliente`) VALUES (:nro_recepcion, :fecha_horas, :id_vehiculos, :nombre_cliente)";
+        $stminsertrecepcion = $connect->prepare($insertrecepcion);
+        $stminsertrecepcion->bindParam(':nro_recepcion', $formatproximonumero);
+        $stminsertrecepcion->bindParam(':fecha_horas', $fecha);
+        $stminsertrecepcion->bindParam(':id_vehiculos', $tipo_vehiculo, PDO::PARAM_INT);
+        $stminsertrecepcion->bindParam(':nombre_cliente', $nombre);
+        $stminsertrecepcion->execute();
 
-    foreach ($decriptioncheck as $name) {
-        $valordescription[] = $name;
-    }
-    foreach ($checkboxes as $valor) {
-        $valoreselect[] = $valor;
-    }
+        $idinsertado = $connect->lastInsertId();
 
-    for ($i = 0; $i < $cant_check; $i++) {
-        $precio = $valoreselect[$i];
-        $descripcion = $valordescription[$i];
-
-        $insertdetalle = "INSERT INTO `detalles_recepcion`(`id_recepcion`, `descipcion_producto`, `precio`, `cantidad`) VALUES (?,?,?,?)";
+        $insertdetalle = "INSERT INTO `detalles_recepcion`(`id_recepcion`, `descipcion_producto`, `precio`, `cantidad`) VALUES (:id_recepcion, :descipcion_producto, :precio, :cantidad)";
         $stminsertdetalle = $connect->prepare($insertdetalle);
-        $stminsertdetalle->bind_param("isii", $idinsertado, $descripcion, $precio, $totalvalor);
 
-        $stminsertdetalle->execute();
-    }
-    if ($connect->error) {
-        $connect->rollback(); // Revertir la transacción si ocurre algún error
-        echo "Error al insertar datos: " . $db->error;
-        exit();
-    }
+        foreach ($decriptioncheck as $index => $descripcion) {
+            $precio = $checkboxes[$index];
 
-    $connect->commit();
-    echo '<script>
-            Swal.fire({
-            icon: "success",
-            title: "Recepcionado!",
-            timer: 2000,
-            confirmButtonColor: "#0be881",
-            confirmButtonText:`Aceptar`,
-            });
-            </script>';
-} ?>
+            $cantidad = $totalvalor;
+
+            $stminsertdetalle->bindParam(':id_recepcion', $idinsertado, PDO::PARAM_INT);
+            $stminsertdetalle->bindParam(':descipcion_producto', $descripcion);
+            $stminsertdetalle->bindParam(':precio', $precio, PDO::PARAM_INT);
+            $stminsertdetalle->bindParam(':cantidad', $cantidad, PDO::PARAM_INT);
+
+            $stminsertdetalle->execute();
+        }
+
+        $connect->commit();
+
+        echo '<script>
+                Swal.fire({
+                icon: "success",
+                title: "Recepcionado!",
+                timer: 2000,
+                confirmButtonColor: "#0be881",
+                confirmButtonText:`Aceptar`,
+                });
+                </script>';
+    } catch (Exception $e) {
+
+        $connect->rollBack();
+        echo "Error al insertar datos: " . $e->getMessage();
+    }
+}
+?>
 <script>
     setTimeout(() => {
         window.history.replaceState(null, null, window.location.pathname);
     }, 0);
 </script>
-<?php
-?>

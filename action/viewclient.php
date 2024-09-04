@@ -1,8 +1,10 @@
 <?php
 include "../connet/conexion.php";
-$consulta = ("SELECT * FROM `clientes`");
-if ($result = $connect->query($consulta)) {
-    while ($row = $result->fetch_assoc()) {
+try {
+    $query = "SELECT * FROM `clientes`";
+    $stmt = $connect->prepare($query);
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id_cliente = $row["id_cliente"];
         $nombres = $row["nombres"];
         $apellidos = $row["apellidos"];
@@ -80,5 +82,8 @@ if ($result = $connect->query($consulta)) {
         </script>
 <?php
     }
-} ?>
+} catch (PDOException $e) {
+    echo 'Error: ' . $e->getMessage();
+}
+?>
 <!--  -->

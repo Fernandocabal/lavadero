@@ -2,14 +2,15 @@
 
 include "../connet/conexion.php";
 $id_factura = $_GET['id'];
-
-$sql = ("SELECT * FROM `header_factura`
+try {
+    $sql = ("SELECT * FROM `header_factura`
 INNER JOIN clientes ON header_factura.id_cliente = clientes.id_cliente
 INNER JOIN ciudades on clientes.ciudad=ciudades.id_ciudad
 INNER JOIN condicion on condicion.id_condicion=header_factura.id_condicion
 WHERE id_header= $id_factura;");
-if ($result = $connect->query($sql)) {
-    while ($row = $result->fetch_assoc()) {
+    $stmt = $connect->prepare($sql);
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $nroci = $row['nroci'];
         $nombres = $row['nombres'];
         $apellidos = $row['apellidos'];
@@ -25,17 +26,22 @@ if ($result = $connect->query($sql)) {
         $cajero = $row['cajero'];
         $total = 0;
     }
-}
-$sqltimbrado = "SELECT * FROM `timbrado`";
-if ($result = $connect->query($sqltimbrado)) {
-    while ($row = $result->fetch_assoc()) {
+    $sqltimbrado = "SELECT * FROM `timbrado`";
+    $stmtimbrado = $connect->prepare($sqltimbrado);
+    $stmtimbrado->execute();
+
+    while ($row = $stmtimbrado->fetch(PDO::FETCH_ASSOC)) {
         $nro_timbrado = $row["nro_timbrado"];
         $sucursal = $row["sucursal"];
         $caja = $row["caja"];
         $fecha_inicio = $row["fecha_inicio"];
         $fecha_vencimiento = $row["fecha_vencimiento"];
     }
+} catch (PDOException $e) {
+    echo 'Error' . $e->getMessage();
 }
+
+
 
 
 require('../fpdf/fpdf.php');
@@ -100,22 +106,30 @@ $pdf->Cell(30, 5, 'Cantidad', 1, 0, 'C');
 $pdf->Cell(30, 5, 'Precio Unitario', 1, 0, 'C');
 $pdf->Cell(30, 5, 'Total', 1, 1, 'C');
 
-$sqldetalles = "SELECT * FROM `detalle_factura` WHERE id_header = '$id_factura'";
-$resultdetalles = $connect->query($sqldetalles);
-if ($resultdetalles->num_rows > 0) {
-    foreach ($resultdetalles as $rowdetalles) {
-        $cantidad = $rowdetalles['cantidad'];
-        $descripcion_producto = $rowdetalles["detalle"];
-        $precio_producto = $rowdetalles["precio"];
-        $total_item = $cantidad * $precio_producto;
+try {
 
-        $pdf->SetFont('Arial', '', 7);
-        $pdf->Cell(100, 5, $descripcion_producto, 'T,L,B');
-        $pdf->Cell(30, 5, $cantidad, 'R,L,B', 0, 'C');
-        $pdf->Cell(30, 5, number_format($precio_producto, 0, '.', '.'), 1, 0, 'R');
-        $pdf->Cell(30, 5, number_format($total_item, 0, '.', '.'), 1, 1, 'R');
+    $sqldetalles = "SELECT * FROM `detalle_factura` WHERE id_header = :id_factura";
+    $stmt = $connect->prepare($sqldetalles);
+    $stmt->bindParam(':id_factura', $id_factura, PDO::PARAM_INT);
+    $stmt->execute();
+    $resultdetalles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (count($resultdetalles) > 0) {
+        foreach ($resultdetalles as $rowdetalles) {
+            $cantidad = $rowdetalles['cantidad'];
+            $descripcion_producto = $rowdetalles["detalle"];
+            $precio_producto = $rowdetalles["precio"];
+            $total_item = $cantidad * $precio_producto;
+
+            $pdf->SetFont('Arial', '', 7);
+            $pdf->Cell(100, 5, $descripcion_producto, 'T,L,B');
+            $pdf->Cell(30, 5, $cantidad, 'R,L,B', 0, 'C');
+            $pdf->Cell(30, 5, number_format($precio_producto, 0, '.', '.'), 1, 0, 'R');
+            $pdf->Cell(30, 5, number_format($total_item, 0, '.', '.'), 1, 1, 'R');
+        }
     }
-};
+} catch (PDOException $th) {
+    echo 'error ' . $th->getMessage();
+}
 
 $pdf->Ln(1);
 $pdf->Cell(30, 4, 'SUBTOTAL:', 'L, B, T', 0, 'L');
@@ -189,22 +203,30 @@ $pdf->Cell(30, 5, 'Cantidad', 1, 0, 'C');
 $pdf->Cell(30, 5, 'Precio Unitario', 1, 0, 'C');
 $pdf->Cell(30, 5, 'Total', 1, 1, 'C');
 
-$sqldetalles = "SELECT * FROM `detalle_factura` WHERE id_header = '$id_factura'";
-$resultdetalles = $connect->query($sqldetalles);
-if ($resultdetalles->num_rows > 0) {
-    foreach ($resultdetalles as $rowdetalles) {
-        $cantidad = $rowdetalles['cantidad'];
-        $descripcion_producto = $rowdetalles["detalle"];
-        $precio_producto = $rowdetalles["precio"];
-        $total_item = $cantidad * $precio_producto;
+try {
 
-        $pdf->SetFont('Arial', '', 7);
-        $pdf->Cell(100, 5, $descripcion_producto, 'T,L,B');
-        $pdf->Cell(30, 5, $cantidad, 'R,L,B', 0, 'C');
-        $pdf->Cell(30, 5, number_format($precio_producto, 0, '.', '.'), 1, 0, 'R');
-        $pdf->Cell(30, 5, number_format($total_item, 0, '.', '.'), 1, 1, 'R');
+    $sqldetalles = "SELECT * FROM `detalle_factura` WHERE id_header = :id_factura";
+    $stmt = $connect->prepare($sqldetalles);
+    $stmt->bindParam(':id_factura', $id_factura, PDO::PARAM_INT);
+    $stmt->execute();
+    $resultdetalles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (count($resultdetalles) > 0) {
+        foreach ($resultdetalles as $rowdetalles) {
+            $cantidad = $rowdetalles['cantidad'];
+            $descripcion_producto = $rowdetalles["detalle"];
+            $precio_producto = $rowdetalles["precio"];
+            $total_item = $cantidad * $precio_producto;
+
+            $pdf->SetFont('Arial', '', 7);
+            $pdf->Cell(100, 5, $descripcion_producto, 'T,L,B');
+            $pdf->Cell(30, 5, $cantidad, 'R,L,B', 0, 'C');
+            $pdf->Cell(30, 5, number_format($precio_producto, 0, '.', '.'), 1, 0, 'R');
+            $pdf->Cell(30, 5, number_format($total_item, 0, '.', '.'), 1, 1, 'R');
+        }
     }
-};
+} catch (PDOException $th) {
+    echo 'error ' . $th->getMessage();
+}
 
 $pdf->Ln(1);
 $pdf->Cell(30, 4, 'SUBTOTAL:', 'L, B, T', 0, 'L');

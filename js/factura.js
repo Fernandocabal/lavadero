@@ -92,8 +92,6 @@ btninsertfactura.addEventListener('click', (evento) => {
 
 btnaddservice.addEventListener('click', (e) => {
     e.preventDefault();
-
-    // Obtener el número actual de filas en la tabla (excluyendo la fila del encabezado)
     const table = document.getElementById('table');
     const tableBody = table.querySelector('tbody');
     const filas = tableBody.querySelectorAll('tr');
@@ -105,24 +103,27 @@ btnaddservice.addEventListener('click', (e) => {
             icon: 'warning',
             confirmButtonText: 'Aceptar'
         });
-        return; // Salir de la función si ya se alcanzó el límite
+        return;
     }
 
     const valueselect = document.getElementById('selectservice').value;
-    const xhr = new XMLHttpRequest();
+    fetch('../componetes/datos_productos.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            'idproducto': valueselect
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud: ' + response.statusText);
+            }
+            return response.json();
+        })
 
-    xhr.open('POST', '../componetes/datos_productos.php', true);
-
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    // Crear los datos a enviar
-    const data = `idproducto=${valueselect}`;
-
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            // La solicitud fue exitosa
-            const producto = JSON.parse(xhr.responseText);
-
+        .then(producto => {
             // Verificar si el producto ya está en la tabla
             if (esProductoRepetido(producto.id_productos)) {
                 Swal.fire({
@@ -136,13 +137,10 @@ btnaddservice.addEventListener('click', (e) => {
             crearFilaTabla(producto);
             calcularTotal();
             calculariva();
-            // console.log(xhr.responseText);
-        } else {
-
-            console.error('Error al realizar la solicitud:', xhr.statusText);
-        }
-    };
-    xhr.send(data);
+        })
+        .catch(error => {
+            console.error('Error al realizar la solicitud:', error);
+        });
 
     function esProductoRepetido(idProducto) {
         const table = document.getElementById('table');
@@ -168,7 +166,6 @@ btnaddservice.addEventListener('click', (e) => {
 
         const columnicondelete = document.createElement('td');
         const icondelete = document.createElement('i');
-        // columnicondelete.classList = 'd-flex align-items-center justify-content-center'
         icondelete.name = 'icondelete[]';
         icondelete.classList = 'bx bx-trash btn btn-danger btn-sm';
         icondelete.readOnly = true;

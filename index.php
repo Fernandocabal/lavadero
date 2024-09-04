@@ -1,6 +1,4 @@
 <?php
-session_start();
-error_reporting(0);
 include "./connet/conexion.php";
 if (isset($_SESSION['nombre'])) {
     header('location:./pages/dashboard.php');

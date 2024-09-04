@@ -2,8 +2,16 @@
 include "../connet/conexion.php";
 
 $id = $_POST["id"];
-$sql = "DELETE FROM `clientes` WHERE `clientes`.`id_cliente` = '$id'";
-if ($connect->query($sql) === true) {
-} else {
-    echo "Error " . $sql . "<br>" . $connect->error;
+
+try {
+    $sql = "DELETE FROM `clientes` WHERE `id_cliente` = :id";
+    $stmt = $connect->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    if ($stmt->execute()) {
+    } else {
+        $errorInfo = $stmt->errorInfo();
+        echo "Error al eliminar el cliente: " . $errorInfo[2];
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
 }
