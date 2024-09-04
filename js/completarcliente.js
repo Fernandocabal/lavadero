@@ -2,7 +2,7 @@ function buscarCliente() {
     var ruc = document.getElementById("ruc").value;
     if (ruc.length >= 3) {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "../componetes/buscar_cliente.php?ruc=" + ruc, true);
+        xhr.open("GET", "../componentes/buscar_cliente.php?ruc=" + ruc, true);
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.responseText);

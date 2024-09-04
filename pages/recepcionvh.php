@@ -26,7 +26,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
 <body>
     <header class="ctnheader">
         <?php
-        include "../componetes/header.php";
+        include "../componentes/header.php";
         ?>
     </header>
     <div class="ctnpage">
@@ -119,7 +119,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     </div>
     <footer class="ctnfooter">
         <?php
-        include "../componetes/footer.php"; ?>
+        include "../componentes/footer.php"; ?>
     </footer>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>

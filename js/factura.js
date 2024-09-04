@@ -66,7 +66,7 @@ btninsertfactura.addEventListener('click', (evento) => {
                     }).then(result => {
                         if (result.isConfirmed) {
                             formfactura.reset();
-                            window.location.href = `../componetes/facturafpdf.php?id=${data.id}`;
+                            window.location.href = `../componentes/facturafpdf.php?id=${data.id}`;
                         }
                     });
                 } else {
@@ -107,7 +107,7 @@ btnaddservice.addEventListener('click', (e) => {
     }
 
     const valueselect = document.getElementById('selectservice').value;
-    fetch('../componetes/datos_productos.php', {
+    fetch('../componentes/datos_productos.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -276,7 +276,7 @@ $(document).ready(function () {
         let data = e.params.data;
         $.ajax({
             type: 'POST',
-            url: '../componetes/obtener_datos_cliente.php',
+            url: '../componentes/obtener_datos_cliente.php',
             data: {
                 id: data['id']
             },

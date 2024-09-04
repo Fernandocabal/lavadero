@@ -28,7 +28,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
 
     <header class="ctnheader">
         <?php
-        include "../componetes/header.php";
+        include "../componentes/header.php";
         ?>
     </header>
     <!--Sección contenedor-->
@@ -48,7 +48,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                 </div>
                 <div class="targetcontenido">
                     <?php
-                    include "../componetes/countlist.php";
+                    include "../componentes/countlist.php";
                     ?>
                 </div>
 
@@ -63,7 +63,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     </div>
     <footer class="ctnfooter">
         <?php
-        include "../componetes/footer.php";
+        include "../componentes/footer.php";
         ?>
     </footer>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>

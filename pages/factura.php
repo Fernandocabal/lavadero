@@ -29,14 +29,14 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
 <body class="contentdash">
     <header class="ctnheader">
         <?php
-        include "../componetes/header.php";
+        include "../componentes/header.php";
         ?>
     </header>
     <div class="ctnpage">
         <div class="ctnfact" id="targetcenter">
             <form action="" method="POST" class="row" id="formfactura">
                 <?php
-                include "../componetes/datosfactura.php";
+                include "../componentes/datosfactura.php";
                 ?>
                 <div class="col-12 m-0 titlefact">
                     <div class="col-md-6 d-grid mx-auto">
@@ -99,7 +99,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
                     <select id="selectservice" class="buscadorprecio form-select m-0 form-select-sm w-25">
                         <option value="" selected disabled>Selecciona una opcion</option>
                         <?php
-                        include "../componetes/obtener_datos_producto.php"
+                        include "../componentes/obtener_datos_producto.php"
                         ?>
                     </select>
                     <button id="addservice" class="btn btn-sm btn-dark">Agregar</button>
@@ -193,7 +193,7 @@ if (empty($_SESSION["nombre"]) and empty($_SESSION["apellido"])) {
     </div>
     <footer class="ctnfooter">
         <?php
-        include "../componetes/footer.php"; ?>
+        include "../componentes/footer.php"; ?>
     </footer>
     <script src="../js/factura.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>

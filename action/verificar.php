@@ -31,7 +31,7 @@ if (!empty($_POST["ingresar"])) {
                 } else {
                     $_SESSION["nombre"] = $username;
                     $_SESSION["apellido"] = $userlastname;
-                    $_SESSION["password"] = $userpass;
+                    // $_SESSION["password"] = $userpass;
                     $_SESSION["id_tipo"] = $usertype;
                     $_SESSION['last_activity'] = time();
                     header("location:./pages/dashboard.php");

@@ -1,4 +1,14 @@
-<?php ?>
+<?php
+
+require_once '../componentes/funciones.php';
+
+if (estalogueado()) {
+    echo "<h1>zi</h1>";
+} else {
+    echo "<h1>zi</h1>";
+}
+
+?>
 <a class="hambur" data-bs-toggle="offcanvas" href="#sidebar" role="button" aria-controls="sidebar">
     <i class='bx bx-menu' id="hamburicon"></i>
 </a>
