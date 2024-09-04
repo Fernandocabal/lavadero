@@ -1,6 +1,6 @@
 function buscarCliente() {
     var ruc = document.getElementById("ruc").value;
-    if (ruc.length >= 3) { // Ajustar la longitud mínima según tus necesidades
+    if (ruc.length >= 3) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "../componetes/buscar_cliente.php?ruc=" + ruc, true);
         xhr.onreadystatechange = function () {
@@ -15,13 +15,11 @@ function buscarCliente() {
                         = response.data.email;
                     document.getElementById("phonenumber").value
                         = response.data.phonenumber;
-                    // Completar otros campos del cliente
 
-                    // Manejar caso de cliente no encontrado
                 } else if (ruc.length === 2) {
-                    // Si el RUC está vacío, limpiar los otros campos
+
                     document.getElementById("nombrecliente").value = "";
-                    // ... (limpiar otros campos)
+                    
                 }
             }
         };
