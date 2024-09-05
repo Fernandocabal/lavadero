@@ -42,8 +42,12 @@ btninsertfactura.addEventListener('click', (evento) => {
             icon: 'warning',
             text: 'Por favor selecciona un cliente',
             confirmButtonText: 'Aceptar',
+        }).then(result => {
+            if (result.isConfirmed) {
+                nroci.focus();
+            }
         });
-        nroci.focus();
+
     } else {
         const formData = new FormData(formfactura);
         fetch('../action/insertfactura.php', {
@@ -58,7 +62,7 @@ btninsertfactura.addEventListener('click', (evento) => {
                         text: data.message,
                         icon: 'success',
                         allowEscapeKey: false,
-                        allowOutsideClick: false, // Evita cerrar al hacer clic fuera
+                        allowOutsideClick: false,
                         showConfirmButton: true,
                         showCancelButton: false,
                         focusConfirm: true,

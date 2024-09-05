@@ -1,12 +1,14 @@
 <?php
-
+// session_start();
 require_once '../componentes/funciones.php';
 
-if (estalogueado()) {
-    echo "<h1>zi</h1>";
-} else {
-    echo "<h1>zi</h1>";
+if (!estalogueado()) {
+    session_unset();
+    session_destroy();
+    header("location:../index.php");
+    exit();
 }
+
 
 ?>
 <a class="hambur" data-bs-toggle="offcanvas" href="#sidebar" role="button" aria-controls="sidebar">

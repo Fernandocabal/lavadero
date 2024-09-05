@@ -1,12 +1,8 @@
 <?php
 
-
 function estalogueado()
 {
-    $inactivo = 2;
-
-    var_dump($_SESSION);
-
+    $inactivo = 3600;
     if (isset($_SESSION['nombre'])) {
         if ((time() - $_SESSION['last_activity']) >  $inactivo) {
             return false;
