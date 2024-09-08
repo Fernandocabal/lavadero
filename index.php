@@ -1,9 +1,11 @@
 <?php
-include "./connet/conexion.php";
-if (isset($_SESSION['nombre'])) {
+session_start();
+include "./functions/conexion.php";
+include "./functions/funciones.php";
+if (estalogueado()) {
     header('location:./pages/dashboard.php');
+    exit();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -11,21 +13,18 @@ if (isset($_SESSION['nombre'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="./node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="./node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="icon" href="./img/Logo.png">
+    <link rel="icon" href="./assets/img/Logo.png">
     <title>Inicio</title>
 </head>
 
 <body class="contenedor">
     <form action="" method="post" class="tarjeta-login" id="formlogin">
-        <img src="./img/Logo.png" class="logo"></img>
-        <?php
-        include "./action/verificar.php";
-        ?>
+        <img src="./assets/img/Logo.png" class="logo"></img>
         <h1>Bienvenidos</h1>
         <h4>Iniciar Sesion</h4>
         <div class="contenedor-input">
@@ -45,7 +44,7 @@ if (isset($_SESSION['nombre'])) {
     </form>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     </script>
-    <script src="./js/app.js"></script>
+    <script src="./scripts/app.js"></script>
 </body>
 
 </html>

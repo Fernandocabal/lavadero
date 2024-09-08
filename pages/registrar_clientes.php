@@ -1,5 +1,5 @@
 <?php
-include "../connet/conexion.php";
+include "../functions/conexion.php";
 session_start();
 $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];
@@ -12,20 +12,20 @@ $id_tipo = $_SESSION["id_tipo"];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/datatables/datatables.min.css">
-    <link rel="icon" href="../img/Logo.png">
+    <link rel="stylesheet" href="../assets/css/datatables/datatables.min.css">
+    <link rel="icon" href="../assets/img/Logo.png">
     <title>Registrar Clientes</title>
 </head>
 
 <body>
     <header class="ctnheader">
         <?php
-        include "../componentes/header.php";
+        include "../include/header.php";
         ?>
     </header>
     <div class="ctnpage">
@@ -41,7 +41,7 @@ $id_tipo = $_SESSION["id_tipo"];
                     </div>
                     <div class="col-md-6">
                         <?php
-                        include "../action/insertcliente.php";
+                        include "../backend/insertcliente.php";
                         ?>
                         <label for="inputname" class="form-label required">Nombre *</label>
                         <input type="text" class="form-control" id="inputname" name="inputname" placeholder="Juan" autocomplete="off">
@@ -107,7 +107,7 @@ $id_tipo = $_SESSION["id_tipo"];
                         <select class="form-select" id="inputCity" name="inputCity" autocomplete="off">
                             <option selected disabled>Selecciones una ciudad</option>
                             <?php
-                            include "../action/selectcontry.php";
+                            include "../backend/selectcontry.php";
                             ?>
                         </select>
                         <div class="valid-feedback">
@@ -136,7 +136,7 @@ $id_tipo = $_SESSION["id_tipo"];
                         </thead>
                         <tbody>
                             <?php
-                            include "../action/viewclient.php";
+                            include "../backend/viewclient.php";
                             ?>
                         </tbody>
                     </table>
@@ -146,11 +146,11 @@ $id_tipo = $_SESSION["id_tipo"];
     </div>
     <footer class="ctnfooter">
         <?php
-        include "../componentes/footer.php"; ?>
+        include "../include/footer.php"; ?>
     </footer>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="../js/datatables/datatables.min.js"></script>
+    <script src="../assets/js/datatables/datatables.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({
@@ -191,7 +191,7 @@ $id_tipo = $_SESSION["id_tipo"];
             }
         }
     </script>
-    <script src="../js/clientverif.js"></script>
+    <script src="../assets/js/clientverif.js"></script>
 
 </body>
 

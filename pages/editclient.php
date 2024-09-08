@@ -1,5 +1,5 @@
 <?php
-include "../connet/conexion.php";
+include "../functions/conexion.php";
 session_start();
 $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];
@@ -12,20 +12,20 @@ $id_tipo = $_SESSION["id_tipo"];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.6.0/dt-1.11.4/datatables.min.css" />
-    <link rel="icon" href="../img/Logo.png">
+    <link rel="icon" href="../assets/img/Logo.png">
     <title>Editar clientes</title>
 </head>
 
 <body class="contentdash">
     <header class="ctnheader">
         <?php
-        include "../componentes/header.php";
+        include "../include/header.php";
         ?>
     </header>
     <div class="ctnpage">
@@ -33,7 +33,7 @@ $id_tipo = $_SESSION["id_tipo"];
             <div class="targetform">
                 <form action="" method="post" class="row g-2" id="form_edit_client">
                     <?php
-                    include "../action/clientupdate.php";
+                    include "../backend/clientupdate.php";
                     ?>
                     <div class="col-12">
                         <div class="col-md-6 d-grid mx-auto">
@@ -146,10 +146,10 @@ $id_tipo = $_SESSION["id_tipo"];
     </div>
     <footer class="ctnfooter">
         <?php
-        include "../componentes/footer.php"; ?>
+        include "../include/footer.php"; ?>
     </footer>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    <script src="../js/editclientverif.js"></script>
+    <script src="../assets/js/editclientverif.js"></script>
 </body>
 
 </html>

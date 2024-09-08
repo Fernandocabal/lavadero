@@ -1,5 +1,5 @@
 <?php
-include "../connet/conexion.php";
+include "../functions/conexion.php";
 session_start();
 $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];
@@ -12,19 +12,19 @@ $id_tipo = $_SESSION["id_tipo"];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../assets/css/datatables/datatables.min.css">
     <title>Recepcion de vehiculos</title>
 </head>
 
 <body>
     <header class="ctnheader">
         <?php
-        include "../componentes/header.php";
+        include "../include/header.php";
         ?>
     </header>
     <div class="ctnpage">
@@ -32,7 +32,7 @@ $id_tipo = $_SESSION["id_tipo"];
             <div class="targetform">
                 <form action="" method="post" id="formregis">
                     <?php
-                    include "../action/insertrecepcion.php";
+                    include "../backend/insertrecepcion.php";
                     ?>
                     <div class="col-12">
                         <div class="col-md-6 d-grid mx-auto">
@@ -59,7 +59,7 @@ $id_tipo = $_SESSION["id_tipo"];
                             <select class="form-select" id="inputvehiculo" name="inputvehiculo" autocomplete="off">
                                 <option selected disabled>Selecciona un tipo de vehículo</option>
                                 <?php
-                                include "../action/selectvehiculo.php";
+                                include "../backend/selectvehiculo.php";
                                 ?>
                             </select>
                             <div class="valid-feedback">
@@ -107,7 +107,7 @@ $id_tipo = $_SESSION["id_tipo"];
                         </thead>
                         <tbody>
                             <?php
-                            include "../action/viewrecepcion.php";
+                            include "../backend/viewrecepcion.php";
                             ?>
                         </tbody>
                     </table>
@@ -117,13 +117,13 @@ $id_tipo = $_SESSION["id_tipo"];
     </div>
     <footer class="ctnfooter">
         <?php
-        include "../componentes/footer.php"; ?>
+        include "../include/footer.php"; ?>
     </footer>
     <script src="../node_modules/jquery/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script src="../js/datatables/datatables.min.js"></script>
-    <script src="../js/registerverif.js">
+    <script src="../assets/js/datatables/datatables.min.js"></script>
+    <script src="../assets/js/registerverif.js">
     </script>
 
 </body>

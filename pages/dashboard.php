@@ -1,5 +1,5 @@
 <?php
-include "../connet/conexion.php";
+include "../functions/conexion.php";
 session_start();
 $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];
@@ -12,10 +12,10 @@ $id_tipo = $_SESSION["id_tipo"];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="icon" href="../img/Logo.png">
+    <link rel="icon" href="../assets/img/Logo.png">
     <title>Dashboard</title>
 </head>
 
@@ -25,7 +25,7 @@ $id_tipo = $_SESSION["id_tipo"];
 
     <header class="ctnheader">
         <?php
-        include "../componentes/header.php";
+        include "../include/header.php";
         ?>
     </header>
     <!--Sección contenedor-->
@@ -45,7 +45,7 @@ $id_tipo = $_SESSION["id_tipo"];
                 </div>
                 <div class="targetcontenido">
                     <?php
-                    include "../componentes/countlist.php";
+                    include "../backend/countlist.php";
                     ?>
                 </div>
 
@@ -60,11 +60,11 @@ $id_tipo = $_SESSION["id_tipo"];
     </div>
     <footer class="ctnfooter">
         <?php
-        include "../componentes/footer.php";
+        include "../include/footer.php";
         ?>
     </footer>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    <script src="../js/app2.js"></script>
+    <script src="../assets/js/app2.js"></script>
 </body>
 
 </html>
