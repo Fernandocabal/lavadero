@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 
 if (!empty($_POST["usuario"]) and !empty($_POST["password"])) {
     $usuario = $_POST["usuario"];
-    $password = md5($_POST["password"]);
+    $password = $_POST["password"];
     try {
         $stmt = $connect->prepare("SELECT * FROM usuarios WHERE nombre_usuario = :usuario");
         $stmt->bindParam(':usuario', $usuario, PDO::PARAM_STR);
@@ -17,14 +17,14 @@ if (!empty($_POST["usuario"]) and !empty($_POST["password"])) {
             $username = $row["nombre"];
             $userlastname = $row["apellido"];
             $usertype = $row["id_tipo"];
-            if ($userpass != $password) {
-                echo json_encode(['success' => false, 'message' => 'Contraseña incorrecta']);
-            } else {
+            if (password_verify($password, $userpass)) {
                 $_SESSION["nombre"] = $username;
                 $_SESSION["apellido"] = $userlastname;
                 $_SESSION["id_tipo"] = $usertype;
                 $_SESSION['last_activity'] = time();
                 echo json_encode(['success' => true, 'redirect' => './pages/dashboard.php']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Contraseña incorrecta']);
             }
         } else {
             echo json_encode(['success' => false, 'message' => 'El usuario no existe']);
