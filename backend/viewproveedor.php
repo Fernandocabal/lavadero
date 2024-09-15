@@ -1,36 +1,36 @@
 <?php
 include "../functions/conexion.php";
 try {
-    $query = "SELECT * FROM `clientes`";
+    $query = "SELECT * FROM `proveedores`";
     $stmt = $connect->prepare($query);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $id_cliente = $row["id_cliente"];
-        $nombres = $row["nombres"];
-        $apellidos = $row["apellidos"];
-        $nroci = $row["nroci"];
-        $email = $row["email"];
-        $phonenumber = $row["phonenumber"];
-        $direccion = $row["direccion"];
-        $ciudad = $row["ciudad"];
+        $id_proveedor = $row['id_proveedor'];
+        $nombre_proveedor = $row['nombre_proveedor'];
+        $ruc_proveedor = $row['ruc_proveedor'];
+        $email = $row['email_proveedor'];
         echo "
         <tr>
-        <td> $nombres </td>
-        <td> $apellidos </td>
-        <td> $nroci </td>
+        <td> $nombre_proveedor </td>
+        <td> $ruc_proveedor</td>
         <td> $email </td>
         <td class='ctnacciones'>
         <a role='button' data-bs-toggle='dropdown' aria-expanded='false'>
         <i class='bx bx-dots-vertical-rounded btnacciones'></i></a>
         <ul class='dropdown-menu'>
             <li>
-            <a class='dropdown-item' href='../pages/editclient.php?id=" . $id_cliente . "' name='idclient' id='listitem'><i class='bx bx-edit'></i>Editar</a>
+            <button type='button' class='dropdown-item' onclick='get($id_proveedor);' data-bs-toggle='modal' id='listitem' data-bs-target='#editproveedor'>
+            <i class='bx bx-edit'></i>Editar
+            </button>
+            </li>
+            <li>
+            <a class='dropdown-item' href='../pages/editclient.php?id=" . $id_proveedor . "' name='idclient' id='listitem'><i class='bx bx-edit'></i>Editar</a>
             </li>"
 ?>
         <?php
         if ($id_tipo < 2) {
             echo "<li>
-            <a class='dropdown-item' onclick='borrar($id_cliente);' style='cursor: pointer;' id='listitem'><i class='bx bx-trash'></i>Eliminar</a>
+            <a class='dropdown-item' onclick='borrar($id_proveedor);' style='cursor: pointer;' id='listitem'><i class='bx bx-trash'></i>Eliminar</a>
             </li>  
             ";
         }

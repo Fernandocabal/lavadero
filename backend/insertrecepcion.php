@@ -54,7 +54,7 @@ if (isset($_POST["insertclient"])) {
                 icon: "success",
                 title: "Recepcionado!",
                 timer: 2000,
-                confirmButtonColor: "#0be881",
+                confirmButtonColor: "#212529",
                 confirmButtonText:`Aceptar`,
                 });
                 </script>';

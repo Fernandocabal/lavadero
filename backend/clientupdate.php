@@ -31,7 +31,7 @@ if (isset($_POST["editclient"])) {
                         html:"Se ha guardado correctamente",
                         focusConfirm: false,
                         reverseButtons: true,
-                        confirmButtonColor: "#0be881",
+                        confirmButtonColor: "#212529",
                         confirmButtonText:`Aceptar`
                         }).then((result) => {
                         if (result.value) {

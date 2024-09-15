@@ -49,7 +49,8 @@ if (!estalogueado()) {
                     <div class='accordion-body'>
                     <a href='../pages/compras.php' class='sidebarop'>Cargar facturas Compras</a>
                     <a href='../pages/registrar_empleado.php' class='sidebarop'>Cargar facturas Ventas</a>
-                        <a href='../pages/registrar_empleado.php' class='sidebarop'>Registrar Nuevo Empleado</a>    
+                    <a href='../pages/registrar_proveedor.php' class='sidebarop'>Registrar Proveedor</a> 
+                    <a href='../pages/registrar_empleado.php' class='sidebarop'>Registrar Nuevo Empleado</a>   
                     </div>
                 </div>
             </div>";

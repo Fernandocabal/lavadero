@@ -1,4 +1,5 @@
 <?php ?>
 <div class="text-footer">
-    Desarrollado por Fernando
+    ♥ ❤ ❥ ❣ ❦ ❧
+    <!-- Desarrollado por Fernando -->
 </div>

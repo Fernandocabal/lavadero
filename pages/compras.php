@@ -31,7 +31,7 @@ $id_tipo = $_SESSION["id_tipo"];
         ?>
     </header>
     <div class="ctnpage">
-        <form class="ctncompras">
+        <form class="ctncompras" id="formcompras">
             <div class="col-12 m-0 titlefact">
                 <div class="col-md-6 d-grid mx-auto">
                     <p class="col-12 display-8 d-flex justify-content-center">
@@ -61,15 +61,15 @@ $id_tipo = $_SESSION["id_tipo"];
                         setTodayDate();
                     </script>
                     <label for="proveedor">R.U.C Proveedor</label>
-                    <input type="text" class="inputbody" id="proveedor">
+                    <input type="text" class="inputbody" name="proveedor" id="proveedor">
                     <label for="timbrado">Timbrado</label>
                     <input type="text" id="timbrado" class="inputbody">
                 </div>
                 <div class="groupfacturas">
                     <label for="nombreproveedor">Nombre de proveedor</label>
-                    <input type="text" class="inputbody" id="nombreproveedor">
+                    <input type="text" class="inputbody" name="nombreproveedor" id="nombreproveedor">
                     <label for="nrofactura">Numero de factura</label>
-                    <input type="text" class="inputbody" id="nrofactura" maxlength="15" value="001-001-0000001">
+                    <input type="text" class="inputbody" name="nrofactura" id="nrofactura" maxlength="15" value="001-001-0000001">
                     <label for="typedoc">Tipo de documento</label>
                     <select class="form-select form-select-sm" name="typedoc" id="typedoc">
                         <option value="">Contado</option>
@@ -79,13 +79,13 @@ $id_tipo = $_SESSION["id_tipo"];
                 </div>
                 <div class="groupfacturas">
                     <label for="conceptodecompra">Concepto de compra</label>
-                    <input type="text" class="inputbody" id="conceptodecompra">
+                    <input type="text" class="inputbody" name="conceptodecompra" id="conceptodecompra">
                     <label for="moneda">Moneda</label>
-                    <select class="form-select form-select-sm" name="typedoc" id="moneda">
+                    <select class="form-select form-select-sm" name="typemodena" id="moneda">
                         <option value="1">Guaraníes</option>
                     </select>
                     <label for="origen">Origen del pago</label>
-                    <select class="form-select form-select-sm" name="typedoc" id="origen">
+                    <select class="form-select form-select-sm" name="typeorigen" id="origen">
                         <option value="1">Caja chica</option>
                         <option value="2">Transferencia Bancaria</option>
                     </select>
@@ -109,13 +109,15 @@ $id_tipo = $_SESSION["id_tipo"];
                         </thead>
                         <tbody id="bodytable" class="table-group-divider">
                             <tr>
-                                <td><i class="bx bx-trash btn btn-danger btn-sm" style="height: 25px; font-size:10px"></i></td>
+                                <td>
+                                    <!-- <i class="bx bx-trash btn btn-danger btn-sm" id="btndelete" style="height: 25px; font-size:10px"></i> -->
+                                </td>
                                 <td><input type="text" name="" id="" class="inputbody"></td>
-                                <td><input type="number" name="" id="" class="inputbody"></td>
-                                <td><input type="text" name="" id="" class="inputbody"></td>
-                                <td><input type="text" class="inputbody" readonly=""></td>
-                                <td><input type="text" class="inputbody" readonly=""></td>
-                                <td><input type="text" class="inputbody" readonly=""></td>
+                                <td><input type="number" name="" id="" class="inputbody cantidad"></td>
+                                <td><input type="text" name="" id="" class="inputbody precio"></td>
+                                <td><input type="text" class="inputbody" readonly="" value="0"></td>
+                                <td><input type="text" class="inputbody" readonly="" value="0"></td>
+                                <td><input type="text" class="inputbody" readonly="" value="0"></td>
                                 <td><input type="text" class="inputbody subtotal" readonly=""></td>
                             </tr>
                         </tbody>
@@ -194,6 +196,8 @@ $id_tipo = $_SESSION["id_tipo"];
         include "../include/footer.php"; ?>
     </footer>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../scripts/compras.js"></script>
+    <script src="../assets/js/compras.js"></script>
 </body>
 
 </html>

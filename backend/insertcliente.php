@@ -25,7 +25,7 @@ if (isset($_POST["insertclient"])) {
                     title: "Ya existe el cliente",
                     confirmButtonText: "Reintentar",
                     text: "El cliente con numero de ci: ' . $nroci . ' ya existe",
-                    confirmButtonColor: "#3b5998",
+                    confirmButtonColor: "#212529",
                     });
                     </script>';
             } else {
@@ -47,7 +47,7 @@ if (isset($_POST["insertclient"])) {
                         icon: "success",
                         title: "Se ha registrado el cliente",
                         timer: 2000,
-                        confirmButtonColor: "#0be881",
+                        confirmButtonColor: "#212529",
                         confirmButtonText:`Aceptar`
                         });
                         </script>';
@@ -65,7 +65,7 @@ if (isset($_POST["insertclient"])) {
             title: "Campos vacíos",
             confirmButtonText: "Reintentar",
             text: "Todos los campos son obligatorios",
-            confirmButtonColor: "#3b5998",
+            confirmButtonColor: "#212529",
             });
             </script>';
     }
