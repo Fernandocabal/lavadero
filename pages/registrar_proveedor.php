@@ -143,6 +143,7 @@ $id_tipo = $_SESSION["id_tipo"];
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../assets/js/datatables/datatables.min.js"></script>
+    <script src="../scripts/proveedor.js"></script>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({
