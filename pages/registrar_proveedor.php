@@ -34,7 +34,7 @@ $id_tipo = $_SESSION["id_tipo"];
     <div class="ctnpage">
         <div class="ctnform" id="targetcenter">
             <div class="targetform">
-                <form action="" method="post" class="row g-3" id="forminsertclient">
+                <form action="" method="post" class="row g-3" id="form_insert">
                     <div class="col-12">
                         <div class="col-md-6 d-grid mx-auto">
                             <h1 class="col-12 display-6 d-flex justify-content-center">
@@ -44,12 +44,12 @@ $id_tipo = $_SESSION["id_tipo"];
                     </div>
                     <div class="col-md-6">
                         <label for="inputname" class="form-label required">Nombre *</label>
-                        <input type="text" class="form-control" id="inputname" name="inputname" placeholder="Juan" autocomplete="off">
+                        <input type="text" class="form-control" id="inputname" name="inputname" autocomplete="off">
                         <div class="valid-feedback">
                             Correcto!
                         </div>
                         <div class="invalid-feedback">
-                            El nombre es obligatorio y no puede contener números y debe al menos tener 3 letras
+                            El nombre es obligatorio!
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -59,7 +59,7 @@ $id_tipo = $_SESSION["id_tipo"];
                             Correcto!
                         </div>
                         <div class="invalid-feedback">
-                            No puede contener "." ni letras, debe ser mayor a 5 digitos
+                            El RUC es obligatorio, no puede contener "." ni letras, debe ser mayor a 5 digitos
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -109,7 +109,7 @@ $id_tipo = $_SESSION["id_tipo"];
                     </div>
                     <div class="col-12">
                         <div class="col-md-2 d-grid mx-auto">
-                            <button type="submit" class="btn btn-dark btn-lg" name="insertclient" id="insertclient">Registrar</button>
+                            <button type="button" class="btn btn-dark btn-lg" name="insertclient" id="insertclient">Registrar</button>
                         </div>
                     </div>
                 </form>
