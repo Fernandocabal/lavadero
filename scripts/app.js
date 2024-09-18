@@ -39,6 +39,8 @@ formlogin.addEventListener("submit", function (event) {
         usuario.focus();
         Swal.fire({
             icon: "error",
+            confirmButtonColor: "#212529",
+            confirmButtonText: "Aceptar",
             text: "Favor completa los datos",
         })
         return;
@@ -47,6 +49,8 @@ formlogin.addEventListener("submit", function (event) {
         password.focus();
         Swal.fire({
             icon: "error",
+            confirmButtonColor: "#212529",
+            confirmButtonText: "Aceptar",
             text: "Favor completa los datos",
         })
         return;
@@ -60,18 +64,22 @@ formlogin.addEventListener("submit", function (event) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Swal.fire({
-                //     showConfirmButton: false,
-                //     title: "Verificando",
-                //     timer: 2000,
-                //     willClose: () => {
-                //         window.location.href = data.redirect;
-                //     }
-                // });
-                window.location.href = data.redirect;
+                Swal.fire({
+                    showConfirmButton: false,
+                    text: "Verificando",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    timer: 1500,
+                    willClose: () => {
+                        window.location.href = data.redirect;
+                    }
+                });
+                // window.location.href = data.redirect;
             } else {
                 Swal.fire({
-                    icon: "error",
+                    icon: "warning",
+                    confirmButtonColor: "#212529",
+                    confirmButtonText: "Aceptar",
                     text: data.message || "Ocurrió un error",
                 });
             }
@@ -80,6 +88,8 @@ formlogin.addEventListener("submit", function (event) {
             console.error('Error:', error);
             Swal.fire({
                 icon: "error",
+                confirmButtonColor: "#212529",
+                confirmButtonText: "Aceptar",
                 text: 'Ocurrió un error al enviar los datos',
             });
         });

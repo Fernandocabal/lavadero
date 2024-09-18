@@ -39,7 +39,7 @@ if (estalogueado()) {
             </div>
         </div>
         <div class="col-12 d-flex align-items-center justify-content-center ctnboton">
-            <input type="submit" value="Ingresar" class="btn btn-primary boton" name="ingresar" id="boton">
+            <input type="submit" value="Ingresar" class="btn btn-dark btn-lg" name="ingresar" id="boton">
         </div>
     </form>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
