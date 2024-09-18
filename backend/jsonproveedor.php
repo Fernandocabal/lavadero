@@ -54,29 +54,21 @@ switch ($action) {
             $direccion = $_POST['edit_direccion_proveedor'] ?? '';
             $ciudad = $_POST['edit_ciudad_proveedor'] ?? '';
             if ($id_proveedor && $nombre) {
-                $query = "SELECT `ruc_proveedor` FROM `proveedores` WHERE ruc_proveedor = :id";
-                $stmt = $connect->prepare($query);
-                $stmt->bindParam(':id', $rucproveedor);
-                $stmt->execute();
-                if ($stmt->rowCount() > 0) {
-                    echo json_encode(['success' => false, 'message' => 'Ya existe un proveedor con el RUC: ' . $rucproveedor]);
-                } else {
-                    try {
-                        $sql = "UPDATE `proveedores`
+                try {
+                    $sql = "UPDATE `proveedores`
                     SET `id_ciudad`=:ciudad,`nombre_proveedor`=:nombre,`ruc_proveedor`=:rucproveedor,`direccion_proveedor`=:direccion,`tel_proveedor`=:telfproveedor,`email_proveedor`=:email WHERE id_proveedor = :id_proveedor";
-                        $stmt = $connect->prepare($sql);
-                        $stmt->bindParam(':ciudad', $ciudad);
-                        $stmt->bindParam(':nombre', $nombre);
-                        $stmt->bindParam(':rucproveedor', $rucproveedor);
-                        $stmt->bindParam(':direccion', $direccion);
-                        $stmt->bindParam(':telfproveedor', $telfproveedor);
-                        $stmt->bindParam(':email', $emailproveedor);
-                        $stmt->bindParam(':id_proveedor', $id_proveedor, PDO::PARAM_STR);
-                        $stmt->execute();
-                        echo json_encode(['success' => true, 'message' => 'Proveedor actualizado correctamente']);
-                    } catch (PDOException $e) {
-                        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-                    }
+                    $stmt = $connect->prepare($sql);
+                    $stmt->bindParam(':ciudad', $ciudad);
+                    $stmt->bindParam(':nombre', $nombre);
+                    $stmt->bindParam(':rucproveedor', $rucproveedor);
+                    $stmt->bindParam(':direccion', $direccion);
+                    $stmt->bindParam(':telfproveedor', $telfproveedor);
+                    $stmt->bindParam(':email', $emailproveedor);
+                    $stmt->bindParam(':id_proveedor', $id_proveedor, PDO::PARAM_STR);
+                    $stmt->execute();
+                    echo json_encode(['success' => true, 'message' => 'Proveedor actualizado correctamente']);
+                } catch (PDOException $e) {
+                    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
                 }
             } else {
                 echo json_encode(['success' => false, 'message' => 'Datos incompletos']);
