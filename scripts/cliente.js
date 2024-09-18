@@ -1,13 +1,15 @@
-let id_proveedor = document.getElementById('id_proveedor'),
-    nameproveedor = document.getElementById('nameproveedor'),
-    emailproveedor = document.getElementById('emailproveedor'),
-    telfproveedor = document.getElementById('telfproveedor'),
-    direccion = document.getElementById('edit_direccion_proveedor'),
-    selectciudad = document.getElementById('edit_ciudad_proveedor'),
-    rucproveedor = document.getElementById('rucproveedor'),
+let id_cliente = document.getElementById('id_cliente'),
+    name_client_edit = document.getElementById('name_client_edit'),
+    lastname_client_edit = document.getElementById('lastname_client_edit'),
+    edit_email_client = document.getElementById('edit_email_client'),
+    edit_telf_client = document.getElementById('edit_telf_client'),
+    edit_direccion_client = document.getElementById('edit_direccion_client'),
+    selectciudad = document.getElementById('edit_ciudad_client'),
+    nro_docu_edit = document.getElementById('nro_docu_edit'),
     form_edit = document.getElementById('form_edit'),
-    form_insert = document.getElementById('form_insert'),
+    forminsertclient = document.getElementById('forminsertclient'),
     inputname = document.getElementById('inputname'),
+    inputlastname = document.getElementById('inputlastname'),
     inputdocumento = document.getElementById('inputdocumento'),
     inputemail = document.getElementById("inputemail"),
     inputphone = document.getElementById("inputphone"),
@@ -34,7 +36,7 @@ function validarname() {
         return false;
     }
 };
-function validar_ruc() {
+function validarci() {
     let rucvalue = inputdocumento.value,
         expre = /^\d{5,9}[-]?\d{1}/;
     if (!expre.test(rucvalue)) {
@@ -69,20 +71,21 @@ function validarciudad() {
     }
 };
 async function get(id) {
-    const url = `../backend/jsonproveedor.php?action=select&id=${encodeURIComponent(id)}`;
+    const url = `../backend/jsoncliente.php?action=select&id=${encodeURIComponent(id)}`;
     try {
         const response = await fetch(url, {
             method: 'GET',
         });
         const data = await response.json();
         console.log('Datos recibidos:', data);
-        id_proveedor.value = data.id_proveedor
-        nameproveedor.value = data.nombre_proveedor;
-        rucproveedor.value = data.ruc_proveedor;
-        direccion.value = data.direccion_proveedor;
-        telfproveedor.value = data.tel_proveedor;
-        emailproveedor.value = data.email_proveedor;
-        const optionValue = data.id_ciudad;
+        id_cliente.value = data.id_cliente;
+        lastname_client_edit.value = data.apellidos;
+        name_client_edit.value = data.nombres;
+        nro_docu_edit.value = data.nroci;
+        edit_direccion_client.value = data.direccion;
+        edit_telf_client.value = data.phonenumber;
+        edit_email_client.value = data.email;
+        const optionValue = data.ciudad;
         for (let i = 0; i < selectciudad.options.length; i++) {
             const option = selectciudad.options[i];
             if (option.value == optionValue) {
@@ -110,7 +113,7 @@ async function borrar(id) {
 
     if (result.isConfirmed) {
         try {
-            const url = `../backend/jsonproveedor.php?action=delete&id=${encodeURIComponent(id)}`;
+            const url = `../backend/jsoncliente.php?action=delete&id=${encodeURIComponent(id)}`;
             const response = await fetch(url, {
                 method: 'GET',
             });
@@ -155,7 +158,7 @@ async function borrar(id) {
 savedit.addEventListener('click', () => {
     const formData = new FormData(form_edit);
     formData.append('action', 'update');
-    fetch('../backend/jsonproveedor.php', {
+    fetch('../backend/jsoncliente.php', {
         method: 'POST',
         body: formData
     })
@@ -202,7 +205,7 @@ btnregistrar.addEventListener('click', () => {
         inputname.focus();
         return;
     }
-    if (validar_ruc()) {
+    if (validarci()) {
         inputdocumento.classList.remove("is-valid");
         inputdocumento.classList.add("is-invalid");
         inputdocumento.focus();
@@ -220,9 +223,9 @@ btnregistrar.addEventListener('click', () => {
         inputCity.focus();
         return;
     }
-    const formData = new FormData(form_insert);
+    const formData = new FormData(forminsertclient);
     formData.append('action', 'insert');
-    fetch('../backend/jsonproveedor.php', {
+    fetch('../backend/jsoncliente.php', {
         method: 'POST',
         body: formData
     })
@@ -262,3 +265,40 @@ btnregistrar.addEventListener('click', () => {
             });
         });
 })
+inputname.addEventListener('keyup', function () {
+    if (validarname()) {
+        inputname.classList.add("is-invalid");
+        inputname.classList.remove("is-valid");
+    } else {
+        inputname.classList.add("is-valid");
+        inputname.classList.remove("is-invalid");
+    }
+})
+inputdocumento.addEventListener('keyup', function () {
+    if (validarci()) {
+        inputdocumento.classList.add("is-invalid");
+        inputdocumento.classList.remove("is-valid");
+    } else {
+        inputdocumento.classList.add("is-valid");
+        inputdocumento.classList.remove("is-invalid");
+    }
+})
+
+// inputphone.addEventListener('keyup', function () {
+//     if (validarphone()) {
+//         inputphone.classList.remove("is-invalid");
+//         inputphone.classList.add("is-valid");
+//     } else {
+//         inputphone.classList.remove("is-valid");
+//         inputphone.classList.add("is-invalid");
+//     }
+// })
+inputdireccion.addEventListener('keyup', function () {
+    if (validardireccion()) {
+        inputdireccion.classList.remove("is-valid");
+        inputdireccion.classList.add("is-invalid");
+    } else {
+        inputdireccion.classList.remove("is-invalid");
+        inputdireccion.classList.add("is-valid");
+    }
+})  

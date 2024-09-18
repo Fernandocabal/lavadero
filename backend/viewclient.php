@@ -24,7 +24,9 @@ try {
         <i class='bx bx-dots-vertical-rounded btnacciones'></i></a>
         <ul class='dropdown-menu'>
             <li>
-            <a class='dropdown-item' href='../pages/editclient.php?id=" . $id_cliente . "' name='idclient' id='listitem'><i class='bx bx-edit'></i>Editar</a>
+            <button type='button' class='dropdown-item' onclick='get($id_cliente);' data-bs-toggle='modal' id='listitem' data-bs-target='#editproveedor'>
+            <i class='bx bx-edit'></i>Editar
+            </button>
             </li>"
 ?>
         <?php
@@ -41,45 +43,6 @@ try {
         </td>
         </tr>"
         ?>
-        <script>
-            function borrar(id) {
-                Swal.fire({
-                    title: "Desea Eliminar los registros?",
-                    text: "No los podrá recuperar",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#212529",
-                    cancelButtonColor: "#d33",
-                    cancelButtonText: "Cancelar",
-                    confirmButtonText: "Si eliminar"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                                type: "POST",
-                                url: "../backend/deleteclient.php",
-                                data: {
-                                    'id': id
-                                }
-                            })
-                            .done(function(response) {
-                                Swal.fire({
-                                    title: "Borrado!",
-                                    text: "El registro se ha borrado correctamente",
-                                    icon: 'success',
-                                    confirmButtonText: "Aceptar",
-                                    timer: "2000"
-                                }).then((result) => {
-                                    // redireccion con javascript
-                                    window.location.href = "../pages/registrar_clientes.php";
-                                    //recargar página  jQuery
-                                    location.reload();
-                                });
-                            })
-
-                    }
-                });
-            }
-        </script>
 <?php
     }
 } catch (PDOException $e) {

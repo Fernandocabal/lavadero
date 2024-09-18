@@ -40,9 +40,6 @@ $id_tipo = $_SESSION["id_tipo"];
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <?php
-                        include "../backend/insertcliente.php";
-                        ?>
                         <label for="inputname" class="form-label required">Nombre *</label>
                         <input type="text" class="form-control" id="inputname" name="inputname" placeholder="Juan" autocomplete="off">
                         <div class="valid-feedback">
@@ -119,7 +116,7 @@ $id_tipo = $_SESSION["id_tipo"];
                     </div>
                     <div class="col-12">
                         <div class="col-md-2 d-grid mx-auto">
-                            <button type="submit" class="btn btn-primary btn-lg" name="insertclient" id="insertclient">Registrar</button>
+                            <button type="button" class="btn btn-dark btn-lg" name="insertclient" id="insertclient">Registrar</button>
                         </div>
                     </div>
                 </form>
@@ -144,6 +141,9 @@ $id_tipo = $_SESSION["id_tipo"];
             </div>
         </div>
     </div>
+    <?php
+    include "../include/editclientmodal.php";
+    ?>
     <footer class="ctnfooter">
         <?php
         include "../include/footer.php"; ?>
@@ -191,7 +191,7 @@ $id_tipo = $_SESSION["id_tipo"];
             }
         }
     </script>
-    <script src="../assets/js/clientverif.js"></script>
+    <script src="../scripts/cliente.js"></script>
 
 </body>
 
