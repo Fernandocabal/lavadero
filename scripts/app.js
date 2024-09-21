@@ -70,6 +70,9 @@ formlogin.addEventListener("submit", function (event) {
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     timer: 1500,
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
                     willClose: () => {
                         window.location.href = data.redirect;
                     }

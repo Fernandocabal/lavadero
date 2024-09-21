@@ -10,6 +10,12 @@
     --btndarkcolor: #212529;
 }
 
+/* PARA SWAL */
+.custom-swal {
+    font-size: 12px;
+    padding: 10px;
+}
+
 .contenedor {
     display: flex;
     flex-direction: column;
@@ -57,13 +63,6 @@
     background-color: transparent;
     border: none;
 }
-
-/* #boton {
-    padding: 2px 50px;
-    border-radius: 8px;
-    transition: all .3s;
-    font-size: 25px;
-} */
 
 .ctninput {
     display: flex;
