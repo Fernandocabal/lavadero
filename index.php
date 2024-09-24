@@ -23,9 +23,15 @@ if (estalogueado()) {
 </head>
 
 <body class="contenedor">
+    <div class="bgvideo">
+        <video autoplay loop muted>
+            <source src="https://persistent.oaistatic.com/sonic/landing/bg_v2.mp4" type="video/mp4">
+            Tu navegador no soporta el video.
+        </video>
+    </div>
     <form action="" method="post" class="tarjeta-login" id="formlogin">
         <img src="./assets/img/Logo.png" class="logo"></img>
-        <h1>Bienvenidos</h1>
+        <h2>Bienvenidos</h2>
         <h4>Iniciar Sesion</h4>
         <div class="contenedor-input">
             <div class="ctninput">
