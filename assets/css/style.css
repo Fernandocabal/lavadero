@@ -15,7 +15,8 @@
     font-size: 12px;
     padding: 10px;
 }
-.bgvideo{
+
+.bgvideo {
     position: fixed;
     top: 0;
     left: 0;
@@ -24,6 +25,7 @@
     overflow: hidden;
     z-index: -1;
 }
+
 .contenedor {
     display: flex;
     flex-direction: column;
@@ -602,10 +604,6 @@
     backdrop-filter: blur(5px);
 }
 
-/* estilo para el pdf */
-.containerpdf {
-    width: 500px;
-}
 
 /*Estilos para smartphones*/
 @media screen and (min-width:320px) and (max-width: 768px) {
@@ -613,6 +611,10 @@
         display: flex;
         flex-direction: row;
 
+    }
+
+    .bgvideo {
+        display: none;
     }
 
     .ctnproducto select {
