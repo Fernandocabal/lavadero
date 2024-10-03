@@ -46,18 +46,18 @@ $id_tipo = $_SESSION["id_tipo"];
                 <div class="col-12 d-flex justify-content-around m-0 p-0 headerfact">
                     <div class="datosfactura">
                         <div class="form-label mb-0 lablefact">N° de Factura</div>
-                        <div type="text" class="inputform"><?php echo $formatproximonumero ?></div>
+                        <div type="text" class="form-control form-control-sm inputform"><?php echo $formatproximonumero ?></div>
                         <div class="form-label mb-0 lablefact">Timbrado</div>
-                        <div type="date" class="inputform"><?php echo $nro_timbrado; ?></div>
+                        <div type="date" class="form-control form-control-sm inputform"><?php echo $nro_timbrado; ?></div>
                     </div>
                     <div class="datosfactura">
                         <div class="form-label mb-0 lablefact">Fecha</div>
-                        <div type="date" id="fechaactual" class="inputform"></div>
+                        <div type="date" id="fechaactual" class="form-control form-control-sm inputform"></div>
                     </div>
                     <div class="datosfactura">
                         <div class="form-label mb-0 lablefact">Nombre Cliente: </div>
                         <div class="inputform">
-                            <select id="nombres" name="nombres" class="form-control">
+                            <select id="nombres" name="nombres">
                                 <option> </option>
                                 <?php
                                 include "../backend/selectclient.php";
@@ -65,17 +65,17 @@ $id_tipo = $_SESSION["id_tipo"];
                             </select>
                         </div>
                         <div class="form-label mb-0 lablefact">Ruc o Ci: </div>
-                        <input type="text" class="inputform" id="nroci" readonly>
+                        <input type="text" class="form-control form-control-sm inputform" id="nroci" readonly>
                     </div>
                     <div class="datosfactura">
                         <div class="form-label mb-0 lablefact">Direccion: </div>
-                        <input type="text" class="inputform" id="direccion" readonly>
+                        <input type="text" class="form-control form-control-sm inputform" id="direccion" readonly>
                         <div class="form-div mb-0 lablefact">Celular: </div>
-                        <input type="text" class="inputform" id="phonenumber" readonly>
+                        <input type="text" class="form-control form-control-sm inputform" id="phonenumber" readonly>
                     </div>
                     <div class="datosfactura">
                         <div class="form-label mb-0 lablefact">Correo: </div>
-                        <input type="text" class="inputform" id="email" readonly>
+                        <input type="text" class="form-control form-control-sm inputform" id="email" readonly>
                     </div>
                     <div class="datosfactura" style="font-size: 10px;">
                         <p class="form-label mb-0 lablefact">Condicion de venta: </p>
@@ -94,13 +94,13 @@ $id_tipo = $_SESSION["id_tipo"];
                     </div>
                 </div>
                 <div class="ctnproducto d-flex align-items-center" style="height: 40px;">
-                    <select id="selectservice" class="buscadorprecio form-select m-0 form-select-sm w-25">
+                    <select id="selectservice" class="buscadorprecio form-select form-select-sm w-25" style="font-size: 12px;">
                         <option value="" selected disabled>Selecciona una opcion</option>
                         <?php
                         include "../backend/obtener_datos_producto.php"
                         ?>
                     </select>
-                    <button id="addservice" class="btn btn-sm btn-dark">Agregar</button>
+                    <button id="addservice" class="btn btn-sm btn-dark m-2" style="font-size: 10px;">Agregar</button>
 
                 </div>
                 <div class="col-12 p-0 d-flex flex-column justify-content-between body_factura">
@@ -194,6 +194,7 @@ $id_tipo = $_SESSION["id_tipo"];
         include "../include/footer.php"; ?>
     </footer>
     <script src="../assets/js/factura.js"></script>
+    <script src="../scripts/factura.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../assets/js/verificarfactura.js"></script>
 </body>

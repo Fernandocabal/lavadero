@@ -485,20 +485,7 @@
 }
 
 .inputform {
-    display: block;
-    width: 100%;
-    padding: 4px 3.5px;
-    line-height: 1.5;
-    color: #212529;
-    appearance: none;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #dee2e6;
-    border-radius: 3px;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    font-size: 10px;
-    height: 24px !important;
-    overflow: hidden;
+    font-size: 10px !important;
 }
 
 .inputbody {
