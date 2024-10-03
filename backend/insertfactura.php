@@ -17,14 +17,31 @@ try {
     $fecha = date('d/m/Y H:i');
     $precio = $_POST["precio"];
     $descripcion = $_POST["descripcion"];
-    $cant_check = count($precio);
     $cantidad = $_POST["cantidad"];
+    $cant_check = count($descripcion);
+    if (count($precio) !== $cant_check || count($cantidad) !== $cant_check) {
+        throw new Exception("El número de ítems no coincide en descripción, precio y cantidad.");
+    }
     $nombres = $_POST["nombres"];
     $totalfactura = $_POST['totalfactura'];
     $iva10 = $_POST['sendiva'];
     $sqlcondicion = "SELECT * FROM `condicion` WHERE id_condicion = 1";
     $stmt = $connect->query($sqlcondicion);
     $condicion = $stmt->fetch(PDO::FETCH_ASSOC);
+    // if ($cant_check > 1) {
+    //     echo json_encode([
+    //         'success' => true,
+    //         'message' => $cant_check
+
+    //     ]);
+    // } else {
+    //     echo json_encode([
+    //         'success' => true,
+    //         'message' => 'Recibi menos de 1'
+
+    //     ]);
+    // }
+
     if ($condicion) {
         $id_condicion = $condicion["id_condicion"];
     }
@@ -64,11 +81,15 @@ try {
     $insertdetalle = "INSERT INTO `detalle_factura`(`id_header`, `detalle`, `cantidad`, `precio`) VALUES (?, ?, ?, ?)";
     $stmt = $connect->prepare($insertdetalle);
     for ($i = 0; $i < $cant_check; $i++) {
-        $descripcion = $descripcion[$i];
-        $precio = $precio[$i];
-        $cantidad = $cantidad[$i];
+        $descripcion_items = $descripcion[$i];
+        $precio_items = $precio[$i];
+        $cantidad_items = $cantidad[$i];
 
-        $stmt->execute([$idinsertado, $descripcion, $cantidad, $precio]);
+        if (!is_numeric($cantidad_items) || !is_numeric($precio_items)) {
+            throw new Exception("Cantidad y precio deben ser numéricos.");
+        }
+
+        $stmt->execute([$idinsertado, $descripcion_items, $cantidad_items, $precio_items]);
     }
     $connect->commit();
 
