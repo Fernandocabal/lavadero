@@ -1,13 +1,13 @@
 <?php
 include "../functions/conexion.php";
 
-$proveedor = $_POST["proveedor"];
-// $proveedor = $_GET["proveedor"];
+$proveedor = $_POST["id"];
+// $proveedor = $_GET["id"];
 $response = [];
 try {
-    $sql = "SELECT * FROM `proveedores` WHERE ruc_proveedor = :proveedor";
+    $sql = "SELECT * FROM `proveedores` WHERE id_proveedor = :id";
     $stmt = $connect->prepare($sql);
-    $stmt->bindParam(':proveedor', $proveedor, PDO::PARAM_STR);
+    $stmt->bindParam(':id', $proveedor, PDO::PARAM_STR);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $response = [

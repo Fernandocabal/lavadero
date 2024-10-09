@@ -74,7 +74,7 @@ function addrows() {
     const preciounit = document.createElement('input');
     preciounit.type = 'text';
     preciounit.value = '';
-    preciounit.name = 'precio[]';
+    preciounit.name = 'precio_unit[]';
     preciounit.classList = 'inputbody precio';
     columnutiraio.appendChild(preciounit);
 
@@ -83,6 +83,7 @@ function addrows() {
     descuento.type = 'text';
     descuento.value = '0';
     descuento.classList = 'inputbody';
+    descuento.name = 'descuentos[]';
     descuento.readOnly = true;
     columndescuento.appendChild(descuento);
 
@@ -91,6 +92,7 @@ function addrows() {
     exentas.type = 'text';
     exentas.value = '0';
     exentas.classList = 'inputbody';
+    exentas.name = 'exenta_unit[]';
     exentas.readOnly = true;
     columnexentas.appendChild(exentas);
 
@@ -99,6 +101,7 @@ function addrows() {
     cincoporciento.type = 'text';
     cincoporciento.value = '0';
     cincoporciento.classList = 'inputbody';
+    cincoporciento.name = 'grabada5_unit[]';
     cincoporciento.readOnly = true;
     column5.appendChild(cincoporciento);
 
@@ -107,6 +110,7 @@ function addrows() {
     diezporciento.type = 'text';
     diezporciento.value = '';
     diezporciento.classList = 'inputbody subtotal'
+    diezporciento.name = 'grabada10_unit[]';
     diezporciento.readOnly = true;
     column10.appendChild(diezporciento);
 

@@ -119,8 +119,6 @@ $id_tipo = $_SESSION["id_tipo"];
                                 </tr>
                             </thead>
                             <tbody id="bodytable" class="table-group-divider">
-
-
                             </tbody>
                         </table>
                     </div>
@@ -177,9 +175,9 @@ $id_tipo = $_SESSION["id_tipo"];
                         </div>
                     </div>
                 </div>
-                <div class="ctnbtns bg-body-secondary pt-2 pb-3">
+                <div class="ctnbtns bg-body-secondary">
                     <div class="btns">
-                        <button type=" submit" class="btn btn-dark  btn-lg" style="width: 100%;" name="insertfactura" id="insertfactura">Imprimir</button>
+                        <button type="submit" class="btn btn-dark  btn-lg" style="width: 100%;" name="insertfactura" id="insertfactura">Imprimir</button>
                     </div>
                     <div class="btns">
                         <a href="../pages/recepcionvh.php" class="btn btn-secondary btn-lg" style="width: 100%;" name="insertclient" id="insertclient">Cancelar</a>
