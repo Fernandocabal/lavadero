@@ -84,7 +84,7 @@ $id_tipo = $_SESSION["id_tipo"];
                         <input type="text" class="form-control form-control-sm inputform" name="nrofactura" id="nrofactura" maxlength="15" value="001-001-0000001">
                         <label class="form-label mb-0 lablefact" for="typedoc">Tipo de documento</label>
                         <select class="form-select form-select-sm inputform" name="typedoc" id="typedoc">
-                            <option value="0" selected disabled>Seleccione una condición</option>
+
                             <?php
                             include "../backend/selectcondicion.php";
                             ?>

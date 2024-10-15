@@ -2,17 +2,31 @@
 include "../functions/conexion.php";
 date_default_timezone_set('America/Asuncion');
 session_start();
-var_dump($_POST);
+// var_dump($_POST);
 try {
     $connect->beginTransaction();
     $fecha = date('d/m/Y H:i');
     $fechafactura = $_POST['fechafactura'];
-    $timbrado = $_POST['timbrado'];
-    $nrofactura = $_POST['nrofactura'];
-    $typedoc = $_POST['typedoc'];
-    $concepto = $_POST['conceptodecompra'];
-    $typemodena = $_POST['typemodena'];
+
     $id_proveedor = $_POST['id_proveedor'];
+    if (empty($id_proveedor)) {
+        throw new Exception("El proveedor no puede estar vacio");
+    }
+
+    $timbrado = $_POST['timbrado'];
+    if (empty($timbrado)) {
+        throw new Exception("El timbrado es obligatorio");
+    };
+
+    $nrofactura = $_POST['nrofactura'];
+    $regexnrofactura = '/^\d{3}-\d{3}-\d{7}$/';
+    if (!preg_match($regexnrofactura, $nrofactura)) {
+        throw new Exception("Número de factura no válido. Debe seguir el patrón 001-001-0000001.");
+    }
+
+
+    $typemodena = $_POST['typemodena'];
+
     $typeorigen = $_POST['typeorigen'];
     $exentas = $_POST['exenta_unit'];
     $grabada5 = $_POST['grabada5_unit'];
@@ -21,25 +35,39 @@ try {
     $cantidad = $_POST["cantidad"];
     $descripcion = $_POST["descripcion"];
     $cant_check = count($descripcion);
+    if (empty($descripcion) || empty($cantidad)) {
+        throw new Exception("Debes de cargar el detalle de la factura");
+    }
     if (count($precio) !== $cant_check || count($cantidad) !== $cant_check) {
         throw new Exception("El número de ítems no coincide en descripción, precio y cantidad.");
     }
-    if (is_array($concepto)) {
+
+    $concepto = $_POST['conceptodecompra'];
+    if (empty($concepto)) {
+        throw new Exception("El concepto de compra es obligatorio");
+    } elseif (is_array($concepto)) {
         $concepto_string = implode(", ", $concepto);
     } else {
         $concepto_string = (string) $concepto;
     }
     $totalfactura = $_POST['totalfactura'];
-    $sqlcondicion = "SELECT * FROM `condicion` WHERE id_condicion = :condicion";
-    $stmt = $connect->prepare($sqlcondicion);
-    $stmt->bindParam(':condicion', $typedoc, PDO::PARAM_INT);
-    $stmt->execute();
-    $condicion = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$condicion) {
-        throw new Exception("Condición no encontrada.");
+
+    $typedoc = $_POST['typedoc'];
+    if (empty($typedoc)) {
+        throw new Exception("Selecciona el tipo de documento");
     } else {
-        $id_condicion = $condicion["id_condicion"];
-    };
+        $sqlcondicion = "SELECT * FROM `condicion` WHERE id_condicion = :condicion";
+        $stmt = $connect->prepare($sqlcondicion);
+        $stmt->bindParam(':condicion', $typedoc, PDO::PARAM_INT);
+        $stmt->execute();
+        $condicion = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$condicion) {
+            throw new Exception("Condición no encontrada.");
+        } else {
+            $id_condicion = $condicion["id_condicion"];
+        };
+    }
+
     function totalexentas($exentas)
     {
         $total = 0;
