@@ -23,10 +23,7 @@ try {
     if (!preg_match($regexnrofactura, $nrofactura)) {
         throw new Exception("Número de factura no válido. Debe seguir el patrón 001-001-0000001.");
     }
-
-
     $typemodena = $_POST['typemodena'];
-
     $typeorigen = $_POST['typeorigen'];
     $exentas = $_POST['exenta_unit'];
     $grabada5 = $_POST['grabada5_unit'];
@@ -35,8 +32,26 @@ try {
     $cantidad = $_POST["cantidad"];
     $descripcion = $_POST["descripcion"];
     $cant_check = count($descripcion);
-    if (empty($descripcion) || empty($cantidad)) {
+    if (
+        !is_array($descripcion) || count($descripcion) === 0 ||
+        !is_array($cantidad) || count($cantidad) === 0
+    ) {
         throw new Exception("Debes de cargar el detalle de la factura");
+    }
+    foreach ($descripcion as $desc) {
+        if (trim($desc) === '') {
+            throw new Exception("La descripción no puede estar vacía.");
+        }
+    }
+    foreach ($cantidad as $cant) {
+        if (trim($cant) === '') {
+            throw new Exception("La cantidad no puede estar vacía.");
+        }
+    }
+    foreach ($precio as $pre) {
+        if (trim($pre) === '') {
+            throw new Exception("El precio es obligatorio");
+        }
     }
     if (count($precio) !== $cant_check || count($cantidad) !== $cant_check) {
         throw new Exception("El número de ítems no coincide en descripción, precio y cantidad.");
