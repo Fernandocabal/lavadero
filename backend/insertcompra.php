@@ -2,9 +2,14 @@
 include "../functions/conexion.php";
 date_default_timezone_set('America/Asuncion');
 session_start();
+require_once '../functions/funciones.php';
 // var_dump($_POST);
 try {
     $connect->beginTransaction();
+    if (!estaSesionIniciada()) {
+        throw new Exception("No haz iniciado sesión");
+        exit();
+    }
     $fecha = date('d/m/Y H:i');
     $fechafactura = $_POST['fechafactura'];
 
@@ -23,6 +28,15 @@ try {
     if (!preg_match($regexnrofactura, $nrofactura)) {
         throw new Exception("Número de factura no válido. Debe seguir el patrón 001-001-0000001.");
     }
+    $sqlnrofactura = "SELECT * FROM `headercompra` WHERE nrocompr = :nrocomprobante";
+    $stmt = $connect->prepare($sqlnrofactura);
+    $stmt->bindParam('nrocomprobante', $nrofactura, PDO::PARAM_STR);
+    $stmt->execute();
+    $nrocomprobanteresult = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($nrocomprobanteresult) {
+        throw new Exception("Ya existe un registro cargado con este número de factura");
+    }
+
     $typemodena = $_POST['typemodena'];
     $typeorigen = $_POST['typeorigen'];
     $exentas = $_POST['exenta_unit'];

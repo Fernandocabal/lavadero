@@ -23,11 +23,11 @@ if (!estalogueado()) {
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#item1" aria-expanded="false" aria-controls="item1">
                         Menu Acciones
                     </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div id="item1" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <a href="../pages/recepcionvh.php" class="sidebarop">Recepción de Vehiculos</a>
                         <a href="../pages/factura.php" class="sidebarop">Facturación</a>
@@ -41,11 +41,11 @@ if (!estalogueado()) {
                 echo "
              <div class='accordion-item'>
                 <h2 class='accordion-header'>
-                    <button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#collapseThree' aria-expanded='false' aria-controls='collapseThree'>
+                    <button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#item2' aria-expanded='false' aria-controls='item2'>
                         Administrativo
                     </button>
                 </h2>
-                <div id='collapseThree' class='accordion-collapse collapse' data-bs-parent='#accordionExample'>
+                <div id='item2' class='accordion-collapse collapse' data-bs-parent='#accordionExample'>
                     <div class='accordion-body'>
                     <a href='../pages/compras.php' class='sidebarop'>Cargar facturas Compras</a>
                     <a href='../pages/registrar_empleado.php' class='sidebarop'>Cargar facturas Ventas</a>
@@ -56,6 +56,18 @@ if (!estalogueado()) {
             </div>";
             }
             ?>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#item3" aria-expanded="false" aria-controls="item3">
+                        Reportes
+                    </button>
+                </h2>
+                <div id="item3" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <a href="#" class="sidebarop">En breve</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
 

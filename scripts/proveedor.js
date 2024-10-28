@@ -105,7 +105,10 @@ async function borrar(id) {
         confirmButtonColor: "#212529",
         cancelButtonColor: "#d33",
         cancelButtonText: "Cancelar",
-        confirmButtonText: "Si eliminar"
+        confirmButtonText: "Si eliminar",
+        customClass: {
+            popup: 'custom-swal'
+        },
     });
 
     if (result.isConfirmed) {
@@ -123,7 +126,10 @@ async function borrar(id) {
                     confirmButtonColor: "#212529",
                     confirmButtonText: "Aceptar",
                     allowOutsideClick: false,
-                    allowEscapeKey: false
+                    allowEscapeKey: false,
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
                 }).then(result => {
                     if (result.isConfirmed) {
                         window.location.reload();
@@ -136,7 +142,10 @@ async function borrar(id) {
                     text: 'No se ha podido eliminar el registro',
                     icon: 'error',
                     confirmButtonColor: "#212529",
-                    confirmButtonText: "Aceptar"
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
                 });
             }
         } catch (error) {
@@ -146,7 +155,10 @@ async function borrar(id) {
                 text: 'Ocurrió un error al intentar eliminar el registro.',
                 icon: 'error',
                 confirmButtonColor: "#212529",
-                confirmButtonText: "Aceptar"
+                confirmButtonText: "Aceptar",
+                customClass: {
+                    popup: 'custom-swal'
+                },
             });
         }
     }
@@ -169,7 +181,10 @@ savedit.addEventListener('click', () => {
                     confirmButtonColor: "#212529",
                     confirmButtonText: "Aceptar",
                     allowOutsideClick: false,
-                    allowEscapeKey: false
+                    allowEscapeKey: false,
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
                 }).then(result => {
                     if (result.isConfirmed) {
                         window.location.reload();
@@ -181,7 +196,10 @@ savedit.addEventListener('click', () => {
                     text: data.message || 'No se pudo procesar el registro.',
                     icon: 'error',
                     confirmButtonColor: "#212529",
-                    confirmButtonText: "Aceptar"
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
                 });
             }
         }).catch((error) => {
@@ -191,7 +209,10 @@ savedit.addEventListener('click', () => {
                 text: 'Ocurrió un error al intentar procesar el registro.',
                 icon: 'error',
                 confirmButtonColor: "#212529",
-                confirmButtonText: "Aceptar"
+                confirmButtonText: "Aceptar",
+                customClass: {
+                    popup: 'custom-swal'
+                },
             });
         });
 });
@@ -236,7 +257,10 @@ btnregistrar.addEventListener('click', () => {
                     confirmButtonColor: "#212529",
                     confirmButtonText: "Aceptar",
                     allowOutsideClick: false,
-                    allowEscapeKey: false
+                    allowEscapeKey: false,
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
                 }).then(result => {
                     if (result.isConfirmed) {
                         window.location.reload();
@@ -248,7 +272,10 @@ btnregistrar.addEventListener('click', () => {
                     text: data.message || 'No se pudo procesar el registro.',
                     icon: 'error',
                     confirmButtonColor: "#212529",
-                    confirmButtonText: "Aceptar"
+                    confirmButtonText: "Aceptar",
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
                 });
             }
         }).catch((error) => {
@@ -258,7 +285,10 @@ btnregistrar.addEventListener('click', () => {
                 text: 'Ocurrió un error al intentar procesar el registro.',
                 icon: 'error',
                 confirmButtonColor: "#212529",
-                confirmButtonText: "Aceptar"
+                confirmButtonText: "Aceptar",
+                customClass: {
+                    popup: 'custom-swal'
+                },
             });
         });
 })

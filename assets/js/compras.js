@@ -7,7 +7,29 @@ let subtotalTotal = document.getElementById('subtotaltotal'),
     totaliva = document.getElementById('totaliva'),
     btnaddrows = document.getElementById('btnplus'),
     bodytable = document.getElementById('bodytable'),
-    btndelete = document.getElementById('btndelete');
+    btndelete = document.getElementById('btndelete'),
+    nrofactura = document.getElementById('nrofactura'),
+    rucproveedor = document.getElementById('rucproveedor'),
+    timbrado = document.getElementById('timbrado');
+
+
+timbrado.addEventListener('input', function () {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+nrofactura.addEventListener('input', function () {
+    let value = this.value.replace(/[^0-9-]/g, '');
+    if (value.length > 3 && value.charAt(3) !== '-') {
+        value = value.slice(0, 3) + '-' + value.slice(3);
+    }
+    if (value.length > 7 && value.charAt(7) !== '-') {
+        value = value.slice(0, 7) + '-' + value.slice(7);
+    }
+    if (value.length > 16) {
+        value = value.slice(0, 16);
+    }
+    this.value = value;
+});
+
 btnaddrows.addEventListener('click', () => {
     addrows();
     calcularTotal();

@@ -83,7 +83,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-dark btn-sm" id="savedit">Guardar Cambios</button>
+                <button type="button" class="btn btn-dark btn-sm" id="savedit" data-bs-dismiss="modal">Guardar Cambios</button>
             </div>
         </div>
     </div>

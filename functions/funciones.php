@@ -14,3 +14,7 @@ function estalogueado()
 
     return false;
 }
+function estaSesionIniciada()
+{
+    return isset($_SESSION['nombre']);
+}
