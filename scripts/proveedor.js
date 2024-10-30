@@ -16,6 +16,19 @@ let id_proveedor = document.getElementById('id_proveedor'),
     btnregistrar = document.getElementById('insertclient'),
     savedit = document.getElementById('savedit');
 
+inputdocumento.addEventListener('input', function () {
+    let value = this.value.replace(/[^0-9-]/g, '');
+    this.value = value;
+});
+rucproveedor.addEventListener('input', function () {
+    let value = this.value.replace(/[^0-9-]/g, '');
+    this.value = value;
+});
+inputphone.addEventListener('input', function () {
+    let value = this.value.replace(/[^0-9+]/g, '');
+    this.value = value;
+})
+
 function validardireccion() {
     const regex = /^[a-zA-Z\u00C0-\u017F\p{L}0-9\s\p]{3,30}$/;
     const name = inputdireccion.value;
@@ -26,7 +39,7 @@ function validardireccion() {
     }
 };
 function validarname() {
-    const regex = /^[a-zA-Z\u00C0-\u017F\s]{3,24}$/;
+    const regex = /^[a-zA-Z\u00C0-\u017F\s.,]{3,24}$/;
     const name = inputname.value;
     if (!regex.test(name)) {
         return true;

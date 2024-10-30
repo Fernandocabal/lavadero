@@ -19,8 +19,8 @@
                             </div>
                         </div>
                         <div class="col-5">
-                            <label for="rucproveedor" class="form-label form-label-sm">C.I o RUC *</label>
-                            <input type="text" class="form-control form-control-sm" id="rucproveedor" name="rucproveedor" autocomplete="off">
+                            <label for="rucproveedor" class="form-label form-label-sm required">C.I o RUC</label>
+                            <input type="text" class="form-control form-control-sm " id="rucproveedor" name="rucproveedor" autocomplete="off">
                             <div class="valid-feedback">
                                 Correcto!
                             </div>
@@ -53,8 +53,8 @@
                     </div>
                     <div class="d-flex justify-content-around pb-2 pt-2">
                         <div class="col-md-5">
-                            <label for="edit_direccion_proveedor" class="form-label form-label-sm">Direccion *</label>
-                            <input type="text" class="form-control form-control-sm" id="edit_direccion_proveedor" name="edit_direccion_proveedor" placeholder="Av. Pratt Gill Ñemby" autocomplete="off">
+                            <label for="edit_direccion_proveedor" class="form-label form-label-sm required">Direccion</label>
+                            <input type="text" class="form-control form-control-sm " id="edit_direccion_proveedor" name="edit_direccion_proveedor" placeholder="Av. Pratt Gill Ñemby" autocomplete="off">
                             <div class="valid-feedback">
                                 Correcto!
                             </div>
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <label for="edit_ciudad_proveedor" class="form-label form-label-sm">Ciudad *</label>
+                            <label for="edit_ciudad_proveedor" class="form-label form-label-sm required">Ciudad</label>
                             <select class="form-select form-select-sm" id="edit_ciudad_proveedor" name="edit_ciudad_proveedor" autocomplete="off">
                                 <option selected disabled>Selecciones una ciudad</option>
                                 <?php

@@ -43,7 +43,7 @@ $id_tipo = $_SESSION["id_tipo"];
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="inputname" class="form-label required">Nombre *</label>
+                        <label for="inputname" class="form-label required">Nombre Proveedor</label>
                         <input type="text" class="form-control" id="inputname" name="inputname" autocomplete="off">
                         <div class="valid-feedback">
                             Correcto!
@@ -53,7 +53,7 @@ $id_tipo = $_SESSION["id_tipo"];
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="inputdocumento" class="form-label">C.I o RUC *</label>
+                        <label for="inputdocumento" class="form-label required">C.I o RUC</label>
                         <input type="text" class="form-control" id="inputdocumento" name="inputdocumento" autocomplete="off">
                         <div class="valid-feedback">
                             Correcto!
@@ -83,7 +83,7 @@ $id_tipo = $_SESSION["id_tipo"];
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="direccion" class="form-label">Direccion *</label>
+                        <label for="direccion" class="form-label required">Direccion</label>
                         <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Av. Pratt Gill Ñemby" autocomplete="off">
                         <div class="valid-feedback">
                             Correcto!
@@ -93,7 +93,7 @@ $id_tipo = $_SESSION["id_tipo"];
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="inputCity" class="form-label">Ciudad *</label>
+                        <label for="inputCity" class="form-label required">Ciudad</label>
                         <select class="form-select" id="inputCity" name="inputCity" autocomplete="off">
                             <option selected disabled>Selecciones una ciudad</option>
                             <?php
