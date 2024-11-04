@@ -1,7 +1,7 @@
 <?php
 include "../functions/conexion.php";
 try {
-    $query = ("SELECT * FROM `ciudades`");
+    $query = ("SELECT * FROM `ciudades` ORDER BY `ciudades`.`nombre` ASC");
     $stmt = $connect->prepare($query);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

@@ -64,7 +64,7 @@ if (!estalogueado()) {
                 </h2>
                 <div id="item3" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <a href="#" class="sidebarop">En breve</a>
+                        <a href="../pages/compras_registradas.php" class="sidebarop">Compras Registradas</a>
                     </div>
                 </div>
             </div>

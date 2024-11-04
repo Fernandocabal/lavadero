@@ -424,10 +424,10 @@
 
 .btnacciones {
     border-radius: 4px;
-    font-size: 30px;
+    font-size: 15px;
     cursor: pointer;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     background-color: var(--bluebtn);
     color: white;
 }
@@ -553,6 +553,23 @@
     background-color: var(--bgfactura);
 }
 
+.ctnreport {
+    display: flex;
+    align-items: flex-start;
+    height: calc(100vh - 7vh);
+    width: 100vw;
+}
+
+.containerta {
+    font-size: 12px;
+}
+
+.tablareport {
+    display: flex;
+    align-items: center;
+    border: 1px solid red;
+}
+
 /* Seccion de carga de facturas */
 
 /* Modificar fondo de swal */
@@ -611,8 +628,17 @@
     }
 
     .containerta {
+        font-size: 12px;
         width: 100%;
         overflow-y: scroll;
+    }
+
+    .tablareport {
+        overflow-x: scroll;
+    }
+
+    .ctnreport {
+        width: 90%;
     }
 
     .ctnbtns {

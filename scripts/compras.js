@@ -3,6 +3,7 @@ let fechafactura = document.getElementById('fechafactura'),
     nombreproveedor = document.getElementById('nombreproveedor'),
     proveedor = document.getElementById('idproveedor'),
     id_proveedor = document.getElementById('id_proveedor'),
+    concepto = document.getElementById('conceptodecompra'),
     insertcompra = document.getElementById('insertcompra');
 
 form.addEventListener('submit', (evento) => {
@@ -32,6 +33,21 @@ form.addEventListener('submit', (evento) => {
         }).then(() => {
             setTimeout(() => {
                 timbrado.focus();
+            }, 300);
+        });
+    } else if (concepto.value === '') {
+        Swal.fire({
+            title: 'Sin Concepto',
+            icon: 'warning',
+            text: 'Escribe un concepto de compra',
+            confirmButtonColor: "#212529",
+            confirmButtonText: 'Aceptar',
+            customClass: {
+                popup: 'custom-swal'
+            },
+        }).then(() => {
+            setTimeout(() => {
+                concepto.focus();
             }, 300);
         });
     } else {
@@ -78,9 +94,9 @@ form.addEventListener('submit', (evento) => {
                     });
                 } else {
                     Swal.fire({
-                        title: 'Error',
+                        title: 'Atención',
                         text: data.message,
-                        icon: 'error',
+                        icon: 'warning',
                         confirmButtonColor: "#212529",
                         confirmButtonText: 'Aceptar',
                         customClass: {

@@ -20,8 +20,8 @@ try {
         <td> $nroci </td>
         <td> $email </td>
         <td class='ctnacciones'>
-        <a role='button' data-bs-toggle='dropdown' aria-expanded='false'>
-        <i class='bx bx-dots-vertical-rounded btnacciones'></i></a>
+        <a role='button' data-bs-toggle='dropdown' aria-expanded='false' style='text-decoration: none;';>
+        <i class='bx bx-dots-vertical-rounded btnacciones d-flex align-items-center justify-content-center'></i></a>
         <ul class='dropdown-menu'>
             <li>
             <button type='button' class='dropdown-item' onclick='get($id_cliente);' data-bs-toggle='modal' id='listitem' data-bs-target='#editproveedor'>

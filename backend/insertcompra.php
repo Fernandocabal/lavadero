@@ -28,13 +28,19 @@ try {
     if (!preg_match($regexnrofactura, $nrofactura)) {
         throw new Exception("Número de factura no válido. Debe seguir el patrón 001-001-0000001.");
     }
-    $sqlnrofactura = "SELECT * FROM `headercompra` WHERE nrocompr = :nrocomprobante";
+    $sqlnrofactura = "SELECT * FROM `headercompra`INNER JOIN proveedores ON headercompra.id_proveedor = proveedores.id_proveedor WHERE headercompra.nrocompr= :nrocomprobante AND headercompra.id_proveedor = :idproveedor";
     $stmt = $connect->prepare($sqlnrofactura);
     $stmt->bindParam('nrocomprobante', $nrofactura, PDO::PARAM_STR);
+    $stmt->bindParam('idproveedor', $id_proveedor, PDO::PARAM_INT);
     $stmt->execute();
     $nrocomprobanteresult = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($nrocomprobanteresult) {
-        throw new Exception("Ya existe un registro cargado con este número de factura");
+        throw new Exception("Ya existe un registro cargado con el proveedor: " .
+            $nrocomprobanteresult['nombre_proveedor'] .
+            " y este número de factura: " .
+            $nrocomprobanteresult['nrocompr'] . "\n" .
+            "Vea el registro nro: " .
+            $nrocomprobanteresult['idheadercompra']);
     }
 
     $typemodena = $_POST['typemodena'];
@@ -168,7 +174,7 @@ try {
     $connect->rollBack();
     echo json_encode([
         'success' => false,
-        'message' => 'Error: ' . $e->getMessage()
+        'message' => $e->getMessage()
     ]);
 }
 $connect = null;

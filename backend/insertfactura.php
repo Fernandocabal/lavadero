@@ -3,6 +3,11 @@ include "../functions/conexion.php";
 date_default_timezone_set('America/Asuncion');
 session_start();
 try {
+    $connect->beginTransaction();
+    if (!estaSesionIniciada()) {
+        throw new Exception("No haz iniciado sesión");
+        exit();
+    }
     $sqltimbrado = "SELECT * FROM `timbrado`";
     $stmt = $connect->query($sqltimbrado);
     $timbrado = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -13,7 +18,7 @@ try {
         $caja = $timbrado["caja"];
         $fecha_vencimiento = $timbrado["fecha_vencimiento"];
     }
-    $connect->beginTransaction();
+
     $fecha = date('d/m/Y H:i');
     $precio = $_POST["precio"];
     $descripcion = $_POST["descripcion"];
