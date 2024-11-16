@@ -175,7 +175,7 @@ try {
     $totalgravada10 = totalgravada10($gravada10);
     $totaliva = totaliva($totalgravada5, $totalgravada10);
     $totalfactura = totalfactura($totalexentas, $gravada5, $gravada10);
-    var_dump($totalfactura);
+    // var_dump($totalfactura);
     //funtion para crear el número de registro de acuerdo a la empresa del usuario
     function crearnroregistro()
     {

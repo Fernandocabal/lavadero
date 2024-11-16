@@ -21,8 +21,11 @@ WHERE id_header= $id_factura;");
         $condicion = $row["condicion"];
         $timbrado = $row["timbrado"];
         $nro_factura = $row["nro_factura"];
-        $totalfactura = $row['total'];
-        $iva = $row['iva'];
+        $totalfactura = $row['totalfactura'];
+        $exentas = $row['exentas'];
+        $gravada5 = $row['gravada5'];
+        $gravada10 = $row['gravada10'];
+        $totaliva = $row['totaliva'];
         $cajero = $row['cajero'];
         $total = 0;
     }
@@ -135,7 +138,7 @@ function agregarDetallesFactura($pdf, $connect, $id_factura)
     }
 }
 agregarDetallesFactura($pdf, $connect, $id_factura);
-function piefactura($pdf, $totalfactura, $iva)
+function piefactura($pdf, $totalfactura, $gravada5, $gravada10, $totaliva)
 {
     $pdf->Cell(30, 4, 'SUBTOTAL:', 'L,T', 0, 'L');
     $pdf->Cell(0, 4, number_format($totalfactura, 0, '.', '.'), 'R,T', 1, 'R');
@@ -145,13 +148,13 @@ function piefactura($pdf, $totalfactura, $iva)
     $pdf->Cell(0, 4, number_format($totalfactura, 0, '.', '.'), 'R,T', 1, 'R');
     $pdf->Cell(40, 4, 'LIQUIDACION DE IVA:', 'L,B,T', 0, 'L');
     $pdf->Cell(25, 4, '(5%)', 'B,T', 0, 'L');
-    $pdf->Cell(30, 4, '0', 'B,T', 0, 'L');
+    $pdf->Cell(30, 4, number_format($gravada5, 0, '.', '.'), 'B,T', 0, 'L');
     $pdf->Cell(25, 4, '(10%)', 'B,T', 0, 'L');
-    $pdf->Cell(30, 4, number_format($iva, 0, '.', '.'), 'B,T', 0, 'L');
+    $pdf->Cell(30, 4, number_format($gravada10, 0, '.', '.'), 'B,T', 0, 'L');
     $pdf->Cell(30, 4, 'TOTAL IVA: ', 'B,T', 0, 'L');
-    $pdf->Cell(0, 4, number_format($iva, 0, '.', '.'), 'R,T,B', 1, 'R');
+    $pdf->Cell(0, 4, number_format($totaliva, 0, '.', '.'), 'R,T,B', 1, 'R');
 };
-piefactura($pdf, $totalfactura, $iva);
+piefactura($pdf, $totalfactura, $gravada5, $gravada10, $totaliva);
 $pdf->Cell(0, 1, 'Original', 0, 1, 'L');
 //Sección duplicado
 $pdf->SetY(152);
@@ -160,7 +163,7 @@ $pdf->Image('../assets/img/logosinfondo.png', 8, 147, 33);
 cabecera($pdf, $timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email);
 $pdf->Ln(5);
 agregarDetallesFactura($pdf, $connect, $id_factura);
-piefactura($pdf, $totalfactura, $iva);
+piefactura($pdf, $totalfactura, $gravada5, $gravada10, $totaliva);
 $pdf->Cell(0, 1, 'Duplicado', 0, 1, 'L');
 $pdf->SetTitle('Factura nro: ' . $nro_factura);
 $pdf->SetAuthor('Cajero: ' . $cajero);

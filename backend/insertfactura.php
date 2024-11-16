@@ -7,7 +7,7 @@ $nombre = $_SESSION['nombre'];
 $apellido = $_SESSION["apellido"];
 $id_tipo = $_SESSION["id_tipo"];
 $id_empresa = $_SESSION['id_empresa'];
-var_dump($_POST);
+// var_dump($_POST);
 try {
     $connect->beginTransaction();
     if (!estaSesionIniciada()) {
@@ -166,7 +166,7 @@ try {
     $totalgravada10 = totalgravada10($gravada10);
     $totaliva = totaliva($totalgravada5, $totalgravada10);
     $totalfactura = totalfactura($totalexentas, $gravada5, $gravada10);
-    var_dump($totalfactura);
+    // var_dump($totalfactura);
 
     //funtion para crear el número de registro de acuerdo a la empresa del usuario
     function crearnroregistro()
