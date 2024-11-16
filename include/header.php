@@ -16,7 +16,18 @@ if (!estalogueado()) {
 </a>
 <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header" style="border-bottom: 1px solid black;">
-        <a href="../pages/dashboard.php" class="offcanvas-title" id="offcanvasExampleLabel" style="text-decoration: none;font-size: xx-large;">CarWash Lavadero</a>
+        <a href="../pages/dashboard.php" class="offcanvas-title" id="offcanvasExampleLabel" style="text-decoration: none;font-size: xx-large;">
+            <?php
+            $stmt = $connect->prepare("SELECT usuarios.nombre_usuario,empresas.nombre_empresa FROM `usuarios` INNER JOIN empresas ON usuarios.id_empresa=empresas.id_empresa WHERE usuarios.id_empresa= :usuario");
+            $stmt->bindParam(':usuario', $_SESSION['id_empresa'], PDO::PARAM_STR);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $nombre_empresa = $row['nombre_empresa'];
+                echo $nombre_empresa;
+            };
+            ?>
+        </a>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column">
@@ -64,7 +75,7 @@ if (!estalogueado()) {
                 </h2>
                 <div id="item3" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <a href="../pages/compras_registradas.php" class="sidebarop">Compras Registradas</a>
+                        <a href="../pages/reportes_compras.php" class="sidebarop">Compras Registradas</a>
                     </div>
                 </div>
             </div>

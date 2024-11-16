@@ -12,8 +12,15 @@ try {
     }
     $fecha = date('d/m/Y H:i');
     $fechafactura = $_POST['fechafactura'];
+    $fechaObj = DateTime::createFromFormat('d/m/Y', $fechafactura);
+    if ($fechaObj && $fechaObj->format('d/m/Y') === $fechafactura) {
+        $fechafactura = $fechaObj->format('Y-m-d');
+    } else {
+        echo "Fecha no válida.";
+        exit;
+    }
 
-    $id_proveedor = $_POST['id_proveedor'];
+    $id_proveedor = $_POST['idproveedor'];
     if (empty($id_proveedor)) {
         throw new Exception("El proveedor no puede estar vacio");
     }
@@ -28,6 +35,7 @@ try {
     if (!preg_match($regexnrofactura, $nrofactura)) {
         throw new Exception("Número de factura no válido. Debe seguir el patrón 001-001-0000001.");
     }
+    //Verificar si ya existe el registro en la base de datos
     $sqlnrofactura = "SELECT * FROM `headercompra`INNER JOIN proveedores ON headercompra.id_proveedor = proveedores.id_proveedor WHERE headercompra.nrocompr= :nrocomprobante AND headercompra.id_proveedor = :idproveedor";
     $stmt = $connect->prepare($sqlnrofactura);
     $stmt->bindParam('nrocomprobante', $nrofactura, PDO::PARAM_STR);
@@ -40,14 +48,14 @@ try {
             " y este número de factura: " .
             $nrocomprobanteresult['nrocompr'] . "\n" .
             "Vea el registro nro: " .
-            $nrocomprobanteresult['idheadercompra']);
+            $nrocomprobanteresult['registro']);
     }
-
+    $tipo_factura = $_POST['tipo_factura'];
     $typemodena = $_POST['typemodena'];
     $typeorigen = $_POST['typeorigen'];
-    $exentas = $_POST['exenta_unit'];
-    $grabada5 = $_POST['grabada5_unit'];
-    $grabada10 = $_POST['grabada10_unit'];
+    $exentas = $_POST['exenta'];
+    $gravada5 = $_POST['gravada5'];
+    $gravada10 = $_POST['gravada10'];
     $precio = $_POST["precio_unit"];
     $cantidad = $_POST["cantidad"];
     $descripcion = $_POST["descripcion"];
@@ -85,7 +93,6 @@ try {
     } else {
         $concepto_string = (string) $concepto;
     }
-    $totalfactura = $_POST['totalfactura'];
 
     $typedoc = $_POST['typedoc'];
     if (empty($typedoc)) {
@@ -106,62 +113,105 @@ try {
     function totalexentas($exentas)
     {
         $total = 0;
-
-        for ($i = 0; $i < count($exentas); $i++) {
-            if (is_numeric($exentas[$i])) {
-                $total += floatval($exentas[$i]);
+        if (is_array($exentas)) {
+            for ($i = 0; $i < count($exentas); $i++) {
+                if (is_numeric($exentas[$i])) {
+                    $total += floatval($exentas[$i]);
+                }
             }
         }
         return $total;
     }
-    function totalgrabada5($grabada5)
+    function totalgravada5($gravada5)
     {
         $total = 0;
-
-        for ($i = 0; $i < count($grabada5); $i++) {
-            if (is_numeric($grabada5[$i])) {
-                $total += floatval($grabada5[$i]);
+        if (is_array($gravada5)) {
+            for ($i = 0; $i < count($gravada5); $i++) {
+                if (is_numeric($gravada5[$i])) {
+                    $total += floatval($gravada5[$i]);
+                }
             }
         }
-        return $total / 1.05;
+        return $total / 21;
     }
-    function totalgrabada10($grabada10)
+    function totalgravada10($gravada10)
     {
         $total = 0;
-
-        for ($i = 0; $i < count($grabada10); $i++) {
-            if (is_numeric($grabada10[$i])) {
-                $total += floatval($grabada10[$i]);
+        if (is_array($gravada10)) {
+            for ($i = 0; $i < count($gravada10); $i++) {
+                if (is_numeric($gravada10[$i])) {
+                    $total += floatval($gravada10[$i]);
+                }
             }
         }
         return $total / 11;
     }
+    function totaliva($totalgravada5, $totalgravada10)
+    {
+        return ($totalgravada5 + $totalgravada10);
+    }
+    function totalfactura($totalexentas, $gravada5, $gravada10)
+    {
+        $totalgr10 = 0;
+        $totalgr5 = 0;
+        if (is_array($gravada10)) {
+            for ($i = 0; $i < count($gravada10); $i++) {
+                if (is_numeric($gravada10[$i])) {
+                    $totalgr10 += floatval($gravada10[$i]);
+                }
+            }
+        }
+        if (is_array($gravada5)) {
+            for ($i = 0; $i < count($gravada5); $i++) {
+                if (is_numeric($gravada5[$i])) {
+                    $totalgr5 += floatval($gravada5[$i]);
+                }
+            }
+        }
+        return ($totalexentas + $totalgr5 + $totalgr10);
+    };
     $totalexentas = totalexentas($exentas);
-    $totalgrabada5 = totalgrabada5($grabada5);
-    $totalgrabada10 = totalgrabada10($grabada10);
-
-    $insertcompra = "INSERT INTO `headercompra`(`nrocompr`, `timbrado`, `id_condicion`, `id_proveedor`, `concepto`, `fecha_compra`, `fecha_carga`, `exentas`, `grabada5`, `grabada10`, `totalcompra`, `moneda`, `typeorigen`, `user`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $totalgravada5 = totalgravada5($gravada5);
+    $totalgravada10 = totalgravada10($gravada10);
+    $totaliva = totaliva($totalgravada5, $totalgravada10);
+    $totalfactura = totalfactura($totalexentas, $gravada5, $gravada10);
+    var_dump($totalfactura);
+    //funtion para crear el número de registro de acuerdo a la empresa del usuario
+    function crearnroregistro()
+    {
+        global $connect;
+        $slqnroregistro = "SELECT MAX(registro) AS max_registro FROM headercompra WHERE id_usuario = :id";
+        $stmt = $connect->prepare($slqnroregistro);
+        $stmt->bindParam('id', $_SESSION['id_usuario'], PDO::PARAM_INT);
+        $stmt->execute();
+        $nroregistro = $stmt->fetch(PDO::FETCH_ASSOC);
+        $ultimoreg = $nroregistro['max_registro'] ? $nroregistro['max_registro'] : 0;
+        $proximoreg = $ultimoreg + 1;
+        return $proximoreg;
+    };
+    $proximoreg = crearnroregistro();
+    $insertcompra = "INSERT INTO `headercompra`( `registro`, `nrocompr`, `timbrado`, `id_condicion`, `id_proveedor`, `concepto`, `fecha_compra`, `fecha_carga`, `exentas`, `gravada5`, `gravada10`, `totaliva`, `totalfactura`, `tipo_factura`, `moneda`, `typeorigen`, `id_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $connect->prepare($insertcompra);
-    $stmt->execute([$nrofactura, $timbrado, $id_condicion, $id_proveedor, $concepto_string, $fechafactura, $fecha, $totalexentas, $totalgrabada5, $totalgrabada10, $totalfactura, $typemodena, $typeorigen, $_SESSION['nombre']]);
+    $stmt->execute([$proximoreg, $nrofactura, $timbrado, $id_condicion, $id_proveedor, $concepto_string, $fechafactura, $fecha, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $tipo_factura, $typemodena, $typeorigen, $_SESSION['id_usuario']]);
     $idinsertado = $connect->lastInsertId();
 
-    $insertdetalle = "INSERT INTO `detalles_compra`(`idheadercompra`, `descripcion`, `cantidad`, `precio`, `exenta`, `grabada5`, `grabada10`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $insertdetalle = "INSERT INTO `detalles_compra`(`idheadercompra`, `descripcion`, `cantidad`, `precio`, `exenta`, `gravada5`, `gravada10`) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $connect->prepare($insertdetalle);
     for ($i = 0; $i < $cant_check; $i++) {
         $descripcion_item = $descripcion[$i];
         $precio_item = $precio[$i];
         $cantidad_item = $cantidad[$i];
         $exenta_item = $exentas[$i];
-        $grabada5_item = floatval($grabada5[$i]) / 1.05;
-        $grabada10_item = floatval($grabada10[$i]) / 11;
+        $gravada5_item = floatval($gravada5[$i]) / 1.05;
+        $gravada10_item = floatval($gravada10[$i]) / 11;
 
-        $stmt->execute([$idinsertado, $descripcion_item, $cantidad_item, $precio_item, $exenta_item, $grabada5_item, $grabada10_item]);
+        $stmt->execute([$idinsertado, $descripcion_item, $cantidad_item, $precio_item, $exenta_item, $gravada5_item, $gravada10_item]);
     }
     $connect->commit();
 
     echo json_encode([
         'success' => true,
-        'id' => $idinsertado,
+        'id' => $proximoreg,
         'message' => 'Id de registro: '
     ]);
 } catch (PDOException $e) {

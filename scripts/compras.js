@@ -2,7 +2,7 @@ let fechafactura = document.getElementById('fechafactura'),
     form = document.getElementById('formcompras'),
     nombreproveedor = document.getElementById('nombreproveedor'),
     proveedor = document.getElementById('idproveedor'),
-    id_proveedor = document.getElementById('id_proveedor'),
+    id_proveedor = document.getElementById('idproveedor'),
     concepto = document.getElementById('conceptodecompra'),
     insertcompra = document.getElementById('insertcompra');
 
@@ -55,69 +55,69 @@ form.addEventListener('submit', (evento) => {
             method: 'POST',
             body: formData
         })
-            // .then(response => {
-            //     return response.text(); // Cambiar a text() para ver la respuesta completa
-            // })
-            // .then(data => {
-            //     console.log(data); // Mostrar la respuesta completa en la consola
-            //     try {
-            //         const jsonData = JSON.parse(data); // Intentar parsear a JSON
-            //         // Procesar jsonData aquí
-            //     } catch (error) {
-            //         console.error('Error al parsear JSON:', error);
-            //     }
-            // })
-            // .catch(error => {
-            //     console.error('Error en la petición:', error);
-            // });
-            .then(response => response.json())
+            .then(response => {
+                return response.text(); // Cambiar a text() para ver la respuesta completa
+            })
             .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        title: 'Registro cargado correctamente',
-                        text: data.message + '' + data.id,
-                        icon: 'success',
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        showConfirmButton: true,
-                        showCancelButton: false,
-                        focusConfirm: true,
-                        confirmButtonColor: "#212529",
-                        confirmButtonText: 'Aceptar',
-                        customClass: {
-                            popup: 'custom-swal'
-                        },
-                    }).then(result => {
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Atención',
-                        text: data.message,
-                        icon: 'warning',
-                        confirmButtonColor: "#212529",
-                        confirmButtonText: 'Aceptar',
-                        customClass: {
-                            popup: 'custom-swal'
-                        },
-                    });
+                console.log(data); // Mostrar la respuesta completa en la consola
+                try {
+                    const jsonData = JSON.parse(data); // Intentar parsear a JSON
+                    // Procesar jsonData aquí
+                } catch (error) {
+                    console.error('Error al parsear JSON:', error);
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    title: 'Error',
-                    text: error,
-                    icon: 'error',
-                    confirmButtonColor: "#212529",
-                    confirmButtonText: 'Aceptar',
-                    customClass: {
-                        popup: 'custom-swal'
-                    },
-                });
+                console.error('Error en la petición:', error);
             });
+        // .then(response => response.json())
+        // .then(data => {
+        //     if (data.success) {
+        //         Swal.fire({
+        //             title: 'Registro cargado correctamente',
+        //             text: data.message + '' + data.id,
+        //             icon: 'success',
+        //             allowEscapeKey: false,
+        //             allowOutsideClick: false,
+        //             showConfirmButton: true,
+        //             showCancelButton: false,
+        //             focusConfirm: true,
+        //             confirmButtonColor: "#212529",
+        //             confirmButtonText: 'Aceptar',
+        //             customClass: {
+        //                 popup: 'custom-swal'
+        //             },
+        //         }).then(result => {
+        //             if (result.isConfirmed) {
+        //                 window.location.reload();
+        //             }
+        //         });
+        //     } else {
+        //         Swal.fire({
+        //             title: 'Atención',
+        //             text: data.message,
+        //             icon: 'warning',
+        //             confirmButtonColor: "#212529",
+        //             confirmButtonText: 'Aceptar',
+        //             customClass: {
+        //                 popup: 'custom-swal'
+        //             },
+        //         });
+        //     }
+        // })
+        // .catch(error => {
+        //     console.error('Error:', error);
+        //     Swal.fire({
+        //         title: 'Error',
+        //         text: error,
+        //         icon: 'error',
+        //         confirmButtonColor: "#212529",
+        //         confirmButtonText: 'Aceptar',
+        //         customClass: {
+        //             popup: 'custom-swal'
+        //         },
+        //     });
+        // });
     };
 })
 $(document).ready(function () {
@@ -141,7 +141,7 @@ $(document).ready(function () {
                         console.log("Respuesta del servidor:", responseobjet);
                         if (responseobjet.success && responseobjet.respuesta) {
                             $('#rucproveedor').val(responseobjet.respuesta.ruc_proveedor);
-                            $('#id_proveedor').val(responseobjet.respuesta.id_proveedor)
+                            $('#idproveedor').val(responseobjet.respuesta.id_proveedor)
                         } else {
                             console.error("Error en la respuesta:", responseobjet.message);
                             alert("No se encontraron datos del proveedor.");

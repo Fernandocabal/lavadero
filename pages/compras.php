@@ -77,7 +77,6 @@ $id_tipo = $_SESSION["id_tipo"];
                         <input type="text" id="timbrado" name="timbrado" class="form-control form-control-sm inputform">
                         <label class="form-label mb-0 lablefact" for="rucproveedor">R.U.C Proveedor</label>
                         <input type="text" class="form-control form-control-sm inputform" name="rucproveedor" id="rucproveedor" readonly>
-                        <input type="hidden" name="id_proveedor" id="id_proveedor" value="">
                     </div>
                     <div class="datosfactura">
                         <label class="form-label mb-0 lablefact" for="nrofactura">Numero de factura</label>
@@ -94,7 +93,13 @@ $id_tipo = $_SESSION["id_tipo"];
                         <label class="form-label mb-0 lablefact" for="conceptodecompra">Concepto de compra</label>
                         <input type="text" class="form-control form-control-sm inputform" name="conceptodecompra" id="conceptodecompra">
 
+                        <label class="form-label mb-0 lablefact" for="typedoc">Tipo de factura</label>
+                        <select class="form-select form-select-sm inputform" name="tipo_factura" id="tipo_factura">
 
+                            <?php
+                            include "../backend/selectypefactura.php";
+                            ?>
+                        </select>
                     </div>
                     <div class="datosfactura">
                         <label class="form-label mb-0 lablefact" for="origen">Origen de fondos</label>
@@ -122,7 +127,8 @@ $id_tipo = $_SESSION["id_tipo"];
                                     <th style="width: 10%;" scope="col">Cantidad</th>
                                     <th style="width: 10%;" scope="col">Precio Unitario</th>
                                     <th style="width: 10%;" scope="col">Descuentos</th>
-                                    <th style="width: 10%;" scope="col">Exentas</th>
+                                    <th style="width: 10%;" scope="col">Tipo de IVA</th>
+                                    <th style="width: 10%;" scope="col">Excento</th>
                                     <th style="width: 10%;" scope="col">5%</th>
                                     <th style="width: 10%;" scope="col">10%</th>
                                 </tr>
@@ -132,12 +138,19 @@ $id_tipo = $_SESSION["id_tipo"];
                                     <td>
                                     </td>
                                     <td><input type="text" name="descripcion[]" id="descripcion" class="inputbody"></td>
-                                    <td><input type="number" name="cantidad[]" id="cantidad" class="inputbody cantidad"></td>
+                                    <td><input type="number" name="cantidad[]" id="cantidad" class="inputbody cantidad" value="1"></td>
                                     <td><input type="text" name="precio_unit[]" id="precio" class="inputbody precio"></td>
                                     <td><input type="text" class="inputbody" readonly="" name="descuentos[]" value="0"></td>
-                                    <td><input type="text" class="inputbody" readonly="" name="exenta_unit[]" value="0"></td>
-                                    <td><input type="text" class="inputbody" readonly="" name="grabada5_unit[]" value="0"></td>
-                                    <td><input type="text" class="inputbody subtotal" name="grabada10_unit[]" readonly=""></td>
+                                    <td>
+                                        <select class="inputbody tipo_iva" readonly="" name="tipo_iva[]" value="0">
+                                            <option value="1">I.V.A 5%</option>
+                                            <option value="2" selected>I.V.A 10%</option>
+                                            <option value="3">EXCENTO</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" class="inputbody exenta" readonly="" name="exenta[]" value="0"></td>
+                                    <td><input type="text" class="inputbody gravada5" name="gravada5[]" readonly="" value="0"></td>
+                                    <td><input type="text" class="inputbody gravada10" name="gravada10[]" readonly="" value="0"></td>
                                 </tr>
                             </tbody>
 
@@ -185,15 +198,15 @@ $id_tipo = $_SESSION["id_tipo"];
                             </div>
                             <div class="d-flex justify-content-between baseizquierda">
                                 <div class="datosIVA">5%</div>
-                                <div class="datosIVA">0</div>
+                                <div class="datosIVA" id="iva5">0</div>
                                 <div class="datosIVA">10%</div>
                                 <div class="datosIVA" id="iva10"></div>
                                 <div class="datosIVA">Total Iva</div>
                                 <div class="datostotal" id="totaliva">0</div>
                             </div>
                             <!-- SECCION OCULTA PARA ENVIAR VALORES A LA BASE DE DATOS -->
-                            <input type="hidden" value="" name="totalfactura" id="totalfactura">
-                            <input type="hidden" value="" name="sendiva" id="sendiva">
+                            <!-- <input type="hidden" value="" name="totalfactura" id="totalfactura">
+                            <input type="hidden" value="" name="sendiva" id="sendiva"> -->
                         </div>
                     </div>
 

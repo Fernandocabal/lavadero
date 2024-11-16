@@ -553,11 +553,24 @@
     background-color: var(--bgfactura);
 }
 
+/* Sección de reportes */
+
 .ctnreport {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     height: calc(100vh - 7vh);
-    width: 100vw;
+    width: 60vw;
+}
+
+.reporte_contenedor_form {
+    width: 100%;
+}
+
+.reporte_fecha {
+    width: 40%;
+    height: 100%;
+    margin: 1px;
+    padding: 5px;
 }
 
 .containerta {
@@ -567,8 +580,11 @@
 .tablareport {
     display: flex;
     align-items: center;
-    border: 1px solid red;
+    justify-content: center;
+    width: 100%;
 }
+
+/* Fin Seccion Reporte */
 
 /* Seccion de carga de facturas */
 
@@ -627,6 +643,12 @@
         width: 96%;
     }
 
+    /* Seccion reporte */
+    .reporte_fecha {
+        width: 49%;
+        margin: 1px;
+    }
+
     .containerta {
         font-size: 12px;
         width: 100%;
@@ -635,12 +657,14 @@
 
     .tablareport {
         overflow-x: scroll;
+        justify-content: left;
     }
 
     .ctnreport {
         width: 90%;
     }
 
+    /* Fin seccion reporte */
     .ctnbtns {
         justify-content: center;
         gap: 4px;

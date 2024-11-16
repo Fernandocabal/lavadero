@@ -4,6 +4,7 @@ session_start();
 $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];
 $id_tipo = $_SESSION["id_tipo"];
+$id_empresa = $_SESSION['id_empresa'];
 
 ?>
 <!DOCTYPE html>
@@ -33,26 +34,29 @@ $id_tipo = $_SESSION["id_tipo"];
     </header>
     <div class="ctnpage">
         <div class="ctnreport flex-column">
-            <div class="col-12">
-                <div class="col-md-6 d-grid mx-auto">
-                    <h1 class="col-12 display-6 d-flex justify-content-center">
-                        Obtener Reporte
-                    </h1>
-                    Selecciona un rago de fecha para obtener un reporte de tus facturas de compras
-                    <form action="" method="post" style="border: 1px solid red;height: 145px;">
-                        <div class="d-flex g-1 p-1 mt-2">
-                            <input type="date" class="form-control m-2" name="" id="firstdate">
-                            <input type="date" class="form-control m-2" name="" id="lastdate">
+            <div class=" reporte_contenedor_form d-flex flex-column">
+                <h1 class="col-12 display-6 d-flex justify-content-center">
+                    Obtener Reporte
+                </h1>
+                <p class="col-12 d-flex flex-column align-items-center">Selecciona un rago de fecha para obtener un reporte de tus facturas de compras</p>
+                <form action="../backend/reportecompraspdf.php" class="mb-4 d-flex flex-column justify-content-around" method="post" id="formreport" target="_blank" style="height: 160px;">
+                    <div class="d-flex justify-content-center">
+                        <div class="reporte_fecha d-flex flex-column align-items-center">
+                            <label class="form-label form-label-sm" for="firstdate">Desde</label>
+                            <input type="date" class="form-control" name="firstdate" id="firstdate">
                         </div>
-                        <div class="d-flex justify-content-center mt-2">
-                            <input type="button" class="btn btn-success" value="Obtener reporte">
+                        <div class="reporte_fecha d-flex flex-column align-items-center">
+                            <label class="form-label form-label-sm" for="lastdate">Hasta</label>
+                            <input type="date" class="form-control" name="lastdate" id="lastdate">
                         </div>
-
-
-                    </form>
-                </div>
+                    </div>
+                    <div class="d-flex justify-content-center mt-2">
+                        <input type="submit" class="btn btn-success" id="report" value="Obtener reporte">
+                    </div>
+                </form>
             </div>
-            <div class="col-12 d-flex justify-content-center">
+            <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                <p>Tabla con el listado de todas las facturas cargadas</p>
                 <div class="tablareport">
                     <table id="reporte" class="table table-hover table-bordered table-striped nowrap" style="width:100%; font-size:12px;">
                         <thead>
@@ -86,6 +90,11 @@ $id_tipo = $_SESSION["id_tipo"];
         $(document).ready(function() {
             $('#reporte').DataTable({
                 "language": idioma_espanol,
+                "pageLength": 5,
+                "lengthMenu": [5, 25, 50],
+                "order": [
+                    [0, 'desc']
+                ],
                 layout: {
                     bottomEnd: {
                         paging: {
@@ -122,19 +131,8 @@ $id_tipo = $_SESSION["id_tipo"];
             }
         }
     </script>
-    <script>
-        function setDates() {
-            const firstDateInput = document.getElementById('firstdate');
-            const lastDateInput = document.getElementById('lastdate');
-            const today = new Date();
-            const currentYear = today.getFullYear();
-            const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
-            const currentDate = String(today.getDate()).padStart(2, '0');
-            firstDateInput.value = `${currentYear}-${currentMonth}-01`;
-            lastDateInput.value = `${currentYear}-${currentMonth}-${currentDate}`;
-        }
-        window.onload = setDates;
-    </script>
+    <script src="../assets/js/reportecompras.js"></script>
+    <script src="../scripts/reportescompras.js"></script>
 </body>
 
 </html>

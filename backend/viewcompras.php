@@ -1,19 +1,36 @@
 <?php
 include "../functions/conexion.php";
+$nombre = $_SESSION['nombre'];
+$apellido = $_SESSION["apellido"];
+$id_tipo = $_SESSION["id_tipo"];
+$id_empresa = $_SESSION['id_empresa'];
 try {
-    $query = "SELECT * FROM `headercompra`INNER JOIN proveedores ON headercompra.id_proveedor = proveedores.id_proveedor";
+    $query = "SELECT 
+    headercompra.*,
+    proveedores.*,
+    usuarios.id_empresa
+FROM 
+    headercompra
+INNER JOIN 
+    proveedores ON headercompra.id_proveedor = proveedores.id_proveedor
+INNER JOIN 
+    usuarios ON headercompra.id_usuario = usuarios.id_usuario
+WHERE 
+    usuarios.id_empresa = :id";
     $stmt = $connect->prepare($query);
+    $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id_proveedor = $row['id_proveedor'];
         $id_headercompra = $row['idheadercompra'];
+        $registro = $row['registro'];
         $nrocompr = $row['nrocompr'];
         $nombre_proveedor = $row['nombre_proveedor'];
         $ruc_proveedor = $row['ruc_proveedor'];
         $fecha_compra = $row['fecha_compra'];
         echo "
         <tr>
-        <td> $id_headercompra </td>
+        <td> $registro </td>
         <td> $nrocompr </td>
         <td> $nombre_proveedor</td>
         <td> $fecha_compra </td>

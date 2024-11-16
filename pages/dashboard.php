@@ -4,6 +4,18 @@ session_start();
 $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];
 $id_tipo = $_SESSION["id_tipo"];
+$id_empresa = $_SESSION['id_empresa'];
+try {
+    $sqlempresa = "SELECT * FROM `usuarios` INNER JOIN empresas ON usuarios.id_empresa = empresas.id_empresa WHERE usuarios.id_empresa = :id";
+    $stmt = $connect->prepare($sqlempresa);
+    $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
+    $stmt->execute();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $nombre_empresa = $row["nombre_empresa"];
+    }
+} catch (PDOException $e) {
+    echo 'Error ' . $e->getMessage();
+}
 
 ?>
 <!DOCTYPE html>
@@ -35,8 +47,8 @@ $id_tipo = $_SESSION["id_tipo"];
             <div class="targetdash">
                 <p id="time"></p>
                 <?php
-
-                echo "Hola " . $nombre . " tienes el nivel " . $id_tipo;
+                echo "<p> Hola " . $nombre . "</p>";
+                echo "Empresa: " . $nombre_empresa;
                 ?>
             </div>
             <div class="targetdash" style="justify-content: start;">
