@@ -108,12 +108,14 @@ $id_tipo = $_SESSION["id_tipo"];
                         <table id="table" class="table mb-0 table-sm table-bordered" style="font-size: 10px;">
                             <thead>
                                 <tr>
-                                    <th style="width: 4%;" scope="col"></th>
+                                    <th style=" width: 4%;" scope="col">
+                                    </th>
                                     <th scope="col">Descripcion</th>
                                     <th style="width: 10%;" scope="col">Cantidad</th>
                                     <th style="width: 10%;" scope="col">Precio Unitario</th>
                                     <th style="width: 10%;" scope="col">Descuentos</th>
-                                    <th style="width: 10%;" scope="col">Exentas</th>
+                                    <th style="width: 10%;" scope="col">Tipo de IVA</th>
+                                    <th style="width: 10%;" scope="col">Excento</th>
                                     <th style="width: 10%;" scope="col">5%</th>
                                     <th style="width: 10%;" scope="col">10%</th>
                                 </tr>
@@ -163,15 +165,15 @@ $id_tipo = $_SESSION["id_tipo"];
                             </div>
                             <div class="d-flex justify-content-between baseizquierda">
                                 <div class="datosIVA">5%</div>
-                                <div class="datosIVA">0</div>
+                                <div class="datosIVA" id="iva5">0</div>
                                 <div class="datosIVA">10%</div>
                                 <div class="datosIVA" id="iva10"></div>
                                 <div class="datosIVA">Total Iva</div>
                                 <div class="datostotal" id="totaliva">0</div>
                             </div>
                             <!-- SECCION OCULTA PARA ENVIAR VALORES A LA BASE DE DATOS -->
-                            <input type="hidden" value="" name="totalfactura" id="totalfactura">
-                            <input type="hidden" value="" name="sendiva" id="sendiva">
+                            <!-- <input type="hidden" value="" name="totalfactura" id="totalfactura">
+                            <input type="hidden" value="" name="sendiva" id="sendiva"> -->
                         </div>
                     </div>
                 </div>
