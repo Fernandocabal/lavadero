@@ -1,6 +1,11 @@
 <?php
-// session_start();
+session_start();
 require_once '../functions/funciones.php';
+$nombre = $_SESSION["nombre"];
+$apellido = $_SESSION["apellido"];
+$id_tipo = $_SESSION["id_tipo"];
+$usernickname = $_SESSION["nombre_usuario"];
+$nombre_empresa = $_SESSION['nombre_empresa'];
 
 if (!estalogueado()) {
     session_unset();
@@ -8,8 +13,6 @@ if (!estalogueado()) {
     header("location:../index.php");
     exit();
 }
-
-
 ?>
 <a class="hambur" data-bs-toggle="offcanvas" href="#sidebar" role="button" aria-controls="sidebar">
     <i class='bx bx-menu' id="hamburicon"></i>
@@ -18,14 +21,7 @@ if (!estalogueado()) {
     <div class="offcanvas-header" style="border-bottom: 1px solid black;">
         <a href="../pages/dashboard.php" class="offcanvas-title" id="offcanvasExampleLabel" style="text-decoration: none;font-size: xx-large;">
             <?php
-            $stmt = $connect->prepare("SELECT usuarios.nombre_usuario,empresas.nombre_empresa FROM `usuarios` INNER JOIN empresas ON usuarios.id_empresa=empresas.id_empresa WHERE usuarios.id_empresa= :usuario");
-            $stmt->bindParam(':usuario', $_SESSION['id_empresa'], PDO::PARAM_STR);
-            $stmt->execute();
-            if ($stmt->rowCount() > 0) {
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                $nombre_empresa = $row['nombre_empresa'];
-                echo $nombre_empresa;
-            };
+            echo $nombre_empresa;
             ?>
         </a>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -92,7 +88,11 @@ if (!estalogueado()) {
     <div class="btndrop" class="btndrop" onclick="dropmenu()"><i class='bx bx-chevrons-down icondrop' id="icondrop"></i></div>
     <div class="boxdrop" id="boxdrop">
         <div class="dropmenu" id="dropmenu">
-            <a class="sign-out" href="../backend/cerrar_sesion.php" id="sign-out">
+            <a class="drop_menu_option" href="../pages/perfil.php" id="sign-out">
+                <i class="bx bx-user" id="iconout"></i>
+                <div class="">Perfil</div>
+            </a>
+            <a class="drop_menu_option" href="../backend/cerrar_sesion.php" id="sign-out">
                 <i class="bx bx-exit" id="iconout"></i>
                 <div class="">Cerrar Sesión</div>
             </a>

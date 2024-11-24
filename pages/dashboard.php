@@ -1,21 +1,6 @@
 <?php
 include "../functions/conexion.php";
-session_start();
-$nombre = $_SESSION["nombre"];
-$apellido = $_SESSION["apellido"];
-$id_tipo = $_SESSION["id_tipo"];
-$id_empresa = $_SESSION['id_empresa'];
-try {
-    $sqlempresa = "SELECT * FROM `usuarios` INNER JOIN empresas ON usuarios.id_empresa = empresas.id_empresa WHERE usuarios.id_empresa = :id";
-    $stmt = $connect->prepare($sqlempresa);
-    $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
-    $stmt->execute();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $nombre_empresa = $row["nombre_empresa"];
-    }
-} catch (PDOException $e) {
-    echo 'Error ' . $e->getMessage();
-}
+// session_start();
 
 ?>
 <!DOCTYPE html>

@@ -35,7 +35,6 @@ function vericarpassword() {
 formlogin.addEventListener("submit", function (event) {
     event.preventDefault();
     if (vericarusuario()) {
-
         usuario.focus();
         Swal.fire({
             icon: "error",
@@ -55,9 +54,8 @@ formlogin.addEventListener("submit", function (event) {
         })
         return;
     }
-    // this.submit();
     const formData = new FormData(formlogin);
-    fetch('./backend/verificar.php', {
+    fetch('./backend/login.php', {
         method: 'POST',
         body: formData,
     })
@@ -77,7 +75,6 @@ formlogin.addEventListener("submit", function (event) {
                         window.location.href = data.redirect;
                     }
                 });
-                // window.location.href = data.redirect;
             } else {
                 Swal.fire({
                     icon: "warning",

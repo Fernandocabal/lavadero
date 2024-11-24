@@ -237,10 +237,10 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    width: 180px;
-    height: 40px;
-    right: 1px;
-    bottom: -41px;
+    width: 150px;
+    height: 70px;
+    right: 2px;
+    bottom: -71px;
     box-shadow: 0px 0px 7px 3px var(--shadow);
     border-radius: 5px;
     background-color: white;
@@ -260,19 +260,24 @@
     height: 100%;
 }
 
-.sign-out {
+.drop_menu_option {
     display: flex;
     text-decoration: none;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
-    width: 70%;
+    width: 90%;
     height: 50%;
     gap: 10px;
     border-radius: 5px;
+    transition: all .1s;
 }
 
-.sign-out i,
-.sign-out div {
+.drop_menu_option:hover {
+    background-color: var(--bgtarget);
+}
+
+.drop_menu_option i,
+.drop_menu_option div {
     display: flex;
     align-items: center;
     color: black;
@@ -601,8 +606,41 @@
     color: red;
 }
 
-
 /* Fin estilos para formulario registro proveedores */
+/* Seccion pagina de perfil */
+.perfil_ctn {
+    width: 100%;
+    height: calc(100vh - 7vh);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.perfil_ctn .perfil_box_group {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.perfil_ctn .perfil_box {
+    width: 350px;
+    height: 300px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 20px 5px var(--shadow);
+}
+
+.mensaje_error_password {
+    font-size: 12px;
+    visibility: hidden;
+    height: 17px;
+}
+
+.mensaje_error_password.active {
+    visibility: visible;
+}
+
+/* Fin seccion pagina de perfil */
 /*Estilos para smartphones*/
 @media screen and (min-width:320px) and (max-width: 768px) {
     .ctnproducto {
@@ -665,6 +703,29 @@
     }
 
     /* Fin seccion reporte */
+    /* Seccíon perfil y contraseña*/
+    .perfil_ctn {
+        overflow: scroll;
+        justify-content: flex-start;
+
+    }
+
+    .perfil_box_group {
+        flex-direction: column;
+        align-items: center;
+        height: 1080px;
+    }
+
+    .perfil_ctn .perfil_box {
+        width: 95%;
+        height: 300px;
+    }
+
+    .perfil_box {
+        margin-bottom: 20px;
+    }
+
+    /*Fin seccíon perfil y contraseña */
     .ctnbtns {
         justify-content: center;
         gap: 4px;

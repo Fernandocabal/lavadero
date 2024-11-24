@@ -1,10 +1,6 @@
 <?php
 include "../functions/conexion.php";
-session_start();
-$nombre = $_SESSION["nombre"];
-$apellido = $_SESSION["apellido"];
-$id_tipo = $_SESSION["id_tipo"];
-
+// session_start();
 ?>
 <!DOCTYPE html>
 <html lang="es">
