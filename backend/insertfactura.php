@@ -5,8 +5,8 @@ session_start();
 require_once '../functions/funciones.php';
 $nombre = $_SESSION['nombre'];
 $apellido = $_SESSION["apellido"];
-$id_tipo = $_SESSION["id_tipo"];
-$id_empresa = $_SESSION['id_empresa'];
+
+$id_empresa = $_SESSION['id_empresa_activa'];
 // var_dump($_POST);
 try {
     $connect->beginTransaction();
@@ -67,7 +67,7 @@ try {
         global $connect;
         $sqlnumeracion = "SELECT * FROM numeracion_factura WHERE id_empresa = :id";
         $stmt = $connect->prepare($sqlnumeracion);
-        $stmt->bindParam(':id', $_SESSION['id_empresa'], PDO::PARAM_INT);
+        $stmt->bindParam(':id', $_SESSION['id_empresa_activa'], PDO::PARAM_INT);
         $stmt->execute();
 
         $numeracion = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -91,7 +91,7 @@ try {
         // Actualizar el último número de factura en la tabla
         $stmt = $connect->prepare("UPDATE numeracion_factura SET ultimo_numero = :ultimo_numero WHERE id_empresa = :id");
         $stmt->bindParam(':ultimo_numero', $proximonumero, PDO::PARAM_INT);
-        $stmt->bindParam(':id', $_SESSION['id_empresa'], PDO::PARAM_INT);
+        $stmt->bindParam(':id', $_SESSION['id_empresa_activa'], PDO::PARAM_INT);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {

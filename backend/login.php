@@ -8,7 +8,7 @@ if (!empty($_POST["usuario"]) and !empty($_POST["password"])) {
     $usuario = $_POST["usuario"];
     $password = $_POST["password"];
     try {
-        $stmt = $connect->prepare("SELECT * FROM usuarios INNER JOIN empresas ON usuarios.id_empresa=empresas.id_empresa WHERE usuarios.nombre_usuario= :usuario");
+        $stmt = $connect->prepare("SELECT * FROM usuarios WHERE nombre_usuario= :usuario");
         $stmt->bindParam(':usuario', $usuario, PDO::PARAM_STR);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
@@ -17,18 +17,13 @@ if (!empty($_POST["usuario"]) and !empty($_POST["password"])) {
             $userpass = $row["password"];
             $username = $row["nombre"];
             $userlastname = $row["apellido"];
-            $usertype = $row["id_tipo"];
-            $id_empresa = $row['id_empresa'];
             $usernickname = $row["nombre_usuario"];
-            $nombre_empresa = $row['nombre_empresa'];
+
             if (password_verify($password, $userpass)) {
                 $_SESSION['id_usuario'] = $id_usuario;
                 $_SESSION["nombre"] = $username;
                 $_SESSION["apellido"] = $userlastname;
-                $_SESSION["id_tipo"] = $usertype;
                 $_SESSION["nombre_usuario"] = $usernickname;
-                $_SESSION['id_empresa'] = $id_empresa;
-                $_SESSION['nombre_empresa'] = $nombre_empresa;
                 $_SESSION['last_activity'] = time();
                 echo json_encode(['success' => true, 'redirect' => './pages/dashboard.php']);
             } else {

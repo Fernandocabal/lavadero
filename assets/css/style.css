@@ -312,7 +312,7 @@
     background: rgb(255, 255, 255);
     border-radius: 0px 12px 12px 0px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(11.2px);
+    width: 300px;
 }
 
 .sidebarop {
@@ -327,6 +327,7 @@
     color: var(--colorletra);
 }
 
+/*Fin Estilos de la barra lateral*/
 
 .sidebarop:hover {
     border-radius: 10px;
@@ -591,7 +592,6 @@
 
 /* Fin Seccion Reporte */
 
-/* Seccion de carga de facturas */
 
 /* Modificar fondo de swal */
 .swal2-backdrop-show {
@@ -613,7 +613,7 @@
     height: calc(100vh - 7vh);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 20px;
 }
 
@@ -643,6 +643,15 @@
 /* Fin seccion pagina de perfil */
 /*Estilos para smartphones*/
 @media screen and (min-width:320px) and (max-width: 768px) {
+
+    /*Estilos de la barra lateral*/
+    #sidebar {
+        width: 98%;
+    }
+
+    /*Fin Estilos de la barra lateral*/
+
+
     .ctnproducto {
         display: flex;
         flex-direction: row;

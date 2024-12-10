@@ -5,9 +5,8 @@ session_start();
 require_once '../functions/funciones.php';
 $nombre = $_SESSION['nombre'];
 $apellido = $_SESSION["apellido"];
-$id_tipo = $_SESSION["id_tipo"];
 $usernickname = $_SESSION["nombre_usuario"];
-$id_empresa = $_SESSION['id_empresa'];
+
 if (!empty($_POST["pass-actual"]) and !empty($_POST["new_password"]) and !empty($_POST["confirm_password"])) {
     $pass_actual = $_POST["pass-actual"];
     $new_password = $_POST["new_password"];
@@ -18,7 +17,7 @@ if (!empty($_POST["pass-actual"]) and !empty($_POST["new_password"]) and !empty(
             throw new Exception("No haz iniciado sesión");
             exit();
         }
-        $stmt = $connect->prepare("SELECT * FROM usuarios INNER JOIN empresas ON usuarios.id_empresa=empresas.id_empresa WHERE usuarios.nombre_usuario= :usuario");
+        $stmt = $connect->prepare("SELECT * FROM usuarios WHERE nombre_usuario= :usuario");
         $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {

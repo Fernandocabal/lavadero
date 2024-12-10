@@ -2,6 +2,13 @@ let eyes = document.getElementById('eyes'),
     password = document.getElementById('password'),
     formlogin = document.getElementById('formlogin'),
     usuario = document.getElementById('usuario');
+//Paracompletar el campo de usuario con el último username logeado
+window.onload = function () {
+    var lastUser = localStorage.getItem('last_user');
+    if (lastUser) {
+        document.getElementById('usuario').value = lastUser;
+    }
+};
 function ver() {
     if (password.type === "password") {
         password.type = "text";
@@ -34,6 +41,8 @@ function vericarpassword() {
 
 formlogin.addEventListener("submit", function (event) {
     event.preventDefault();
+    var username = document.getElementById('usuario').value;
+    localStorage.setItem('last_user', username);    //Paracompletar el campo de usuario con el último username logeado
     if (vericarusuario()) {
         usuario.focus();
         Swal.fire({
@@ -59,6 +68,21 @@ formlogin.addEventListener("submit", function (event) {
         method: 'POST',
         body: formData,
     })
+        // .then(response => {
+        //     return response.text(); // Cambiar a text() para ver la respuesta completa
+        // })
+        // .then(data => {
+        //     console.log(data); // Mostrar la respuesta completa en la consola
+        //     try {
+        //         const jsonData = JSON.parse(data); // Intentar parsear a JSON
+        //         // Procesar jsonData aquí
+        //     } catch (error) {
+        //         console.error('Error al parsear JSON:', error);
+        //     }
+        // })
+        // .catch(error => {
+        //     console.error('Error en la petición:', error);
+        // });
         .then(response => response.json())
         .then(data => {
             if (data.success) {

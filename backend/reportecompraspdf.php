@@ -5,8 +5,8 @@ date_default_timezone_set('America/Asuncion');
 session_start();
 $nombre = $_SESSION['nombre'];
 $apellido = $_SESSION["apellido"];
-$id_tipo = $_SESSION["id_tipo"];
-$id_empresa = $_SESSION['id_empresa'];
+
+$id_empresa = $_SESSION['id_empresa_activa'];
 $horagenerado = date('d-m-Y_H-i-s');
 try {
     $firstdate = $_POST['firstdate'];

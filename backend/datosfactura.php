@@ -1,10 +1,10 @@
 <?php
 include "../functions/conexion.php";
 date_default_timezone_set('America/Asuncion');
-if (!isset($_SESSION['id_empresa'])) {
+if (!isset($_SESSION['id_empresa_activa'])) {
     echo "No se ha asignado id_empresa en la sesión.";
 } else {
-    $id_empresa = $_SESSION['id_empresa'];
+    $id_empresa = $_SESSION['id_empresa_activa'];
 }
 try {
     $sqltimbrado = "SELECT * FROM `timbrado` WHERE id_empresa = :id";
@@ -19,7 +19,7 @@ try {
     }
     $sqlnumeracion = "SELECT * FROM numeracion_factura WHERE id_empresa = :id";
     $stmt = $connect->prepare($sqlnumeracion);
-    $stmt->bindParam(':id', $_SESSION['id_empresa'], PDO::PARAM_INT);
+    $stmt->bindParam(':id', $_SESSION['id_empresa_activa'], PDO::PARAM_INT);
     $stmt->execute();
     $numeracion = $stmt->fetch(PDO::FETCH_ASSOC);
     $ultimo_numero = $numeracion['ultimo_numero'];

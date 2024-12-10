@@ -3,8 +3,8 @@ include "../functions/conexion.php";
 session_start();
 $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];
-$id_tipo = $_SESSION["id_tipo"];
-$id_empresa = $_SESSION['id_empresa'];
+
+$id_empresa = $_SESSION['id_empresa_activa'];
 
 ?>
 <!DOCTYPE html>

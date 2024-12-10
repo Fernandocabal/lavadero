@@ -25,11 +25,21 @@ try {
             </li>"
 ?>
         <?php
-        if ($id_tipo < 2) {
-            echo "<li>
+        $query = "SELECT * FROM `permisos_usuarios` WHERE usuario = :usuario";
+        $stmt = $connect->prepare($query);
+        $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
+        $stmt->execute();
+        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($resultados) {
+            foreach ($resultados as $resultado) {
+                $item = $resultado['item'];
+                if ($item === 'btn_eliminar_proveedor') {
+                    echo "<li>
             <a class='dropdown-item' onclick='borrar($id_proveedor);' style='cursor: pointer;' id='listitem'><i class='bx bx-trash'></i>Eliminar</a>
             </li>  
             ";
+                }
+            }
         }
         ?>
         <?php
