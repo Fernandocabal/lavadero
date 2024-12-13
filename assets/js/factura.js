@@ -279,7 +279,8 @@ $(document).ready(function () {
 
     $('#nombres').select2({
         placeholder: "Busca por nombre o CI",
-        width: '100%'
+        width: '100%',
+        theme: 'bootstrap-5'
     });
     $('#nombres').on('select2:select', function (e) {
         let data = e.params.data;

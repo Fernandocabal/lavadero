@@ -124,7 +124,8 @@ $(document).ready(function () {
 
     $('#idproveedor').select2({
         placeholder: "Busca por nombre o ruc",
-        width: '100%'
+        width: '100%',
+        theme: 'bootstrap-5'
     });
     $('#idproveedor').on('select2:select', function (e) {
         let data = e.params.data;

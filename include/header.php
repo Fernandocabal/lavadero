@@ -16,10 +16,6 @@ if ($empresa_activa) {
     $nombre_empresa = $empresa_activa['nombre_empresa'];
     $ruc_empresa = $empresa_activa['ruc_empresa'];
 }
-
-
-
-
 if (!estalogueado()) {
     session_unset();
     session_destroy();

@@ -1,47 +1,104 @@
-function select_sucursal() {
-    let empresa_select = select_empresa.value,
-        sucursal_select = document.getElementById('select_sucursal'),
-        select_caja = document.getElementById('select_caja');
-    if (!empresa_select) return;
-    fetch('../backend/jsonsucursal.php?id=' + empresa_select)
-        // .then(response => {
-        //     return response.text(); // Cambiar a text() para ver la respuesta completa
-        // })
-        // .then(data => {
-        //     console.log(data); // Mostrar la respuesta completa en la consola
-        //     try {
-        //         const jsonData = JSON.parse(data); // Intentar parsear a JSON
-        //         // Procesar jsonData aquí
-        //     } catch (error) {
-        //         console.error('Error al parsear JSON:', error);
-        //     }
-        // })
-        // .catch(error => {
-        //     console.error('Error en la petición:', error);
-        // });
+//Sección de select 2
+$(document).ready(function () {
+    $('#select_sucursal').select2({
+        placeholder: "Sucursal",
+        width: '100%',
+        theme: 'bootstrap-5'
+    });
+    $('#select_nombre_empresa').select2({
+        placeholder: "Selecciones una empresa",
+        width: '100%',
+        theme: 'bootstrap-5'
+    });
+    $('#select_caja').select2({
+        placeholder: "Caja",
+        width: '100%',
+        theme: 'bootstrap-5'
+    });
+    $('#select_nombre_empresa').on('select2:select', function (e) {
+        let data = e.params.data;
+        $('#select_caja').val(null).trigger('change');
+        $.ajax({
+            type: 'POST',
+            url: '../backend/jsonsucursal.php',
+            data: {
+                tipo: 'sucursal',
+                id: data['id']
+            },
+            success: function (response) {
+                if (response) {
+                    populateSucursalSelect(response.sucursales);
 
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                sucursal_select.innerHTML = "<option value=''>Selecciona una sucursal</option>";
-                data.sucursales.forEach(function (sucursal) {
-                    var optionElement = document.createElement("option");
-                    optionElement.value = sucursal.id_sucursal;
-                    optionElement.textContent = sucursal.nombre;
-                    sucursal_select.appendChild(optionElement);
-                });
-            } else {
-                var optionElement = document.createElement("option");
-                optionElement.value = '';
-                optionElement.textContent = 'No hay sucursales disponibles';
-                sucursal_select.appendChild(optionElement);
+                } else {
+                    console.error("Respuesta del servidor inválida:", response);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error trayendo datos de la base de datos: ", textStatus, errorThrown);
             }
-        })
-        .catch(error => {
-            console.error('Error al cargar los productos:', error);
         });
-};
-select_empresa.addEventListener("change", select_sucursal)
+    });
+    $('#select_sucursal').on('select2:select', function (e) {
+        let data = e.params.data;
+        $.ajax({
+            type: 'POST',
+            url: '../backend/jsonsucursal.php',
+            data: {
+                tipo: 'caja',
+                id: data['id']
+            },
+            success: function (response) {
+                let parsedResponse = typeof response === 'string' ? JSON.parse(response) : response;
+                if (parsedResponse && parsedResponse.cajas) {
+                    populateCajaSelect(parsedResponse.cajas);
+                } else {
+                    console.error("No se encontraron cajas.");
+                }
+            }
+        });
+    });
+    function populateSucursalSelect(data) {
+        $('#select_sucursal').empty().select2({
+            placeholder: "Seleccione una sucursal",
+        });
+        if (data && Array.isArray(data) && data.length > 0) {
+            data.forEach(item => {
+                $('#select_sucursal').append(
+                    new Option(item.nombre, item.id_sucursal)
+                );
+            });
+        } else {
+            console.warn("No se encontraron datos para las sucursales.");
+        }
+
+        $('#select_sucursal').select2({
+            placeholder: "Seleccione una sucursal",
+            width: '100%',
+            theme: 'bootstrap-5'
+        });
+    }
+    function populateCajaSelect(data) {
+        $('#select_caja').empty().select2({
+            placeholder: "Seleccione una caja",
+        });
+
+        if (data && Array.isArray(data) && data.length > 0) {
+            data.forEach(item => {
+                $('#select_caja').append(
+                    new Option(item.prefijo, item.prefijo)
+                );
+            });
+        } else {
+            console.warn("No se encontraron datos para las cajas.");
+        }
+
+        $('#select_caja').select2({
+            placeholder: "Seleccione una caja",
+            width: '100%',
+            theme: 'bootstrap-5'
+        });
+    }
+});
 
 btn_change_password.addEventListener("click", function (event) {
     event.preventDefault();
@@ -88,13 +145,12 @@ btn_change_password.addEventListener("click", function (event) {
     })
         //PARA DEPURACIÓN
         // .then(response => {
-        //     return response.text(); // Cambiar a text() para ver la respuesta completa
+        //     return response.text();
         // })
         // .then(data => {
-        //     console.log(data); // Mostrar la respuesta completa en la consola
+        //     console.log(data);
         //     try {
-        //         const jsonData = JSON.parse(data); // Intentar parsear a JSON
-        //         // Procesar jsonData aquí
+        //         const jsonData = JSON.parse(data);
         //     } catch (error) {
         //         console.error('Error al parsear JSON:', error);
         //     }
@@ -142,4 +198,66 @@ btn_change_password.addEventListener("click", function (event) {
             });
         });
 
+});
+btn_change_empresa.addEventListener("click", function (evento) {
+    evento.preventDefault();
+    const formData = new FormData(form_change_empresa);
+    fetch('../backend/change_empresa.php', {
+        method: 'POST',
+        body: formData,
+    })
+        // PARA DEPURACIÓN
+        // .then(response => {
+        //     return response.text();
+        // })
+        // .then(data => {
+        //     console.log(data);
+        //     try {
+        //         const jsonData = JSON.parse(data);
+        //     } catch (error) {
+        //         console.error('Error al parsear JSON:', error);
+        //     }
+        // })
+        // .catch(error => {
+        //     console.error('Error en la petición:', error);
+        // });
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
+                    confirmButtonColor: "#212529",
+                    confirmButtonText: "Aceptar",
+                    text: data.message || "Excelente",
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
+                    willClose: () => {
+                        location.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    confirmButtonColor: "#212529",
+                    confirmButtonText: "Aceptar",
+                    text: data.message || "Ocurrió un error",
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: "error",
+                confirmButtonColor: "#212529",
+                confirmButtonText: "Aceptar",
+                text: 'Ocurrió un error al enviar los datos',
+                customClass: {
+                    popup: 'custom-swal'
+                },
+            });
+        });
 });

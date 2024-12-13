@@ -16,6 +16,7 @@ include "../functions/conexion.php";
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link href="../node_modules/select2/css/select2-bootstrap-5-theme.css" rel="stylesheet">
     <link rel="icon" href="../assets/img/Logo.png">
     <title>Facturación</title>
 </head>
@@ -53,7 +54,7 @@ include "../functions/conexion.php";
                     <div class="datosfactura">
                         <div class="form-label mb-0 lablefact">Nombre Cliente: </div>
                         <div class="inputform">
-                            <select id="nombres" name="nombres">
+                            <select class="form-select form-select-sm p-0 m-0" id="nombres" name="nombres">
                                 <option> </option>
                                 <?php
                                 include "../backend/selectclient.php";

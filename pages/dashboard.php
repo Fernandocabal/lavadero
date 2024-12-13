@@ -37,12 +37,12 @@ include "../functions/conexion.php";
                 ?>
             </div>
             <div class="targetdash" style="justify-content: start;">
-                <div class="targettitle">
+                <!-- <div class="targettitle">
                     <h2>Lista de espera</h2>
-                </div>
+                </div> -->
                 <div class="targetcontenido">
                     <?php
-                    include "../backend/countlist.php";
+                    // include "../backend/countlist.php";
                     ?>
                 </div>
 

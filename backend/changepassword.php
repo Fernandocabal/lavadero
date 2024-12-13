@@ -17,6 +17,7 @@ if (!empty($_POST["pass-actual"]) and !empty($_POST["new_password"]) and !empty(
             throw new Exception("No haz iniciado sesión");
             exit();
         }
+        $connect->beginTransaction();
         $stmt = $connect->prepare("SELECT * FROM usuarios WHERE nombre_usuario= :usuario");
         $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
         $stmt->execute();

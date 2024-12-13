@@ -1,10 +1,5 @@
 <?php
 include "../functions/conexion.php";
-session_start();
-$nombre = $_SESSION["nombre"];
-$apellido = $_SESSION["apellido"];
-
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -20,6 +15,7 @@ $apellido = $_SESSION["apellido"];
     <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link href="../node_modules/select2/css/select2-bootstrap-5-theme.css" rel="stylesheet">
     <link rel="icon" href="../assets/img/Logo.png">
     <title>Carga factura</title>
 </head>
@@ -64,7 +60,7 @@ $apellido = $_SESSION["apellido"];
 
                         <div class="inputform">
                             <label class="form-label mb-0 lablefact" for="idproveedor">Proveedor</label>
-                            <select name="idproveedor" id="idproveedor">
+                            <select class="form-select form-select-sm" name="idproveedor" id="idproveedor">
                                 <option> </option>
                                 <?php
                                 include "../backend/selectproveedor.php";

@@ -16,8 +16,7 @@
         <script src="../node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
         <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
         <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5@1.0.0/dist/css/select2-bootstrap-5.min.css" rel="stylesheet">
+        <link href="../node_modules/select2/css/select2-bootstrap-5-theme.css" rel="stylesheet">
         <link rel="icon" href="../assets/img/Logo.png">
         <title>Perfil</title>
     </head>
@@ -73,7 +72,7 @@
                     </div>
                     <div class="perfil_box d-flex flex-column align-items-center">
                         <p class="m-0">Parametros de la empresa</p>
-                        <form action="" class="container container-fluid">
+                        <form action="" class="container container-fluid" id="form_change_empresa">
                             <label class="form-label" for="nombre_empresa">Empresa</label>
                             <select class="form-select form-select-sm" name="nombre_empresa" id="select_nombre_empresa">
                                 <?php
@@ -108,8 +107,10 @@
                             <label class="form-label" for="sucursal">Sucursal</label>
                             <select class="form-select form-select-sm" name="sucursal" id="select_sucursal">
                                 <?php
-                                $query = "SELECT sucursal 
+                                $query = "SELECT *
                                             FROM empresa_activa 
+                                            INNER JOIN sucursales 
+                                            ON empresa_activa.sucursal = sucursales.id_sucursal
                                              WHERE usuario = :usuario";
                                 $stmt = $connect->prepare($query);
                                 $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
@@ -118,7 +119,7 @@
 
                                 if ($resultados && count($resultados) > 0) {
                                     foreach ($resultados as $resultado) {
-                                        echo "<option value='" . htmlspecialchars($resultado['sucursal']) . "'>" . htmlspecialchars($resultado['sucursal']) . "</option>";
+                                        echo "<option value='" . htmlspecialchars($resultado['id_sucursal']) . "'>" . htmlspecialchars($resultado['nombre']) . "</option>";
                                     }
                                 } else {
                                     echo "<option value='' selected>No hay empresas disponibles</option>";
@@ -128,22 +129,22 @@
                             <label class="form-label" for="caja">Caja</label>
                             <select class="form-select form-select-sm" name="caja" id="select_caja">
                                 <?php
-                                // $query = "SELECT caja 
-                                //             FROM empresa_activa 
-                                //              WHERE usuario = :usuario";
-                                // $stmt = $connect->prepare($query);
-                                // $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
-                                // $stmt->execute();
-                                // $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                $query = "SELECT caja 
+                                            FROM empresa_activa 
+                                             WHERE usuario = :usuario";
+                                $stmt = $connect->prepare($query);
+                                $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
+                                $stmt->execute();
+                                $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                                // if ($resultados && count($resultados) > 0) {
-                                //     foreach ($resultados as $resultado) {
-                                //         echo "<option value='" . htmlspecialchars($resultado['caja']) . "'>" . htmlspecialchars($resultado['caja']) . "</option>";
-                                //     }
-                                // } else {
-                                //     echo "<option value='' selected>No hay empresas disponibles</option>";
-                                // }
-                                // 
+                                if ($resultados && count($resultados) > 0) {
+                                    foreach ($resultados as $resultado) {
+                                        echo "<option value='" . htmlspecialchars($resultado['caja']) . "'>" . htmlspecialchars($resultado['caja']) . "</option>";
+                                    }
+                                } else {
+                                    echo "<option value='' selected>No hay empresas disponibles</option>";
+                                }
+
                                 ?>
                             </select>
                             <div class="d-flex flex-column">
