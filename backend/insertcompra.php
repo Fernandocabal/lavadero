@@ -3,7 +3,16 @@ include "../functions/conexion.php";
 date_default_timezone_set('America/Asuncion');
 session_start();
 require_once '../functions/funciones.php';
-// var_dump($_POST);
+$usernickname = $_SESSION["nombre_usuario"];
+$query = "SELECT * FROM empresa_activa  
+    WHERE usuario = :usuario";
+$stmt = $connect->prepare($query);
+$stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
+$stmt->execute();
+$empresa_activa = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($empresa_activa) {
+    $id_empresa = $empresa_activa['id_empresa'];
+}
 try {
     $connect->beginTransaction();
     if (!estaSesionIniciada()) {
@@ -190,9 +199,9 @@ try {
         return $proximoreg;
     };
     $proximoreg = crearnroregistro();
-    $insertcompra = "INSERT INTO `headercompra`( `registro`, `nrocompr`, `timbrado`, `id_condicion`, `id_proveedor`, `concepto`, `fecha_compra`, `fecha_carga`, `exentas`, `gravada5`, `gravada10`, `totaliva`, `totalfactura`, `tipo_factura`, `moneda`, `typeorigen`, `id_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $insertcompra = "INSERT INTO `headercompra`( `registro`, `nrocompr`, `timbrado`, `id_condicion`, `id_proveedor`, `concepto`, `fecha_compra`, `fecha_carga`, `exentas`, `gravada5`, `gravada10`, `totaliva`, `totalfactura`, `tipo_factura`, `moneda`, `typeorigen`, `id_usuario`, `id_empresa`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $connect->prepare($insertcompra);
-    $stmt->execute([$proximoreg, $nrofactura, $timbrado, $id_condicion, $id_proveedor, $concepto_string, $fechafactura, $fecha, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $tipo_factura, $typemodena, $typeorigen, $_SESSION['id_usuario']]);
+    $stmt->execute([$proximoreg, $nrofactura, $timbrado, $id_condicion, $id_proveedor, $concepto_string, $fechafactura, $fecha, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $tipo_factura, $typemodena, $typeorigen, $_SESSION['id_usuario'], $id_empresa]);
     $idinsertado = $connect->lastInsertId();
 
     $insertdetalle = "INSERT INTO `detalles_compra`(`idheadercompra`, `descripcion`, `cantidad`, `precio`, `exenta`, `gravada5`, `gravada10`) VALUES (?, ?, ?, ?, ?, ?, ?)";

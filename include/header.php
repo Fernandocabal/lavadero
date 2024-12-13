@@ -12,7 +12,7 @@ $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
 $stmt->execute();
 $empresa_activa = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($empresa_activa) {
-    $id_empresa = $empresa_activa['id_empresa_activa'];
+    $id_empresa = $empresa_activa['id_empresa'];
     $nombre_empresa = $empresa_activa['nombre_empresa'];
     $ruc_empresa = $empresa_activa['ruc_empresa'];
 }

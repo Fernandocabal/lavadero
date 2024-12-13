@@ -1,10 +1,5 @@
 <?php
 include "../functions/conexion.php";
-session_start();
-$nombre = $_SESSION["nombre"];
-$apellido = $_SESSION["apellido"];
-
-$id_empresa = $_SESSION['id_empresa_activa'];
 
 ?>
 <!DOCTYPE html>
@@ -38,7 +33,7 @@ $id_empresa = $_SESSION['id_empresa_activa'];
                 <h1 class="col-12 display-6 d-flex justify-content-center">
                     Obtener Reporte
                 </h1>
-                <p class="col-12 d-flex flex-column align-items-center">Selecciona un rago de fecha para obtener un reporte de tus facturas de compras</p>
+                <p class="col-12 d-flex flex-column align-items-center">Selecciona un rango de fecha para obtener un reporte de tus facturas de compras</p>
                 <form action="../backend/reportecompraspdf.php" class="mb-4 d-flex flex-column justify-content-around" method="post" id="formreport" target="_blank" style="height: 160px;">
                     <div class="d-flex justify-content-center">
                         <div class="reporte_fecha d-flex flex-column align-items-center">

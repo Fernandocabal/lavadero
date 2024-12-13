@@ -2,21 +2,14 @@
 include "../functions/conexion.php";
 $nombre = $_SESSION['nombre'];
 $apellido = $_SESSION["apellido"];
-
-$id_empresa = $_SESSION['id_empresa_activa'];
 try {
-    $query = "SELECT 
-    headercompra.*,
-    proveedores.*,
-    usuarios.id_empresa
-FROM 
-    headercompra
-INNER JOIN 
-    proveedores ON headercompra.id_proveedor = proveedores.id_proveedor
-INNER JOIN 
-    usuarios ON headercompra.id_usuario = usuarios.id_usuario
-WHERE 
-    usuarios.id_empresa = :id";
+    $query = "SELECT headercompra.*, proveedores.*, empresa_activa.id_empresa 
+    FROM headercompra 
+    INNER JOIN proveedores 
+    ON headercompra.id_proveedor = proveedores.id_proveedor 
+    INNER JOIN empresa_activa 
+    ON headercompra.id_empresa = empresa_activa.id_empresa 
+    WHERE empresa_activa.id_empresa = :id";
     $stmt = $connect->prepare($query);
     $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
     $stmt->execute();
