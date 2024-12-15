@@ -19,6 +19,15 @@ include "../functions/conexion.php";
     <link rel="icon" href="../assets/img/Logo.png">
     <title>Carga factura</title>
 </head>
+<style>
+    .select2-container .select2-selection--single {
+        height: 18px;
+    }
+
+    .form-select-sm~.select2-container--bootstrap-5 .select2-selection {
+        font-size: 10px;
+    }
+</style>
 
 <body class="contentdash">
     <header class="ctnheader">

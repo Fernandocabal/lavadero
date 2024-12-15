@@ -22,17 +22,15 @@ try {
             <button type='button' class='dropdown-item' onclick='get($id_proveedor);' data-bs-toggle='modal' id='listitem' data-bs-target='#editproveedor'>
             <i class='bx bx-edit'></i>Editar
             </button>
-            </li>"
-?>
-        <?php
-        $query = "SELECT * FROM `permisos_usuarios` WHERE usuario = :usuario";
-        $stmt = $connect->prepare($query);
-        $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
-        $stmt->execute();
-        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if ($resultados) {
-            foreach ($resultados as $resultado) {
-                $item = $resultado['item'];
+            </li>";
+        $querypermisos = "SELECT * FROM `permisos_usuarios` WHERE usuario = :usuario";
+        $stmtpermisos = $connect->prepare($querypermisos);
+        $stmtpermisos->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
+        $stmtpermisos->execute();
+        $resultadospermisos = $stmtpermisos->fetchAll(PDO::FETCH_ASSOC);
+        if ($resultadospermisos) {
+            foreach ($resultadospermisos as $permiso) {
+                $item = $permiso['item'];
                 if ($item === 'btn_eliminar_proveedor') {
                     echo "<li>
             <a class='dropdown-item' onclick='borrar($id_proveedor);' style='cursor: pointer;' id='listitem'><i class='bx bx-trash'></i>Eliminar</a>
@@ -41,14 +39,10 @@ try {
                 }
             }
         }
-        ?>
-        <?php
-        " 
+        echo " 
         </ul>
         </td>
-        </tr>"
-        ?>
-<?php
+        </tr>";
     }
 } catch (PDOException $e) {
     echo 'Error: ' . $e->getMessage();

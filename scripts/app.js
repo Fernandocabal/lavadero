@@ -50,6 +50,9 @@ formlogin.addEventListener("submit", function (event) {
             confirmButtonColor: "#212529",
             confirmButtonText: "Aceptar",
             text: "Favor completa los datos",
+            customClass: {
+                popup: 'custom-swal'
+            },
         })
         return;
     }
@@ -60,6 +63,9 @@ formlogin.addEventListener("submit", function (event) {
             confirmButtonColor: "#212529",
             confirmButtonText: "Aceptar",
             text: "Favor completa los datos",
+            customClass: {
+                popup: 'custom-swal'
+            },
         })
         return;
     }
@@ -105,6 +111,9 @@ formlogin.addEventListener("submit", function (event) {
                     confirmButtonColor: "#212529",
                     confirmButtonText: "Aceptar",
                     text: data.message || "Ocurrió un error",
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
                 });
             }
         })
@@ -115,6 +124,9 @@ formlogin.addEventListener("submit", function (event) {
                 confirmButtonColor: "#212529",
                 confirmButtonText: "Aceptar",
                 text: 'Ocurrió un error al enviar los datos',
+                customClass: {
+                    popup: 'custom-swal'
+                },
             });
         });
 

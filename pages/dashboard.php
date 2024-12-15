@@ -32,8 +32,10 @@ include "../functions/conexion.php";
             <div class="targetdash">
                 <p id="time"></p>
                 <?php
-                echo "<p> Hola " . $nombre . "</p>";
-                echo "Empresa: " . $nombre_empresa;
+                echo "<p>Hola " . htmlspecialchars($nombre) . "</p> 
+                 <p>Empresa: " . htmlspecialchars($nombre_empresa) . "</p> 
+                 <p>Sucursal: " . htmlspecialchars($sucursal_activa) . "</p>
+                 <p>Caja: " . htmlspecialchars($caja_activa) . "</p>";
                 ?>
             </div>
             <div class="targetdash" style="justify-content: start;">

@@ -56,6 +56,9 @@ if (isset($_POST["insertclient"])) {
                 timer: 2000,
                 confirmButtonColor: "#212529",
                 confirmButtonText:`Aceptar`,
+                 customClass: {
+                popup: "custom-swal"
+            },
                 });
                 </script>';
     } catch (Exception $e) {

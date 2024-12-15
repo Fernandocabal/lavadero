@@ -5,7 +5,8 @@ $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];
 $usernickname = $_SESSION["nombre_usuario"];
 $query = "SELECT * FROM empresa_activa ea
-    INNER JOIN empresas e ON ea.id_empresa = e.id_empresa 
+    INNER JOIN empresas e ON ea.id_empresa = e.id_empresa
+    INNER JOIN sucursales s ON ea.sucursal = s.id_sucursal 
     WHERE ea.usuario = :usuario";
 $stmt = $connect->prepare($query);
 $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
@@ -15,6 +16,9 @@ if ($empresa_activa) {
     $id_empresa = $empresa_activa['id_empresa'];
     $nombre_empresa = $empresa_activa['nombre_empresa'];
     $ruc_empresa = $empresa_activa['ruc_empresa'];
+    $sucursal_activa = $empresa_activa['nombre'];
+    $prefijo_sucursal = $empresa_activa['prefijo'];
+    $caja_activa = $empresa_activa['caja'];
 }
 if (!estalogueado()) {
     session_unset();
