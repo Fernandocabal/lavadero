@@ -1,18 +1,17 @@
 //Sección de select 2
 $(document).ready(function () {
     $('#select_nombre_empresa').select2({
-        placeholder: "Selecciones una empresa",
+        placeholder: "Selecciona una empresa",
         width: '100%',
         theme: 'bootstrap-5'
     });
     $('#select_sucursal').select2({
-        placeholder: "Sucursal",
+        placeholder: "Primero Selecciona una Empresa",
         width: '100%',
         theme: 'bootstrap-5'
     });
-
     $('#select_caja').select2({
-        placeholder: "Caja",
+        placeholder: "Primero Selecciona una Empresa",
         width: '100%',
         theme: 'bootstrap-5'
     });
@@ -26,7 +25,7 @@ $(document).ready(function () {
         });
         $('#select_caja').empty().trigger('change');
         $('#select_caja').select2({
-            placeholder: "Primero Selecciona una Sucursal",
+            placeholder: "Primero selecciona una Sucursal",
             width: '100%',
             theme: 'bootstrap-5'
         });
@@ -38,15 +37,16 @@ $(document).ready(function () {
                 id: data['id']
             },
             success: function (response) {
-                if (response) {
-                    populateSucursalSelect(response.sucursales);
-
-                } else {
-                    console.error("Respuesta del servidor inválida:", response);
+                try {
+                    const data = typeof response === 'string' ? JSON.parse(response) : response;
+                    if (data && data.sucursales) {
+                        populateSucursalSelect(data.sucursales);
+                    } else {
+                        console.error("Respuesta del servidor inválida:", data);
+                    }
+                } catch (error) {
+                    console.error("Error al parsear la respuesta:", error);
                 }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Error trayendo datos de la base de datos: ", textStatus, errorThrown);
             }
         });
     });
@@ -69,7 +69,7 @@ $(document).ready(function () {
             }
         });
     });
-    function populateSucursalSelect(data, placeholder = "Seleccione una sucursal") {
+    function populateSucursalSelect(data, placeholder = "Seleccione una Sucursal") {
         const $select = $('#select_sucursal').empty();
 
         const placeholderOption = new Option(placeholder, '', true, true);
@@ -93,7 +93,7 @@ $(document).ready(function () {
             theme: 'bootstrap-5'
         });
     }
-    function populateCajaSelect(data, placeholder = "Selecciona una Caja") {
+    function populateCajaSelect(data, placeholder = "Seleccione una Caja") {
         const $select = $('#select_caja').empty();
 
         const placeholderOption = new Option(placeholder, '', true, true);
@@ -118,8 +118,8 @@ $(document).ready(function () {
         });
     }
 });
-
-btn_change_password.addEventListener("click", function (event) {
+//fin de seccion select2
+btn_create_user.addEventListener("click", function (event) {
     event.preventDefault();
     const passActual = document.getElementById("pass-actual");
     if (passwordactual()) {
@@ -217,66 +217,4 @@ btn_change_password.addEventListener("click", function (event) {
             });
         });
 
-});
-btn_change_empresa.addEventListener("click", function (evento) {
-    evento.preventDefault();
-    const formData = new FormData(form_change_empresa);
-    fetch('../backend/change_empresa.php', {
-        method: 'POST',
-        body: formData,
-    })
-        // PARA DEPURACIÓN
-        // .then(response => {
-        //     return response.text();
-        // })
-        // .then(data => {
-        //     console.log(data);
-        //     try {
-        //         const jsonData = JSON.parse(data);
-        //     } catch (error) {
-        //         console.error('Error al parsear JSON:', error);
-        //     }
-        // })
-        // .catch(error => {
-        //     console.error('Error en la petición:', error);
-        // });
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                Swal.fire({
-                    icon: "success",
-                    confirmButtonColor: "#212529",
-                    confirmButtonText: "Aceptar",
-                    text: data.message || "Excelente",
-                    customClass: {
-                        popup: 'custom-swal'
-                    },
-                    willClose: () => {
-                        location.reload();
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: "warning",
-                    confirmButtonColor: "#212529",
-                    confirmButtonText: "Aceptar",
-                    text: data.message || "Ocurrió un error",
-                    customClass: {
-                        popup: 'custom-swal'
-                    },
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            Swal.fire({
-                icon: "error",
-                confirmButtonColor: "#212529",
-                confirmButtonText: "Aceptar",
-                text: 'Ocurrió un error al enviar los datos',
-                customClass: {
-                    popup: 'custom-swal'
-                },
-            });
-        });
 });

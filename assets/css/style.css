@@ -641,6 +641,44 @@
 }
 
 /* Fin seccion pagina de perfil */
+/* Seccion pagina de registrar usuario */
+#form_create_user label::after {
+    content: '*';
+    color: red;
+}
+
+.user_group_input {
+    height: 80px;
+}
+
+.card_form {
+    border: 1px solid red;
+    width: 600px;
+}
+
+.usuario_box {
+    width: 300px;
+}
+
+@keyframes pulse {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(270deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+#iconshufle.active {
+    animation: pulse 0.5s;
+}
+
+/* Fin seccion pagina de perfil */
 /*Estilos para smartphones*/
 @media screen and (min-width:320px) and (max-width: 768px) {
 

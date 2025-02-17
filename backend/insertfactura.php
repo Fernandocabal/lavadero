@@ -5,7 +5,8 @@ session_start();
 require_once '../functions/funciones.php';
 $nombre = $_SESSION['nombre'];
 $apellido = $_SESSION["apellido"];
-
+$sucursal_activa = $_SESSION['sucursal_activa'];
+$caja_activa = $_SESSION['caja_activa'];
 $id_empresa = $_SESSION['id_empresa_activa'];
 // var_dump($_POST);
 try {
@@ -22,8 +23,6 @@ try {
 
     if ($timbrado) {
         $nro_timbrado = $timbrado["nro_timbrado"];
-        $sucursal = $timbrado["sucursal"];
-        $caja = $timbrado["caja"];
         $fecha_vencimiento = $timbrado["fecha_vencimiento"];
     }
     if (empty($id_empresa)) {
@@ -62,7 +61,7 @@ try {
     if ($condicion) {
         $id_condicion = $condicion["id_condicion"];
     }
-    function siguientenumero($sucursal, $caja)
+    function siguientenumero($sucursal_activa, $caja_activa)
     {
         global $connect;
         $sqlnumeracion = "SELECT * FROM numeracion_factura WHERE id_empresa = :id";
@@ -86,7 +85,7 @@ try {
         $proximonumero = $ultimo_numero + 1;
         $parte3 = str_pad($proximonumero, 7, '0', STR_PAD_LEFT);  // 7 dígitos, rellena con ceros a la izquierda
 
-        $formatproximonumero = $sucursal . '-' . $caja . '-' . $parte3;
+        $formatproximonumero = $sucursal_activa . '-' . $caja_activa . '-' . $parte3;
 
         // Actualizar el último número de factura en la tabla
         $stmt = $connect->prepare("UPDATE numeracion_factura SET ultimo_numero = :ultimo_numero WHERE id_empresa = :id");
@@ -100,7 +99,7 @@ try {
             throw new Exception("Error al actualizar el último número de factura.");
         }
     }
-    $numeroFactura = siguientenumero($sucursal, $caja);
+    $numeroFactura = siguientenumero($sucursal_activa, $caja_activa);
     function totalexentas($exentas)
     {
         $total = 0;
@@ -185,7 +184,7 @@ try {
 
     $insertfacturas = "INSERT INTO `header_factura`(`registro`, `nro_factura`, `timbrado`, `fecha_horas`, `id_cliente`, `cajero`, `id_condicion`, `exentas`, `gravada5`, `gravada10`, `totaliva`, `totalfactura`, `id_empresa`, `id_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $connect->prepare($insertfacturas);
-    $stmt->execute([$proximoreg, $numeroFactura, $nro_timbrado, $fecha, $nombres, $_SESSION["nombre"], $id_condicion, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $_SESSION["id_empresa"], $_SESSION['id_usuario']]);
+    $stmt->execute([$proximoreg, $numeroFactura, $nro_timbrado, $fecha, $nombres, $_SESSION["nombre"], $id_condicion, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $_SESSION["id_empresa_activa"], $_SESSION['id_usuario']]);
     $idinsertado = $connect->lastInsertId();
 
     $insertdetalle = "INSERT INTO `detalle_factura`(`id_header`, `detalle`, `cantidad`, `precio`, `exenta`, `gravada5`, `gravada10`) VALUES (?, ?, ?, ?,?, ?, ?)";

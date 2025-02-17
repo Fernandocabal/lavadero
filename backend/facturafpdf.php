@@ -7,7 +7,7 @@ try {
 INNER JOIN clientes ON header_factura.id_cliente = clientes.id_cliente
 INNER JOIN ciudades on clientes.ciudad=ciudades.id_ciudad
 INNER JOIN condicion on condicion.id_condicion=header_factura.id_condicion
-WHERE id_header= $id_factura;");
+WHERE registro= $id_factura;");
     $stmt = $connect->prepare($sql);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

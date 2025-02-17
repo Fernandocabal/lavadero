@@ -14,7 +14,7 @@ try {
     $sql = "SELECT * FROM `headercompra` 
             INNER JOIN proveedores ON headercompra.id_proveedor = proveedores.id_proveedor
             INNER JOIN usuarios ON headercompra.id_usuario = usuarios.id_usuario 
-            WHERE headercompra.fecha_compra BETWEEN :firstdate AND :lastdate AND usuarios.id_empresa = :id";
+            WHERE headercompra.fecha_compra BETWEEN :firstdate AND :lastdate AND headercompra.id_empresa = :id";
     $stmt = $connect->prepare($sql);
     $stmt->bindParam(':firstdate', $firstdate, PDO::PARAM_STR);
     $stmt->bindParam(':lastdate', $lastdate, PDO::PARAM_STR);
@@ -60,7 +60,7 @@ $pdf->Cell(16, 8, 'IVA 5%', 1, 0, 'C');
 $pdf->Cell(16, 8, 'IVA 10%', 1, 1, 'C');
 foreach ($data as $row) {
     $pdf->SetFont('helvetica', '', 6);
-    $pdf->Cell(12, 4, $row['idheadercompra'], 'B', 0, 'C');
+    $pdf->Cell(12, 4, $row['registro'], 'B', 0, 'C');
     $nombre_proveedor = $row['nombre_proveedor'];
     $max_length = 28;
     if (strlen($nombre_proveedor) > $max_length) {

@@ -107,11 +107,8 @@
                             <label class="form-label" for="sucursal">Sucursal</label>
                             <select class="form-select form-select-sm" name="sucursal" id="select_sucursal">
                                 <?php
-                                $query = "SELECT *
-                                            FROM empresa_activa 
-                                            INNER JOIN sucursales 
-                                            ON empresa_activa.sucursal = sucursales.id_sucursal
-                                             WHERE usuario = :usuario";
+                                $query = "SELECT * FROM sucursales s INNER JOIN empresa_activa ea ON ea.sucursal= s.id_sucursal
+                                 WHERE ea.usuario = :usuario";
                                 $stmt = $connect->prepare($query);
                                 $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
                                 $stmt->execute();
@@ -119,7 +116,7 @@
 
                                 if ($resultados && count($resultados) > 0) {
                                     foreach ($resultados as $resultado) {
-                                        echo "<option value='" . htmlspecialchars($resultado['id_sucursal']) . "'>" . htmlspecialchars($resultado['nombre']) . "</option>";
+                                        echo "<option value='" . $resultado['id_sucursal'] . "'>" . $resultado['prefijo'] . " - " . $resultado['nombre'] . "</option>";
                                     }
                                 } else {
                                     echo "<option value='' selected>No hay empresas disponibles</option>";

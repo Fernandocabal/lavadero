@@ -189,9 +189,9 @@ try {
     function crearnroregistro()
     {
         global $connect;
-        $slqnroregistro = "SELECT MAX(registro) AS max_registro FROM headercompra WHERE id_usuario = :id";
+        $slqnroregistro = "SELECT MAX(registro) AS max_registro FROM headercompra WHERE id_empresa = :id";
         $stmt = $connect->prepare($slqnroregistro);
-        $stmt->bindParam('id', $_SESSION['id_usuario'], PDO::PARAM_INT);
+        $stmt->bindParam('id', $_SESSION['id_empresa_activa'], PDO::PARAM_INT);
         $stmt->execute();
         $nroregistro = $stmt->fetch(PDO::FETCH_ASSOC);
         $ultimoreg = $nroregistro['max_registro'] ? $nroregistro['max_registro'] : 0;
