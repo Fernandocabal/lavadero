@@ -610,7 +610,7 @@
 /* Seccion pagina de perfil */
 .perfil_ctn {
     width: 100%;
-    height: calc(100vh - 7vh);
+    height: 95vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -654,11 +654,9 @@
 .card_form {
     border: 1px solid red;
     width: 600px;
+    height: 85vh;
 }
 
-.usuario_box {
-    width: 300px;
-}
 
 @keyframes pulse {
     0% {
@@ -801,6 +799,20 @@
         align-items: center;
 
     }
+
+    /* Seccion pagina de registrar usuario */
+
+    .user_group_input {
+        height: 50px;
+    }
+
+    .card_form {
+        border: 1px solid red;
+        width: 97vw;
+        height: 94vh;
+    }
+
+    /* Fin seccion pagina de perfil */
 
 }
 

@@ -17,7 +17,7 @@ include "../functions/conexion.php";
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/datatables/datatables.min.css">
-    <link rel="icon" href="../assets/img/Logo.png">
+    <link rel="icon" href="../assets/img/logo.png">
     <title>Registrar Proveedor</title>
 </head>
 

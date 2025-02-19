@@ -12,7 +12,7 @@ include "../functions/conexion.php";
     <link rel="stylesheet" href="../assets/css/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="icon" href="../assets/img/Logo.png">
+    <link rel="icon" href="../assets/img/logo.png">
     <title>Dashboard</title>
 </head>
 

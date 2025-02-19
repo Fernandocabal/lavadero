@@ -18,7 +18,7 @@ if (estalogueado()) {
     <script src="./node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="./node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="icon" href="./assets/img/Logo.png">
+    <link rel="icon" href="./assets/img/logo.png">
     <title>Inicio</title>
 </head>
 
@@ -30,7 +30,7 @@ if (estalogueado()) {
         </video>
     </div>
     <form action="" method="post" class="tarjeta-login" id="formlogin">
-        <img src="./assets/img/Logo.png" class="logo"></img>
+        <img src="./assets/img/logo.png" class="logo"></img>
         <h2>Bienvenidos</h2>
         <h4>Iniciar Sesion</h4>
         <div class="contenedor-input">
