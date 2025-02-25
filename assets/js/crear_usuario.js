@@ -47,7 +47,7 @@ function randompassword() {
     iconshufle.classList.add('active');
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789#$%&/()?@';
     let password = '';
-    for (let i = 0; i < 16; i++) { // Genera una contraseña de 8 caracteres
+    for (let i = 0; i < 16; i++) { // Genera una contraseña de 16 caracteres
         const randomIndex = Math.floor(Math.random() * characters.length);
         password += characters[randomIndex];
     }
@@ -66,7 +66,7 @@ btn_create_user.addEventListener('click', () => {
     const apellidoValido = validarCampo(input_lastname, 3);
     const emailvalido = validarEmail(inputemail);
     const documentovalido = validardocumento(user_documento, 3);
-    const passwordvalido = validarpassword(input_password, 16);
+    const passwordvalido = validarpassword(input_password, 5);
     const empresavalido = validarselectempresa(input_empresa, 1);
     const sucursalvalido = validarselectempresa(input_sucursal, 1);
     const cajavalido = validarselectempresa(input_caja, 1);
@@ -191,7 +191,7 @@ user_documento.addEventListener('input', () => {
     validardocumento(user_documento, 3);
 })
 input_password.addEventListener('input', () => {
-    validarpassword(input_password, 16);
+    validarpassword(input_password, 5);
 })
 input_empresa.addEventListener('change', () => {
     validarselectempresa(input_empresa, 1);

@@ -25,13 +25,13 @@ if (!empty($_POST["usuario"]) and !empty($_POST["password"])) {
                     empresa_activa.id_empresa AS id_empresa_activa,
                     empresa_activa.usuario,
                     empresa_activa.id_empresa,
-                    empresa_activa.sucursal,
-                    empresa_activa.caja,
+                    empresa_activa.id_sucursal,
+                    empresa_activa.id_caja,
                     empresa_activa.ult_fecha_modificacion,
                     sucursales.id_sucursal,
                     sucursales.nombre,
-                    sucursales.prefijo FROM empresa_activa INNER JOIN sucursales 
-                ON empresa_activa.sucursal=sucursales.id_sucursal
+                    sucursales.nro_sucursal FROM empresa_activa INNER JOIN sucursales 
+                ON empresa_activa.id_sucursal=sucursales.id_sucursal
                 WHERE empresa_activa.usuario= :usernickname");
                 $stmt_empresa->bindParam(':usernickname', $usernickname, PDO::PARAM_INT);
                 $stmt_empresa->execute();
@@ -39,11 +39,11 @@ if (!empty($_POST["usuario"]) and !empty($_POST["password"])) {
 
                 if ($empresa_activa) {
                     $id_empresa = $empresa_activa['id_empresa'];
-                    $sucursal_activa = strval($empresa_activa['prefijo']);
-                    $caja_activa = strval($empresa_activa['caja']);
+                    $id_sucursal_activa = $empresa_activa['id_sucursal'];
+                    $id_caja_activa = $empresa_activa['id_caja'];
                 } else {
-                    $sucursal_activa = null;
-                    $caja_activa = null; // O algún valor por defecto si no hay empresa activa
+                    $id_sucursal_activa = null;
+                    $id_caja_activa = null; // O algún valor por defecto si no hay empresa activa
                 }
 
                 $_SESSION['id_usuario'] = $id_usuario;
@@ -51,8 +51,8 @@ if (!empty($_POST["usuario"]) and !empty($_POST["password"])) {
                 $_SESSION["apellido"] = $userlastname;
                 $_SESSION["nombre_usuario"] = $usernickname;
                 $_SESSION['id_empresa_activa'] = $id_empresa;
-                $_SESSION['sucursal_activa'] = $sucursal_activa;
-                $_SESSION['caja_activa'] = $caja_activa;
+                $_SESSION['id_sucursal_activa'] = $id_sucursal_activa;
+                $_SESSION['id_caja_activa'] = $id_caja_activa;
                 $_SESSION['last_activity'] = time();
                 echo json_encode(['success' => true, 'redirect' => './pages/dashboard.php']);
             } else {

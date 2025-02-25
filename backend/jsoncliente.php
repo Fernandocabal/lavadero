@@ -1,5 +1,12 @@
 <?php
 include "../functions/conexion.php";
+date_default_timezone_set('America/Asuncion');
+session_start();
+require_once '../functions/funciones.php';
+if (!estalogueado()) {
+    echo json_encode(['success' => false, 'message' => 'No has iniciado sesión o la sesión ha expirado']);
+    exit();
+}
 
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 

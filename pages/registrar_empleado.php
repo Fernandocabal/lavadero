@@ -157,7 +157,7 @@ include "../functions/conexion.php";
                     </div>
                 </div>
                 <div class="modal-footer p-1">
-                    <button type="button" id="btn_insert_user" class="btn btn-success btn-sm">¡Si!, Registrar</button>
+                    <button type="button" id="btn_insert_user" class="btn btn-success btn-sm" data-bs-dismiss="modal" aria-label="Close">¡Si!, Registrar</button>
                 </div>
             </div>
         </div>

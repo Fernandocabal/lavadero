@@ -29,28 +29,25 @@ btninsertfactura.addEventListener('click', (evento) => {
         });
     } else {
         const formData = new FormData(formfactura);
-        // for (let [key, value] of formData.entries()) {
-        //     console.log(`${key}: ${value}`);
-        // }
         fetch('../backend/insertfactura.php', {
             method: 'POST',
             body: formData
         })
-            //     .then(response => {
-            //         return response.text(); // Cambiar a text() para ver la respuesta completa
-            //     })
-            //     .then(data => {
-            //         console.log(data); // Mostrar la respuesta completa en la consola
-            //         try {
-            //             const jsonData = JSON.parse(data); // Intentar parsear a JSON
-            //             // Procesar jsonData aquí
-            //         } catch (error) {
-            //             console.error('Error al parsear JSON:', error);
-            //         }
-            //     })
-            //     .catch(error => {
-            //         console.error('Error en la petición:', error);
-            //     });
+            // .then(response => {
+            //     return response.text(); // Cambiar a text() para ver la respuesta completa
+            // })
+            // .then(data => {
+            //     console.log(data); // Mostrar la respuesta completa en la consola
+            //     try {
+            //         const jsonData = JSON.parse(data); // Intentar parsear a JSON
+            //         // Procesar jsonData aquí
+            //     } catch (error) {
+            //         console.error('Error al parsear JSON:', error);
+            //     }
+            // })
+            // .catch(error => {
+            //     console.error('Error en la petición:', error);
+            // });
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -99,5 +96,6 @@ btninsertfactura.addEventListener('click', (evento) => {
                     },
                 });
             });
+
     }
 });

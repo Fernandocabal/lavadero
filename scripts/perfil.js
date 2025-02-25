@@ -79,7 +79,7 @@ $(document).ready(function () {
 
         if (data && Array.isArray(data) && data.length > 0) {
             data.forEach(item => {
-                const texto = `${item.prefijo} - ${item.nombre}`;
+                const texto = `${item.nro_sucursal} - ${item.nombre}`;
                 const option = new Option(texto, item.id_sucursal);
                 $select.append(option);
             });
@@ -104,7 +104,7 @@ $(document).ready(function () {
         if (data && Array.isArray(data) && data.length > 0) {
             data.forEach(item => {
                 $('#select_caja').append(
-                    new Option(item.prefijo, item.prefijo)
+                    new Option(item.nro_caja, item.id_caja)
                 );
             });
         } else {
@@ -156,67 +156,68 @@ btn_change_password.addEventListener("click", function (event) {
         customClass: {
             popup: 'custom-swal'
         },
-    });
-    const formData = new FormData(form);
-    fetch('../backend/changepassword.php', {
-        method: 'POST',
-        body: formData,
-    })
-        //PARA DEPURACIÓN
-        // .then(response => {
-        //     return response.text();
-        // })
-        // .then(data => {
-        //     console.log(data);
-        //     try {
-        //         const jsonData = JSON.parse(data);
-        //     } catch (error) {
-        //         console.error('Error al parsear JSON:', error);
-        //     }
-        // })
-        // .catch(error => {
-        //     console.error('Error en la petición:', error);
-        // });
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                Swal.fire({
-                    icon: "success",
-                    confirmButtonColor: "#212529",
-                    confirmButtonText: "Aceptar",
-                    text: data.message || "Excelente",
-                    customClass: {
-                        popup: 'custom-swal'
-                    },
-                    willClose: () => {
-                        location.reload();
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: "warning",
-                    confirmButtonColor: "#212529",
-                    confirmButtonText: "Aceptar",
-                    text: data.message || "Ocurrió un error",
-                    customClass: {
-                        popup: 'custom-swal'
-                    },
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            Swal.fire({
-                icon: "error",
-                confirmButtonColor: "#212529",
-                confirmButtonText: "Aceptar",
-                text: 'Ocurrió un error al enviar los datos',
-                customClass: {
-                    popup: 'custom-swal'
-                },
-            });
-        });
+    }).then(() => {
+        const formData = new FormData(form);
 
+        fetch('../backend/changepassword.php', {
+            method: 'POST',
+            body: formData,
+        })
+            //PARA DEPURACIÓN
+            // .then(response => {
+            //     return response.text();
+            // })
+            // .then(data => {
+            //     console.log(data);
+            //     try {
+            //         const jsonData = JSON.parse(data);
+            //     } catch (error) {
+            //         console.error('Error al parsear JSON:', error);
+            //     }
+            // })
+            // .catch(error => {
+            //     console.error('Error en la petición:', error);
+            // });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: "success",
+                        confirmButtonColor: "#212529",
+                        confirmButtonText: "Aceptar",
+                        text: data.message || "Excelente",
+                        customClass: {
+                            popup: 'custom-swal'
+                        },
+                        willClose: () => {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "warning",
+                        confirmButtonColor: "#212529",
+                        confirmButtonText: "Aceptar",
+                        text: data.message || "Ocurrió un error",
+                        customClass: {
+                            popup: 'custom-swal'
+                        },
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: "error",
+                    confirmButtonColor: "#212529",
+                    confirmButtonText: "Aceptar",
+                    text: 'Ocurrió un error al enviar los datos',
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
+                });
+            });
+    });
 });
 btn_change_empresa.addEventListener("click", function (evento) {
     evento.preventDefault();

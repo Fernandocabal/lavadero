@@ -5,20 +5,39 @@ date_default_timezone_set('America/Asuncion');
 session_start();
 $nombre = $_SESSION['nombre'];
 $apellido = $_SESSION["apellido"];
-
 $id_empresa = $_SESSION['id_empresa_activa'];
+$id_sucursal = $_SESSION['id_sucursal_activa'];
 $horagenerado = date('d-m-Y_H-i-s');
+$usernickname = $_SESSION["nombre_usuario"];
+
+$query = "SELECT * FROM empresa_activa  ea 
+INNER JOIN empresas empr ON ea.id_empresa=empr.id_empresa
+INNER JOIN sucursales suc ON ea.id_sucursal=suc.id_sucursal
+INNER JOIN cajas cj ON ea.id_caja=cj.id_caja
+    WHERE usuario = :usuario";
+$stmt = $connect->prepare($query);
+$stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
+$stmt->execute();
+$empresa_activa = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($empresa_activa) {
+    $id_empresa = $empresa_activa['id_empresa'];
+    $nombre_sucursal = $empresa_activa['nombre'];
+    $nro_sucursal = $empresa_activa['nro_sucursal'];
+    $nombre_empresa = $empresa_activa['nombre_empresa'];
+}
+
 try {
     $firstdate = $_POST['firstdate'];
     $lastdate = $_POST['lastdate'];
     $sql = "SELECT * FROM `headercompra` 
-            INNER JOIN proveedores ON headercompra.id_proveedor = proveedores.id_proveedor
-            INNER JOIN usuarios ON headercompra.id_usuario = usuarios.id_usuario 
-            WHERE headercompra.fecha_compra BETWEEN :firstdate AND :lastdate AND headercompra.id_empresa = :id";
+            INNER JOIN proveedores pr ON headercompra.id_proveedor = pr.id_proveedor
+            INNER JOIN usuarios user ON headercompra.id_usuario = user.id_usuario 
+            WHERE headercompra.fecha_compra BETWEEN :firstdate AND :lastdate AND headercompra.id_empresa = :id_empresa AND headercompra.id_sucursal= :id_sucursal";
     $stmt = $connect->prepare($sql);
     $stmt->bindParam(':firstdate', $firstdate, PDO::PARAM_STR);
     $stmt->bindParam(':lastdate', $lastdate, PDO::PARAM_STR);
-    $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
+    $stmt->bindParam(':id_empresa', $id_empresa, PDO::PARAM_INT);
+    $stmt->bindParam(':id_sucursal', $id_sucursal, PDO::PARAM_INT);
     $stmt->execute();
     $data = [];
     $total = 0;
@@ -34,6 +53,7 @@ try {
     echo 'Error: ' . $e->getMessage();
     exit;
 }
+
 require('../assets/tcpdf/tcpdf.php');
 class PDF extends TCPDF
 {
@@ -48,6 +68,7 @@ $pdf->Cell(195, 8, 'Reporte De Compras Registradas', 0, 1, 'C');
 $pdf->SetFont('helvetica', '', 7);
 $pdf->Cell(100, 5, 'Desde: ' . $firstdate . " hasta: " . $lastdate, 0, 0, 'L');
 $pdf->Cell(93, 5, 'Informe generado por: ' . $_SESSION["nombre"] . " " . $_SESSION["apellido"] . " en fecha: " . date('d/m/Y') . " a las "  . date('H:i:s') . "hs", 0, 1, 'L');
+$pdf->Cell(195, 8, 'Empresa: ' . $nombre_empresa . " Sucursal: " . $nro_sucursal . " - " . $nombre_sucursal, 0, 1, 'L');
 $pdf->SetFont('helvetica', 'B', 7);
 $pdf->Cell(12, 8, 'Registro', 1, 0, 'C');
 $pdf->Cell(38, 8, 'Proveedor', 1, 0, 'C');

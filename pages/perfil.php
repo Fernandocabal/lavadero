@@ -107,7 +107,7 @@
                             <label class="form-label" for="sucursal">Sucursal</label>
                             <select class="form-select form-select-sm" name="sucursal" id="select_sucursal">
                                 <?php
-                                $query = "SELECT * FROM sucursales s INNER JOIN empresa_activa ea ON ea.sucursal= s.id_sucursal
+                                $query = "SELECT * FROM sucursales s INNER JOIN empresa_activa ea ON ea.id_sucursal= s.id_sucursal
                                  WHERE ea.usuario = :usuario";
                                 $stmt = $connect->prepare($query);
                                 $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
@@ -116,7 +116,7 @@
 
                                 if ($resultados && count($resultados) > 0) {
                                     foreach ($resultados as $resultado) {
-                                        echo "<option value='" . $resultado['id_sucursal'] . "'>" . $resultado['prefijo'] . " - " . $resultado['nombre'] . "</option>";
+                                        echo "<option value='" . $resultado['id_sucursal'] . "'>" . $resultado['nro_sucursal'] . " - " . $resultado['nombre'] . "</option>";
                                     }
                                 } else {
                                     echo "<option value='' selected>No hay empresas disponibles</option>";
@@ -126,8 +126,9 @@
                             <label class="form-label" for="caja">Caja</label>
                             <select class="form-select form-select-sm" name="caja" id="select_caja">
                                 <?php
-                                $query = "SELECT caja 
-                                            FROM empresa_activa 
+                                $query = "SELECT * 
+                                            FROM empresa_activa ea
+                                            INNER JOIN cajas c ON ea.id_caja=c.id_caja
                                              WHERE usuario = :usuario";
                                 $stmt = $connect->prepare($query);
                                 $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
@@ -136,7 +137,7 @@
 
                                 if ($resultados && count($resultados) > 0) {
                                     foreach ($resultados as $resultado) {
-                                        echo "<option value='" . htmlspecialchars($resultado['caja']) . "'>" . htmlspecialchars($resultado['caja']) . "</option>";
+                                        echo "<option value='" . htmlspecialchars($resultado['id_caja']) . "'>" . htmlspecialchars($resultado['nro_caja']) . "</option>";
                                     }
                                 } else {
                                     echo "<option value='' selected>No hay empresas disponibles</option>";

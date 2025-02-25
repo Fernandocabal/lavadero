@@ -5,29 +5,29 @@ session_start();
 require_once '../functions/funciones.php';
 $nombre = $_SESSION['nombre'];
 $apellido = $_SESSION["apellido"];
-$sucursal_activa = $_SESSION['sucursal_activa'];
-$caja_activa = $_SESSION['caja_activa'];
+$sucursal_activa = $_SESSION['id_sucursal_activa'];
+$caja_activa = $_SESSION['id_caja_activa'];
 $id_empresa = $_SESSION['id_empresa_activa'];
-// var_dump($_POST);
+// var_dump($id_empresa);
 try {
     $connect->beginTransaction();
-    if (!estaSesionIniciada()) {
+    if (!estalogueado()) {
         throw new Exception("No haz iniciado sesión");
         exit();
     }
-    $sqltimbrado = "SELECT * FROM `timbrado` WHERE id_empresa = :id";
+    // Obtener el timbrado vigente
+    $sqltimbrado = "SELECT nro_timbrado, fecha_vencimiento FROM timbrado WHERE id_empresa = :id";
     $stmt = $connect->prepare($sqltimbrado);
     $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
     $stmt->execute();
     $timbrado = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($timbrado) {
-        $nro_timbrado = $timbrado["nro_timbrado"];
-        $fecha_vencimiento = $timbrado["fecha_vencimiento"];
+    if (!$timbrado) {
+        throw new Exception("No se encontró un timbrado válido para la empresa.");
     }
-    if (empty($id_empresa)) {
-        throw new Exception("El id_empresa no puede estar vacío.");
-    }
+
+    $nro_timbrado = $timbrado["nro_timbrado"];
+    $fecha_vencimiento = $timbrado["fecha_vencimiento"];
 
     $fecha = date('d/m/Y H:i');
     $precio = $_POST["precio"];
@@ -44,39 +44,32 @@ try {
     $sqlcondicion = "SELECT * FROM `condicion` WHERE id_condicion = 1";
     $stmt = $connect->query($sqlcondicion);
     $condicion = $stmt->fetch(PDO::FETCH_ASSOC);
-    // if ($cant_check > 1) {
-    //     echo json_encode([
-    //         'success' => true,
-    //         'message' => $cant_check
-
-    //     ]);
-    // } else {
-    //     echo json_encode([
-    //         'success' => true,
-    //         'message' => 'Recibi menos de 1'
-
-    //     ]);
-    // }
 
     if ($condicion) {
         $id_condicion = $condicion["id_condicion"];
     }
-    function siguientenumero($sucursal_activa, $caja_activa)
+    function siguientenumero($id_sucursal, $id_caja, $id_empresa)
     {
         global $connect;
-        $sqlnumeracion = "SELECT * FROM numeracion_factura WHERE id_empresa = :id";
+        $sqlnumeracion = "SELECT ultimo_numero FROM numeracion_factura 
+                          WHERE id_empresa = :id_empresa 
+                          AND id_sucursal = :id_sucursal 
+                          AND id_caja = :id_caja";
         $stmt = $connect->prepare($sqlnumeracion);
-        $stmt->bindParam(':id', $_SESSION['id_empresa_activa'], PDO::PARAM_INT);
+        $stmt->bindParam(':id_empresa', $id_empresa, PDO::PARAM_INT);
+        $stmt->bindParam(':id_sucursal', $id_sucursal, PDO::PARAM_INT);
+        $stmt->bindParam(':id_caja', $id_caja, PDO::PARAM_INT);
         $stmt->execute();
-
         $numeracion = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$numeracion) {
-            $query = "INSERT INTO numeracion_factura (id_empresa, ultimo_numero) VALUES (:id, 0)";
+            $query = "INSERT INTO numeracion_factura (id_empresa, `id_sucursal`, `id_caja`,  ultimo_numero)
+            VALUES (:id_empresa, :id_sucursal, :id_caja, 0)";
             $stmt = $connect->prepare($query);
-            $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
+            $stmt->bindParam(':id_empresa', $id_empresa, PDO::PARAM_INT);
+            $stmt->bindParam(':id_sucursal', $id_sucursal, PDO::PARAM_INT);
+            $stmt->bindParam(':id_caja', $id_caja, PDO::PARAM_INT);
             $stmt->execute();
-
             $ultimo_numero = 0;
         } else {
 
@@ -85,12 +78,33 @@ try {
         $proximonumero = $ultimo_numero + 1;
         $parte3 = str_pad($proximonumero, 7, '0', STR_PAD_LEFT);  // 7 dígitos, rellena con ceros a la izquierda
 
-        $formatproximonumero = $sucursal_activa . '-' . $caja_activa . '-' . $parte3;
+        $sqlnrosucursal = "SELECT s.nro_sucursal, c.nro_caja 
+        FROM sucursales s 
+        JOIN cajas c ON s.id_sucursal = c.id_sucursal 
+        WHERE s.id_sucursal = :id_sucursal AND c.id_caja = :id_caja";
+        $stmt = $connect->prepare($sqlnrosucursal);
+        $stmt->bindParam(':id_sucursal', $id_sucursal, PDO::PARAM_INT);
+        $stmt->bindParam(':id_caja', $id_caja, PDO::PARAM_INT);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$resultado) {
+            throw new Exception("No se encontró la sucursal o caja seleccionada.");
+        }
+
+        $nrosucursal = $resultado['nro_sucursal'];
+        $nrocaja = $resultado['nro_caja'];
+
+        // Formatear el número de factura
+        $formatproximonumero = $nrosucursal . '-' . $nrocaja . '-' . $parte3;
 
         // Actualizar el último número de factura en la tabla
-        $stmt = $connect->prepare("UPDATE numeracion_factura SET ultimo_numero = :ultimo_numero WHERE id_empresa = :id");
+        $stmt = $connect->prepare("UPDATE numeracion_factura SET ultimo_numero = :ultimo_numero 
+        WHERE id_empresa = :id_empresa AND id_sucursal = :id_sucursal AND id_caja = :id_caja");
         $stmt->bindParam(':ultimo_numero', $proximonumero, PDO::PARAM_INT);
-        $stmt->bindParam(':id', $_SESSION['id_empresa_activa'], PDO::PARAM_INT);
+        $stmt->bindParam(':id_empresa', $id_empresa, PDO::PARAM_INT);
+        $stmt->bindParam(':id_sucursal', $id_sucursal, PDO::PARAM_INT);
+        $stmt->bindParam(':id_caja', $id_caja, PDO::PARAM_INT);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
@@ -99,7 +113,7 @@ try {
             throw new Exception("Error al actualizar el último número de factura.");
         }
     }
-    $numeroFactura = siguientenumero($sucursal_activa, $caja_activa);
+    $numeroFactura = siguientenumero($sucursal_activa, $caja_activa, $id_empresa);
     function totalexentas($exentas)
     {
         $total = 0;
@@ -171,9 +185,12 @@ try {
     function crearnroregistro()
     {
         global $connect;
-        $slqnroregistro = "SELECT MAX(registro) AS max_registro FROM header_factura WHERE id_usuario = :id";
+
+        $slqnroregistro = "SELECT MAX(registro) AS max_registro FROM header_factura WHERE id_empresa = :id_empresa AND id_sucursal = :id_sucursal AND id_caja= :id_caja";
         $stmt = $connect->prepare($slqnroregistro);
-        $stmt->bindParam('id', $_SESSION['id_usuario'], PDO::PARAM_INT);
+        $stmt->bindParam('id_empresa', $_SESSION['id_empresa_activa'], PDO::PARAM_INT);
+        $stmt->bindParam('id_sucursal', $_SESSION['id_sucursal_activa'], PDO::PARAM_INT);
+        $stmt->bindParam('id_caja', $_SESSION['id_caja_activa'], PDO::PARAM_INT);
         $stmt->execute();
         $nroregistro = $stmt->fetch(PDO::FETCH_ASSOC);
         $ultimoreg = $nroregistro['max_registro'] ? $nroregistro['max_registro'] : 0;
@@ -182,9 +199,9 @@ try {
     };
     $proximoreg = crearnroregistro();
 
-    $insertfacturas = "INSERT INTO `header_factura`(`registro`, `nro_factura`, `timbrado`, `fecha_horas`, `id_cliente`, `cajero`, `id_condicion`, `exentas`, `gravada5`, `gravada10`, `totaliva`, `totalfactura`, `id_empresa`, `id_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $insertfacturas = "INSERT INTO `header_factura`(`registro`, `nro_factura`, `timbrado`, `fecha_horas`, `id_cliente`, `cajero`, `id_condicion`, `exentas`, `gravada5`, `gravada10`, `totaliva`, `totalfactura`, `id_empresa`, `id_sucursal`, `id_caja`, `id_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)";
     $stmt = $connect->prepare($insertfacturas);
-    $stmt->execute([$proximoreg, $numeroFactura, $nro_timbrado, $fecha, $nombres, $_SESSION["nombre"], $id_condicion, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $_SESSION["id_empresa_activa"], $_SESSION['id_usuario']]);
+    $stmt->execute([$proximoreg, $numeroFactura, $nro_timbrado, $fecha, $nombres, $_SESSION["nombre"], $id_condicion, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $_SESSION["id_empresa_activa"], $_SESSION['id_sucursal_activa'], $_SESSION['id_caja_activa'], $_SESSION['id_usuario']]);
     $idinsertado = $connect->lastInsertId();
 
     $insertdetalle = "INSERT INTO `detalle_factura`(`id_header`, `detalle`, `cantidad`, `precio`, `exenta`, `gravada5`, `gravada10`) VALUES (?, ?, ?, ?,?, ?, ?)";
@@ -207,14 +224,31 @@ try {
 
     echo json_encode([
         'success' => true,
-        'id' => $proximoreg,
+        'id' => $idinsertado,
         'message' => 'La factura se ha generado!'
     ]);
 } catch (PDOException $e) {
     $connect->rollBack();
     echo json_encode([
         'success' => false,
-        'message' => 'Error al insertar datos: ' . $e->getMessage()
+        'message' => 'Error al insertar datos: ' . $e->getMessage(),
+        'sql' => $insertfacturas, // Puedes agregar la consulta SQL que falló
+        'data' => [
+            $proximoreg,
+            $numeroFactura,
+            $nro_timbrado,
+            $fecha,
+            $nombres,
+            $_SESSION["nombre"],
+            $id_condicion,
+            $totalexentas,
+            $totalgravada5,
+            $totalgravada10,
+            $totaliva,
+            $totalfactura,
+            $_SESSION["id_empresa_activa"],
+            $_SESSION['id_usuario']
+        ]
     ]);
 }
 $connect = null;

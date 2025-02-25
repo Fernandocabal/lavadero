@@ -15,7 +15,7 @@ if ($empresa_activa) {
 }
 try {
     $connect->beginTransaction();
-    if (!estaSesionIniciada()) {
+    if (!estalogueado()) {
         throw new Exception("No haz iniciado sesión");
         exit();
     }
@@ -189,9 +189,10 @@ try {
     function crearnroregistro()
     {
         global $connect;
-        $slqnroregistro = "SELECT MAX(registro) AS max_registro FROM headercompra WHERE id_empresa = :id";
+        $slqnroregistro = "SELECT MAX(registro) AS max_registro FROM headercompra WHERE id_empresa = :id_empresa  AND id_sucursal = :id_sucursal";
         $stmt = $connect->prepare($slqnroregistro);
-        $stmt->bindParam('id', $_SESSION['id_empresa_activa'], PDO::PARAM_INT);
+        $stmt->bindParam('id_empresa', $_SESSION['id_empresa_activa'], PDO::PARAM_INT);
+        $stmt->bindParam('id_sucursal', $_SESSION['id_sucursal_activa'], PDO::PARAM_INT);
         $stmt->execute();
         $nroregistro = $stmt->fetch(PDO::FETCH_ASSOC);
         $ultimoreg = $nroregistro['max_registro'] ? $nroregistro['max_registro'] : 0;
@@ -199,9 +200,9 @@ try {
         return $proximoreg;
     };
     $proximoreg = crearnroregistro();
-    $insertcompra = "INSERT INTO `headercompra`( `registro`, `nrocompr`, `timbrado`, `id_condicion`, `id_proveedor`, `concepto`, `fecha_compra`, `fecha_carga`, `exentas`, `gravada5`, `gravada10`, `totaliva`, `totalfactura`, `tipo_factura`, `moneda`, `typeorigen`, `id_usuario`, `id_empresa`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $insertcompra = "INSERT INTO `headercompra`( `registro`, `nrocompr`, `timbrado`, `id_condicion`, `id_proveedor`, `concepto`, `fecha_compra`, `fecha_carga`, `exentas`, `gravada5`, `gravada10`, `totaliva`, `totalfactura`, `tipo_factura`, `moneda`, `typeorigen`, `id_usuario`, `id_empresa`, `id_sucursal`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $connect->prepare($insertcompra);
-    $stmt->execute([$proximoreg, $nrofactura, $timbrado, $id_condicion, $id_proveedor, $concepto_string, $fechafactura, $fecha, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $tipo_factura, $typemodena, $typeorigen, $_SESSION['id_usuario'], $id_empresa]);
+    $stmt->execute([$proximoreg, $nrofactura, $timbrado, $id_condicion, $id_proveedor, $concepto_string, $fechafactura, $fecha, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $tipo_factura, $typemodena, $typeorigen, $_SESSION['id_usuario'], $id_empresa,  $_SESSION['id_sucursal_activa']]);
     $idinsertado = $connect->lastInsertId();
 
     $insertdetalle = "INSERT INTO `detalles_compra`(`idheadercompra`, `descripcion`, `cantidad`, `precio`, `exenta`, `gravada5`, `gravada10`) VALUES (?, ?, ?, ?, ?, ?, ?)";

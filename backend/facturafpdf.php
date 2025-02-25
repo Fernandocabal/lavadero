@@ -7,7 +7,7 @@ try {
 INNER JOIN clientes ON header_factura.id_cliente = clientes.id_cliente
 INNER JOIN ciudades on clientes.ciudad=ciudades.id_ciudad
 INNER JOIN condicion on condicion.id_condicion=header_factura.id_condicion
-WHERE registro= $id_factura;");
+WHERE id_header= $id_factura;");
     $stmt = $connect->prepare($sql);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -96,7 +96,7 @@ function cabecera($pdf, $timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factu
     $pdf->Cell(90, 4, '', 'R,B', 0, 'C');
 };
 cabecera($pdf, $timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email);
-$pdf->Image('../assets/img/logosinfondo.png', 8, 5, 33);
+$pdf->Image('../assets/img/logoaqui.png', 11, 10, 25);
 $pdf->Ln(5);
 function agregarDetallesFactura($pdf, $connect, $id_factura)
 {
@@ -158,7 +158,7 @@ piefactura($pdf, $totalfactura, $gravada5, $gravada10, $totaliva);
 $pdf->Cell(0, 1, 'Original', 0, 1, 'L');
 //Sección duplicado
 $pdf->SetY(152);
-$pdf->Image('../assets/img/logosinfondo.png', 8, 147, 33);
+$pdf->Image('../assets/img/logoaqui.png', 11, 152, 25);
 
 cabecera($pdf, $timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email);
 $pdf->Ln(5);

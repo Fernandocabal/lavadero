@@ -94,7 +94,7 @@ $(document).ready(function () {
 
         if (data && Array.isArray(data) && data.length > 0) {
             data.forEach(item => {
-                const texto = `${item.prefijo} - ${item.nombre}`;
+                const texto = `${item.nro_sucursal} - ${item.nombre}`;
                 const option = new Option(texto, item.id_sucursal);
                 $select.append(option);
             });
@@ -119,7 +119,7 @@ $(document).ready(function () {
         if (data && Array.isArray(data) && data.length > 0) {
             data.forEach(item => {
                 $('#select_caja').append(
-                    new Option(item.prefijo, item.prefijo)
+                    new Option(item.nro_caja, item.id_caja)
                 );
             });
         } else {
@@ -136,32 +136,6 @@ $(document).ready(function () {
 //fin de seccion select2
 btn_insert_user.addEventListener("click", function (event) {
     event.preventDefault();
-    // const passActual = document.getElementById("pass-actual");
-    // if (passwordactual()) {
-    //     passActual.focus();
-    //     Swal.fire({
-    //         icon: "warning",
-    //         confirmButtonColor: "#212529",
-    //         confirmButtonText: "Aceptar",
-    //         text: "Ingresa tu contraseña actual",
-    //         customClass: {
-    //             popup: 'custom-swal'
-    //         },
-    //     })
-    //     return;
-    // }
-    // if (!confirmPassword()) {
-    //     Swal.fire({
-    //         icon: "warning",
-    //         confirmButtonColor: "#212529",
-    //         confirmButtonText: "Aceptar",
-    //         text: "Verifica tu nueva contraseña",
-    //         customClass: {
-    //             popup: 'custom-swal'
-    //         },
-    //     })
-    //     return;
-    // }
     // Swal.fire({
     //     showConfirmButton: false,
     //     text: "Procesando",
@@ -178,60 +152,160 @@ btn_insert_user.addEventListener("click", function (event) {
         body: formData,
     })
         // PARA DEPURACIÓN
-        .then(response => {
-            return response.text();
-        })
+        // .then(response => {
+        //     return response.text();
+        // })
+        // .then(data => {
+        //     console.log(data);
+        //     try {
+        //         const jsonData = JSON.parse(data);
+        //     } catch (error) {
+        //         console.error('Error al parsear JSON:', error);
+        //     }
+        // })
+        // .catch(error => {
+        //     console.error('Error en la petición:', error);
+        // });
+        // });
+
+        .then(response => response.json())
         .then(data => {
-            console.log(data);
-            try {
-                const jsonData = JSON.parse(data);
-            } catch (error) {
-                console.error('Error al parsear JSON:', error);
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
+                    confirmButtonColor: "#212529",
+                    confirmButtonText: "Clic para mostrar la contraseña",
+                    text: data.message + " Nombre de usuario: " + data.userData.username,
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
+                    preConfirm: () => {
+                        return new Promise((resolve) => {
+                            // Mostrar la contraseña en un segundo Swal
+                            Swal.fire({
+                                confirmButtonColor: "#212529",
+                                confirmButtonText: "Enviar por correo",
+                                text: "Nombre de usuario: " + data.userData.username + " y Contraseña: " + data.userData.password,
+                                customClass: {
+                                    popup: 'custom-swal'
+                                },
+                                preConfirm: () => {
+                                    return new Promise((resolve) => {
+                                        // Mostrar otro Swal para pedir el correo
+                                        Swal.fire({
+                                            title: "Introduce el correo electrónico",
+                                            input: 'email',
+                                            inputValue: data.userData.email,
+                                            confirmButtonColor: "#212529",
+                                            confirmButtonText: "Aceptar",
+                                            confirmButtonText: 'Enviar',
+                                            showCancelButton: false,
+                                            customClass: {
+                                                input: 'custom-input',
+                                                popup: 'custom-swal'
+                                            }
+                                        }).then((emailResponse) => {
+                                            if (emailResponse.isConfirmed) {
+                                                const email = emailResponse.value;
+                                                if (email) {
+                                                    // Enviar el correo con los datos al backend
+                                                    fetch('enviarCorreo.php', {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                        },
+                                                        body: JSON.stringify({
+                                                            email: email,
+                                                            username: data.userData.username,
+                                                            password: data.userData.password
+                                                        })
+                                                    })
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            if (data.success) {
+                                                                Swal.fire({
+                                                                    icon: 'success',
+                                                                    title: 'Correo enviado correctamente',
+                                                                    confirmButtonColor: "#212529",
+                                                                    customClass: {
+                                                                        popup: 'custom-swal'
+                                                                    },
+                                                                    willClose: () => {
+                                                                        location.reload();
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                Swal.fire({
+                                                                    icon: 'error',
+                                                                    title: 'Error al enviar el correo',
+                                                                    text: data.message || "De todas formas el usuario ya fue creado correctamente ;-)",
+                                                                    confirmButtonText: 'Aceptar',
+                                                                    confirmButtonColor: "#212529",
+                                                                    customClass: {
+                                                                        popup: 'custom-swal'
+                                                                    }
+                                                                });
+                                                            }
+                                                        })
+                                                        .catch(error => {
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Error',
+                                                                text: "De todas formas el usuario ya fue creado correctamente 😊",
+                                                                confirmButtonText: 'Aceptar',
+                                                                confirmButtonColor: "#212529",
+                                                                customClass: {
+                                                                    popup: 'custom-swal'
+                                                                },
+                                                                willClose: () => {
+                                                                    location.reload();
+                                                                }
+                                                            });
+                                                        });
+                                                } else {
+                                                    Swal.fire({
+                                                        icon: 'warning',
+                                                        title: 'Por favor ingresa un correo válido.',
+                                                        confirmButtonColor: "#212529",
+                                                        customClass: {
+                                                            popup: 'custom-swal'
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                            resolve();
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                    }
+                });
+
+
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    confirmButtonColor: "#212529",
+                    confirmButtonText: "Aceptar",
+                    text: data.message || "Ocurrió un error",
+                    customClass: {
+                        popup: 'custom-swal'
+                    },
+                });
             }
         })
         .catch(error => {
-            console.error('Error en la petición:', error);
+            console.error('Error:', error);
+            Swal.fire({
+                icon: "error",
+                confirmButtonColor: "#212529",
+                confirmButtonText: "Aceptar",
+                text: 'Ocurrió un error al enviar los datos',
+                customClass: {
+                    popup: 'custom-swal'
+                },
+            });
         });
+
 });
-
-//         .then(response => response.json())
-//         .then(data => {
-//             if (data.success) {
-//                 Swal.fire({
-//                     icon: "success",
-//                     confirmButtonColor: "#212529",
-//                     confirmButtonText: "Aceptar",
-//                     text: data.message || "Excelente",
-//                     customClass: {
-//                         popup: 'custom-swal'
-//                     },
-//                     willClose: () => {
-//                         location.reload();
-//                     }
-//                 });
-//             } else {
-//                 Swal.fire({
-//                     icon: "warning",
-//                     confirmButtonColor: "#212529",
-//                     confirmButtonText: "Aceptar",
-//                     text: data.message || "Ocurrió un error",
-//                     customClass: {
-//                         popup: 'custom-swal'
-//                     },
-//                 });
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             Swal.fire({
-//                 icon: "error",
-//                 confirmButtonColor: "#212529",
-//                 confirmButtonText: "Aceptar",
-//                 text: 'Ocurrió un error al enviar los datos',
-//                 customClass: {
-//                     popup: 'custom-swal'
-//                 },
-//             });
-//         });
-
-// });

@@ -31,6 +31,7 @@ if (estalogueado()) {
     </div>
     <form action="" method="post" class="tarjeta-login" id="formlogin">
         <img src="./assets/img/Logo.png" class="logo"></img>
+
         <h2>Bienvenidos</h2>
         <h4>Iniciar Sesion</h4>
         <div class="contenedor-input">

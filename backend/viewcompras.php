@@ -2,10 +2,13 @@
 include "../functions/conexion.php";
 $nombre = $_SESSION['nombre'];
 $apellido = $_SESSION["apellido"];
+$id_empresa = $_SESSION['id_empresa_activa'];
+$id_sucursal = $_SESSION['id_sucursal_activa'];
 try {
-    $query = "SELECT headercompra.*, proveedores.nombre_proveedor, proveedores.id_proveedor FROM headercompra INNER JOIN proveedores ON headercompra.id_proveedor = proveedores.id_proveedor WHERE headercompra.id_empresa = :id";
+    $query = "SELECT headercompra.*, proveedores.nombre_proveedor, proveedores.id_proveedor FROM headercompra INNER JOIN proveedores ON headercompra.id_proveedor = proveedores.id_proveedor WHERE headercompra.id_empresa = :id_empresa AND headercompra.id_sucursal= :id_sucursal";
     $stmt = $connect->prepare($query);
-    $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
+    $stmt->bindParam(':id_empresa', $id_empresa, PDO::PARAM_INT);
+    $stmt->bindParam(':id_sucursal', $id_sucursal, PDO::PARAM_INT);
     $stmt->execute();
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $id_proveedor = $row['id_proveedor'];
