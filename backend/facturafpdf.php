@@ -19,7 +19,6 @@ WHERE id_header= $id_factura;");
         $email = $row['email'];
         $fecha_horas = $row["fecha_horas"];
         $condicion = $row["condicion"];
-        $timbrado = $row["timbrado"];
         $nro_factura = $row["nro_factura"];
         $totalfactura = $row['totalfactura'];
         $exentas = $row['exentas'];
@@ -27,17 +26,35 @@ WHERE id_header= $id_factura;");
         $gravada10 = $row['gravada10'];
         $totaliva = $row['totaliva'];
         $cajero = $row['cajero'];
+        $id_empresa = $row['id_empresa'];
+        $id_sucursal = $row['id_sucursal'];
+        $id_caja = $row['id_caja'];
         $total = 0;
     }
-    $sqltimbrado = "SELECT * FROM `timbrado`";
+
+    $sqltimbrado = "SELECT * FROM `timbrado` WHERE id_empresa= :id_empresa AND id_sucursal= :id_sucursal AND id_caja= :id_caja";
     $stmtimbrado = $connect->prepare($sqltimbrado);
+    $stmtimbrado->bindParam(':id_empresa', $id_empresa, PDO::PARAM_INT);
+    $stmtimbrado->bindParam(':id_sucursal', $id_sucursal, PDO::PARAM_INT);
+    $stmtimbrado->bindParam(':id_caja', $id_caja, PDO::PARAM_INT);
     $stmtimbrado->execute();
     while ($row = $stmtimbrado->fetch(PDO::FETCH_ASSOC)) {
         $nro_timbrado = $row["nro_timbrado"];
-        $sucursal = $row["sucursal"];
-        $caja = $row["caja"];
         $fecha_inicio = $row["fecha_inicio"];
         $fecha_vencimiento = $row["fecha_vencimiento"];
+    }
+
+    $sqlempresa = "SELECT * FROM `empresas` e INNER JOIN ciudades c ON e.id_ciudad = c.id_ciudad WHERE e.id_empresa= :id_empresa";
+    $stmrempresa = $connect->prepare($sqlempresa);
+    $stmrempresa->bindParam(':id_empresa', $id_empresa, PDO::PARAM_INT);
+    $stmrempresa->execute();
+    while ($empresa = $stmrempresa->fetch(PDO::FETCH_ASSOC)) {
+        $nombre_empresa = $empresa['nombre_empresa'];
+        $ruc_empresa = $empresa['ruc_empresa'];
+        $direccion_empresa = $empresa['direccion_empresa'];
+        $tel_empresa = $empresa['tel_empresa'];
+        $email_empresa = $empresa['email_empresa'];
+        $nombre_ciudad = $empresa['nombre_ciudad'];
     }
 } catch (PDOException $e) {
     echo 'Error' . $e->getMessage();
@@ -51,27 +68,27 @@ $pdf = new TCPDF();
 $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
 $pdf->AddPage();
-function cabecera($pdf, $timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email)
+function cabecera($pdf,  $nombre_empresa, $ruc_empresa, $direccion_empresa, $tel_empresa, $nombre_ciudad, $email_empresa, $nro_timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email)
 {
     $pdf->SetFont('helvetica', 'B', 12);
-    $pdf->Cell(130, 5, 'CarWahs Lavadero', 'L,T', 0, 'C');
+    $pdf->Cell(130, 5, $nombre_empresa, 'L,T', 0, 'C');
     $pdf->SetFont('helvetica', '', 7);
     $pdf->Cell(40, 4, 'Timbrado:', 'L,T', 0, 'L');
-    $pdf->Cell(20, 4, $timbrado, 'R,T', 1, 'R');
-    $pdf->Cell(130, 5, 'de Christian Benitez', 'L', 0, 'C');
+    $pdf->Cell(20, 4,  $nro_timbrado, 'R,T', 1, 'R');
+    $pdf->Cell(130, 5, '', 'L', 0, 'C');
     $pdf->Cell(40, 4, 'Fecha de inicio de vigencia:', 'L', 0, 'L');
     $pdf->Cell(20, 4, $fecha_inicio, 'R', 1, 'R');
-    $pdf->Cell(130, 4, 'Avda Pratt Gill c/ Acceso Sur', 'L', 0, 'C');
+    $pdf->Cell(130, 4, $direccion_empresa, 'L', 0, 'C');
     $pdf->Cell(40, 4, 'Fecha de vencimiento:', 'L', 0, 'L');
     $pdf->Cell(20, 4, $fecha_vencimiento, 'R', 1, 'R');
-    $pdf->Cell(130, 4, 'Cel: 0981-111-111', 'L', 0, 'C');
+    $pdf->Cell(130, 4, 'Cel: ' . $tel_empresa, 'L', 0, 'C');
     $pdf->Cell(40, 4, 'RUC:', 'L', 0, 'L');
-    $pdf->Cell(20, 4, '3215768-9', 'R', 1, 'R');
-    $pdf->Cell(130, 5, '', 'L', 0, 'R');
+    $pdf->Cell(20, 4, $ruc_empresa, 'R', 1, 'R');
+    $pdf->Cell(130, 5, $email_empresa, 'L', 0, 'C');
     $pdf->SetFont('helvetica', 'B', 11);
     $pdf->Cell(60, 5, 'Factura', 'L,R', 1, 'C');
     $pdf->SetFont('helvetica', '', 7);
-    $pdf->Cell(130, 5, '', 'L,B', 0, 'R');
+    $pdf->Cell(130, 5, $nombre_ciudad, 'L,B', 0, 'C');
     $pdf->SetFont('helvetica', 'B', 11);
     $pdf->Cell(60, 5, $nro_factura, 'L,R,B', 0, 'C');
     $pdf->Ln(6);
@@ -95,8 +112,8 @@ function cabecera($pdf, $timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factu
     $pdf->Cell(100, 4, 'Correo: ' . $email, 'L,B', 0, 'L');
     $pdf->Cell(90, 4, '', 'R,B', 0, 'C');
 };
-cabecera($pdf, $timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email);
-$pdf->Image('../assets/img/logoaqui.png', 11, 10, 25);
+cabecera($pdf, $nombre_empresa, $ruc_empresa, $direccion_empresa, $tel_empresa, $nombre_ciudad, $email_empresa, $nro_timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email);
+$pdf->Image('../assets/img/empresa_' . $id_empresa . '.png', 11, 10, 25);
 $pdf->Ln(5);
 function agregarDetallesFactura($pdf, $connect, $id_factura)
 {
@@ -158,9 +175,9 @@ piefactura($pdf, $totalfactura, $gravada5, $gravada10, $totaliva);
 $pdf->Cell(0, 1, 'Original', 0, 1, 'L');
 //Sección duplicado
 $pdf->SetY(152);
-$pdf->Image('../assets/img/logoaqui.png', 11, 152, 25);
+$pdf->Image('../assets/img/empresa_' . $id_empresa . '.png', 11, 152, 25);
 
-cabecera($pdf, $timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email);
+cabecera($pdf, $nombre_empresa, $ruc_empresa, $direccion_empresa, $tel_empresa, $nombre_ciudad, $email_empresa, $nro_timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email);
 $pdf->Ln(5);
 agregarDetallesFactura($pdf, $connect, $id_factura);
 piefactura($pdf, $totalfactura, $gravada5, $gravada10, $totaliva);

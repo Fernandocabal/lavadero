@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 require_once '../functions/funciones.php';
 $nombre = $_SESSION["nombre"];
 $apellido = $_SESSION["apellido"];

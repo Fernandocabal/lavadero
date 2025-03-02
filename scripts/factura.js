@@ -33,69 +33,69 @@ btninsertfactura.addEventListener('click', (evento) => {
             method: 'POST',
             body: formData
         })
-            // .then(response => {
-            //     return response.text(); // Cambiar a text() para ver la respuesta completa
-            // })
-            // .then(data => {
-            //     console.log(data); // Mostrar la respuesta completa en la consola
-            //     try {
-            //         const jsonData = JSON.parse(data); // Intentar parsear a JSON
-            //         // Procesar jsonData aquí
-            //     } catch (error) {
-            //         console.error('Error al parsear JSON:', error);
-            //     }
-            // })
-            // .catch(error => {
-            //     console.error('Error en la petición:', error);
-            // });
-            .then(response => response.json())
+            .then(response => {
+                return response.text(); // Cambiar a text() para ver la respuesta completa
+            })
             .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        text: data.message,
-                        icon: 'success',
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        showConfirmButton: true,
-                        showCancelButton: false,
-                        focusConfirm: true,
-                        confirmButtonColor: "#212529",
-                        confirmButtonText: 'Imprimir',
-                        customClass: {
-                            popup: 'custom-swal'
-                        },
-                    }).then(result => {
-                        if (result.isConfirmed) {
-                            formfactura.reset();
-                            window.location.href = `../backend/facturafpdf.php?id=${data.id}`;
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: data.message,
-                        icon: 'error',
-                        confirmButtonColor: "#212529",
-                        confirmButtonText: 'Aceptar',
-                        customClass: {
-                            popup: 'custom-swal'
-                        },
-                    });
+                console.log(data); // Mostrar la respuesta completa en la consola
+                try {
+                    const jsonData = JSON.parse(data); // Intentar parsear a JSON
+                    // Procesar jsonData aquí
+                } catch (error) {
+                    console.error('Error al parsear JSON:', error);
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    title: 'Error',
-                    text: error,
-                    icon: 'error',
-                    confirmButtonColor: "#212529",
-                    confirmButtonText: 'Aceptar',
-                    customClass: {
-                        popup: 'custom-swal'
-                    },
-                });
+                console.error('Error en la petición:', error);
             });
+        // .then(response => response.json())
+        // .then(data => {
+        //     if (data.success) {
+        //         Swal.fire({
+        //             text: data.message,
+        //             icon: 'success',
+        //             allowEscapeKey: false,
+        //             allowOutsideClick: false,
+        //             showConfirmButton: true,
+        //             showCancelButton: false,
+        //             focusConfirm: true,
+        //             confirmButtonColor: "#212529",
+        //             confirmButtonText: 'Imprimir',
+        //             customClass: {
+        //                 popup: 'custom-swal'
+        //             },
+        //         }).then(result => {
+        //             if (result.isConfirmed) {
+        //                 formfactura.reset();
+        //                 window.location.href = `../backend/facturafpdf.php?id=${data.id}`;
+        //             }
+        //         });
+        //     } else {
+        //         Swal.fire({
+        //             title: 'Error',
+        //             text: data.message,
+        //             icon: 'error',
+        //             confirmButtonColor: "#212529",
+        //             confirmButtonText: 'Aceptar',
+        //             customClass: {
+        //                 popup: 'custom-swal'
+        //             },
+        //         });
+        //     }
+        // })
+        // .catch(error => {
+        //     console.error('Error:', error);
+        //     Swal.fire({
+        //         title: 'Error',
+        //         text: error,
+        //         icon: 'error',
+        //         confirmButtonColor: "#212529",
+        //         confirmButtonText: 'Aceptar',
+        //         customClass: {
+        //             popup: 'custom-swal'
+        //         },
+        //     });
+        // });
 
     }
 });

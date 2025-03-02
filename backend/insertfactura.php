@@ -8,7 +8,8 @@ $apellido = $_SESSION["apellido"];
 $sucursal_activa = $_SESSION['id_sucursal_activa'];
 $caja_activa = $_SESSION['id_caja_activa'];
 $id_empresa = $_SESSION['id_empresa_activa'];
-// var_dump($id_empresa);
+$anulado = "N";
+// var_dump($anulado);
 try {
     $connect->beginTransaction();
     if (!estalogueado()) {
@@ -16,17 +17,19 @@ try {
         exit();
     }
     // Obtener el timbrado vigente
-    $sqltimbrado = "SELECT nro_timbrado, fecha_vencimiento FROM timbrado WHERE id_empresa = :id";
-    $stmt = $connect->prepare($sqltimbrado);
-    $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
-    $stmt->execute();
-    $timbrado = $stmt->fetch(PDO::FETCH_ASSOC);
+    $sqltimbrado = "SELECT * FROM `timbrado` WHERE id_empresa= :id_empresa AND id_sucursal= :id_sucursal AND id_caja= :id_caja";
+    $stmtimbrado = $connect->prepare($sqltimbrado);
+    $stmtimbrado->bindParam(':id_empresa', $id_empresa, PDO::PARAM_INT);
+    $stmtimbrado->bindParam(':id_sucursal', $sucursal_activa, PDO::PARAM_INT);
+    $stmtimbrado->bindParam(':id_caja', $caja_activa, PDO::PARAM_INT);
+    $stmtimbrado->execute();
+    $timbrado = $stmtimbrado->fetch(PDO::FETCH_ASSOC);
 
     if (!$timbrado) {
         throw new Exception("No se encontró un timbrado válido para la empresa.");
     }
 
-    $nro_timbrado = $timbrado["nro_timbrado"];
+    $id_timbrado = $timbrado["id_timbrado"];
     $fecha_vencimiento = $timbrado["fecha_vencimiento"];
 
     $fecha = date('d/m/Y H:i');
@@ -199,9 +202,9 @@ try {
     };
     $proximoreg = crearnroregistro();
 
-    $insertfacturas = "INSERT INTO `header_factura`(`registro`, `nro_factura`, `timbrado`, `fecha_horas`, `id_cliente`, `cajero`, `id_condicion`, `exentas`, `gravada5`, `gravada10`, `totaliva`, `totalfactura`, `id_empresa`, `id_sucursal`, `id_caja`, `id_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)";
+    $insertfacturas = "INSERT INTO `header_factura`(`registro`, `nro_factura`, `anulado`, `id_timbrado`, `fecha_horas`, `id_cliente`, `cajero`, `id_condicion`, `exentas`, `gravada5`, `gravada10`, `totaliva`, `totalfactura`, `id_empresa`, `id_sucursal`, `id_caja`, `id_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $connect->prepare($insertfacturas);
-    $stmt->execute([$proximoreg, $numeroFactura, $nro_timbrado, $fecha, $nombres, $_SESSION["nombre"], $id_condicion, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $_SESSION["id_empresa_activa"], $_SESSION['id_sucursal_activa'], $_SESSION['id_caja_activa'], $_SESSION['id_usuario']]);
+    $stmt->execute([$proximoreg, $numeroFactura, $anulado, $id_timbrado, $fecha, $nombres, $_SESSION["nombre"], $id_condicion, $totalexentas, $totalgravada5, $totalgravada10, $totaliva, $totalfactura, $_SESSION["id_empresa_activa"], $_SESSION['id_sucursal_activa'], $_SESSION['id_caja_activa'], $_SESSION['id_usuario']]);
     $idinsertado = $connect->lastInsertId();
 
     $insertdetalle = "INSERT INTO `detalle_factura`(`id_header`, `detalle`, `cantidad`, `precio`, `exenta`, `gravada5`, `gravada10`) VALUES (?, ?, ?, ?,?, ?, ?)";
@@ -232,11 +235,11 @@ try {
     echo json_encode([
         'success' => false,
         'message' => 'Error al insertar datos: ' . $e->getMessage(),
-        'sql' => $insertfacturas, // Puedes agregar la consulta SQL que falló
+        'sql' => $insertfacturas,
         'data' => [
             $proximoreg,
             $numeroFactura,
-            $nro_timbrado,
+            $id_timbrado,
             $fecha,
             $nombres,
             $_SESSION["nombre"],

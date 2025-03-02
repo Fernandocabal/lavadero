@@ -174,7 +174,7 @@ btn_insert_user.addEventListener("click", function (event) {
                 Swal.fire({
                     icon: "success",
                     confirmButtonColor: "#212529",
-                    confirmButtonText: "Clic para mostrar la contraseña",
+                    confirmButtonText: "Enviar datos por correo",
                     text: data.message + " Nombre de usuario: " + data.userData.username,
                     customClass: {
                         popup: 'custom-swal'
@@ -182,102 +182,92 @@ btn_insert_user.addEventListener("click", function (event) {
                     preConfirm: () => {
                         return new Promise((resolve) => {
                             // Mostrar la contraseña en un segundo Swal
+
+                            // Mostrar otro Swal para pedir el correo
                             Swal.fire({
+                                title: "Introduce el correo electrónico",
+                                input: 'email',
+                                inputValue: data.userData.email,
                                 confirmButtonColor: "#212529",
-                                confirmButtonText: "Enviar por correo",
-                                text: "Nombre de usuario: " + data.userData.username + " y Contraseña: " + data.userData.password,
+                                confirmButtonText: "Aceptar",
+                                confirmButtonText: 'Enviar',
+                                showCancelButton: false,
                                 customClass: {
+                                    input: 'custom-input',
                                     popup: 'custom-swal'
-                                },
-                                preConfirm: () => {
-                                    return new Promise((resolve) => {
-                                        // Mostrar otro Swal para pedir el correo
-                                        Swal.fire({
-                                            title: "Introduce el correo electrónico",
-                                            input: 'email',
-                                            inputValue: data.userData.email,
-                                            confirmButtonColor: "#212529",
-                                            confirmButtonText: "Aceptar",
-                                            confirmButtonText: 'Enviar',
-                                            showCancelButton: false,
-                                            customClass: {
-                                                input: 'custom-input',
-                                                popup: 'custom-swal'
-                                            }
-                                        }).then((emailResponse) => {
-                                            if (emailResponse.isConfirmed) {
-                                                const email = emailResponse.value;
-                                                if (email) {
-                                                    // Enviar el correo con los datos al backend
-                                                    fetch('enviarCorreo.php', {
-                                                        method: 'POST',
-                                                        headers: {
-                                                            'Content-Type': 'application/json',
+                                }
+                            }).then((emailResponse) => {
+                                if (emailResponse.isConfirmed) {
+                                    const email = emailResponse.value;
+                                    if (email) {
+                                        // Enviar el correo con los datos al backend
+                                        fetch('enviarCorreo.php', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify({
+                                                email: email,
+                                                username: data.userData.username,
+                                                password: data.userData.password
+                                            })
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: 'Correo enviado correctamente',
+                                                        confirmButtonColor: "#212529",
+                                                        customClass: {
+                                                            popup: 'custom-swal'
                                                         },
-                                                        body: JSON.stringify({
-                                                            email: email,
-                                                            username: data.userData.username,
-                                                            password: data.userData.password
-                                                        })
-                                                    })
-                                                        .then(response => response.json())
-                                                        .then(data => {
-                                                            if (data.success) {
-                                                                Swal.fire({
-                                                                    icon: 'success',
-                                                                    title: 'Correo enviado correctamente',
-                                                                    confirmButtonColor: "#212529",
-                                                                    customClass: {
-                                                                        popup: 'custom-swal'
-                                                                    },
-                                                                    willClose: () => {
-                                                                        location.reload();
-                                                                    }
-                                                                });
-                                                            } else {
-                                                                Swal.fire({
-                                                                    icon: 'error',
-                                                                    title: 'Error al enviar el correo',
-                                                                    text: data.message || "De todas formas el usuario ya fue creado correctamente ;-)",
-                                                                    confirmButtonText: 'Aceptar',
-                                                                    confirmButtonColor: "#212529",
-                                                                    customClass: {
-                                                                        popup: 'custom-swal'
-                                                                    }
-                                                                });
-                                                            }
-                                                        })
-                                                        .catch(error => {
-                                                            Swal.fire({
-                                                                icon: 'error',
-                                                                title: 'Error',
-                                                                text: "De todas formas el usuario ya fue creado correctamente 😊",
-                                                                confirmButtonText: 'Aceptar',
-                                                                confirmButtonColor: "#212529",
-                                                                customClass: {
-                                                                    popup: 'custom-swal'
-                                                                },
-                                                                willClose: () => {
-                                                                    location.reload();
-                                                                }
-                                                            });
-                                                        });
+                                                        willClose: () => {
+                                                            location.reload();
+                                                        }
+                                                    });
                                                 } else {
                                                     Swal.fire({
-                                                        icon: 'warning',
-                                                        title: 'Por favor ingresa un correo válido.',
+                                                        icon: 'error',
+                                                        title: 'Error al enviar el correo',
+                                                        text: data.message || "De todas formas el usuario ya fue creado correctamente ;-)",
+                                                        confirmButtonText: 'Aceptar',
                                                         confirmButtonColor: "#212529",
                                                         customClass: {
                                                             popup: 'custom-swal'
                                                         }
                                                     });
                                                 }
+                                            })
+                                            .catch(error => {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error',
+                                                    text: "De todas formas el usuario ya fue creado correctamente 😊",
+                                                    confirmButtonText: 'Aceptar',
+                                                    confirmButtonColor: "#212529",
+                                                    customClass: {
+                                                        popup: 'custom-swal'
+                                                    },
+                                                    willClose: () => {
+                                                        location.reload();
+                                                    }
+                                                });
+                                            });
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'warning',
+                                            title: 'Por favor ingresa un correo válido.',
+                                            confirmButtonColor: "#212529",
+                                            customClass: {
+                                                popup: 'custom-swal'
                                             }
-                                            resolve();
                                         });
-                                    });
+                                    }
                                 }
+                                resolve();
                             });
+
                         });
                     }
                 });
@@ -292,6 +282,8 @@ btn_insert_user.addEventListener("click", function (event) {
                     customClass: {
                         popup: 'custom-swal'
                     },
+                }).then(() => {
+                    modal_registrar.show(); // Vuelve a abrir el modal después de cerrar la alerta
                 });
             }
         })

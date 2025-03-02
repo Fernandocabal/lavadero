@@ -30,7 +30,7 @@ if (estalogueado()) {
         </video>
     </div>
     <form action="" method="post" class="tarjeta-login" id="formlogin">
-        <img src="./assets/img/Logo.png" class="logo"></img>
+        <img src="./assets/img/login.png" class="logo"></img>
 
         <h2>Bienvenidos</h2>
         <h4>Iniciar Sesion</h4>

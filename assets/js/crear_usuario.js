@@ -9,7 +9,9 @@ let form = document.getElementById('form_create_user'),
     input_empresa = document.getElementById('select_nombre_empresa'),
     input_sucursal = document.getElementById('select_sucursal'),
     input_caja = document.getElementById('select_caja'),
-    btn_create_user = document.getElementById('btn_create_user');
+    btn_create_user = document.getElementById('btn_create_user'),
+    modal_registrar = new bootstrap.Modal(document.getElementById('modal_registrar')),
+    modal_verificar = new bootstrap.Modal(document.getElementById('modal_verificar'));
 
 //funcion para no permitir numeros en el nombre y apellido
 function removeNonLetters(input) {
@@ -71,7 +73,6 @@ btn_create_user.addEventListener('click', () => {
     const sucursalvalido = validarselectempresa(input_sucursal, 1);
     const cajavalido = validarselectempresa(input_caja, 1);
     if (nombreValido && apellidoValido && emailvalido && documentovalido && passwordvalido && empresavalido && sucursalvalido && cajavalido) {
-        const modal = new bootstrap.Modal(document.getElementById('modal_verificar'));
         const modalnombre = document.getElementById('modalnombre');
         const modalapellido = document.getElementById('modalapellido');
         const modalnick = document.getElementById('modalnick');
@@ -84,7 +85,8 @@ btn_create_user.addEventListener('click', () => {
         const textoSeleccionadoEmpresa = input_empresa.options[input_empresa.selectedIndex].text;
         const textoSeleccionadoSucursal = input_sucursal.options[input_sucursal.selectedIndex].text;
         const textoSeleccionadoCaja = input_caja.options[input_caja.selectedIndex].text;
-        modal.show();
+        modal_verificar.show();
+        modal_registrar.hide();
         modalnombre.value = input_name.value;
         modalapellido.value = input_lastname.value;
         modalnick.value = usernickname.value;

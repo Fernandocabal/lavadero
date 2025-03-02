@@ -16,6 +16,8 @@
     padding: 10px;
 }
 
+/* PARA SWAL */
+
 .bgvideo {
     position: fixed;
     top: 0;
@@ -610,7 +612,7 @@
 /* Seccion pagina de perfil */
 .perfil_ctn {
     width: 100%;
-    height: 95vh;
+    height: 93vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -642,6 +644,22 @@
 
 /* Fin seccion pagina de perfil */
 /* Seccion pagina de registrar usuario */
+.registrar_ctn {
+    width: 100%;
+    height: 93vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.card-usuario-registrar {
+    width: 350px;
+    height: 300px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 7px .5px var(--shadow);
+    margin: 10px;
+}
+
 #form_create_user label::after {
     content: '*';
     color: red;
@@ -652,9 +670,8 @@
 }
 
 .card_form {
-    border: 1px solid red;
     width: 600px;
-    height: 85vh;
+    height: 75vh;
 }
 
 
@@ -676,16 +693,58 @@
     animation: pulse 0.5s;
 }
 
-/* Fin seccion pagina de perfil */
+/* Fin seccion pagina de registrar usuario */
+
+/* Seccion pagina no permission */
+.no-permission-body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 93vh;
+    background-color: #f8d7da;
+    color: #721c24;
+    text-align: center;
+}
+
+.no_permission {
+    background: white;
+    padding: 8px 80px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid #f5c6cb;
+}
+
+.no_permission div {
+    font-size: 70px;
+}
+
+/*Fin seccion pagina no permission */
+
 /*Estilos para smartphones*/
 @media screen and (min-width:320px) and (max-width: 768px) {
 
-    /*Estilos de la barra lateral*/
-    #sidebar {
-        width: 98%;
+    /* Seccion dashboard */
+    .targetdash {
+        min-height: 300px;
+        width: 95%;
+        margin-bottom: 10px;
+        box-shadow: 0px 0px 5px 1px var(--shadow);
     }
 
-    /*Fin Estilos de la barra lateral*/
+    .centro {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        overflow-y: scroll;
+        width: 100vw;
+        height: calc(100vh - 7vh);
+        gap: 0;
+        padding: 10px 0px 0px 0px;
+    }
+
+    /* Fin Seccion dashboard */
 
 
     .ctnproducto {
@@ -750,9 +809,13 @@
     /* Fin seccion reporte */
     /* Seccíon perfil y contraseña*/
     .perfil_ctn {
-        overflow: scroll;
+        width: 100%;
+        height: 93vh;
+        display: flex;
+        flex-direction: column;
         justify-content: flex-start;
-
+        align-items: center;
+        overflow-y: scroll;
     }
 
     .perfil_box_group {
@@ -801,18 +864,48 @@
     }
 
     /* Seccion pagina de registrar usuario */
+    .registrar_ctn {
+        width: 100%;
+        height: 93vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .card-usuario-registrar {
+        width: 350px;
+        height: 160px;
+        box-shadow: 0px 0px 7px .5px var(--shadow);
+        margin: 10px;
+    }
 
     .user_group_input {
-        height: 50px;
+        height: 55px;
     }
 
     .card_form {
-        border: 1px solid red;
-        width: 97vw;
-        height: 94vh;
+        height: 91vh;
     }
 
     /* Fin seccion pagina de perfil */
+    /* Seccion pagina no permission */
+
+
+    .no_permission {
+        background: white;
+        width: 96%;
+        padding: 8px 8px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border: 2px solid #f5c6cb;
+    }
+
+    .no_permission div {
+        font-size: 60px;
+    }
+
+    /*Fin seccion pagina no permission */
 
 }
 
