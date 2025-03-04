@@ -25,8 +25,8 @@ nrofactura.addEventListener('input', function () {
     if (value.length > 7 && value.charAt(7) !== '-') {
         value = value.slice(0, 7) + '-' + value.slice(7);
     }
-    if (value.length > 16) {
-        value = value.slice(0, 16);
+    if (value.length > 15) {
+        value = value.slice(0, 15);
     }
     this.value = value;
 });

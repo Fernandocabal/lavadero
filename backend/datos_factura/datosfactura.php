@@ -1,6 +1,9 @@
 <?php
-include "../functions/conexion.php";
+session_start();
+require_once '../../functions/funciones.php';
+include "../../functions/conexion.php";
 date_default_timezone_set('America/Asuncion');
+$usernickname = $_SESSION["nombre_usuario"];
 try {
     // Verificar sesión y empresa activa
     if (!isset($_SESSION['id_empresa_activa']) || empty($_SESSION['id_empresa_activa'])) {
@@ -16,8 +19,21 @@ try {
         throw new Exception("Datos de sesión no válidos.");
     }
 
-    // Obtener el timbrado vigente
-    $sqltimbrado = "SELECT nro_timbrado, fecha_vencimiento FROM timbrado WHERE id_empresa = :id";
+    $query = "SELECT * FROM `empresa_activa` ea 
+    INNER JOIN sucursales s ON ea.id_sucursal = s.id_sucursal
+    INNER JOIN cajas c ON ea.id_caja = c.id_caja
+    WHERE ea.usuario =  :usuario";
+    $stmt = $connect->prepare($query);
+    $stmt->bindParam(':usuario', $usernickname, PDO::PARAM_STR);
+    $stmt->execute();
+    $empresa_activa = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $nro_sucursal = $empresa_activa['nro_sucursal'];
+    $nro_caja = $empresa_activa['nro_caja'];
+
+
+    // // Obtener el timbrado vigente
+    $sqltimbrado = "SELECT * FROM timbrado WHERE id_empresa = :id";
     $stmt = $connect->prepare($sqltimbrado);
     $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
     $stmt->execute();
@@ -26,27 +42,33 @@ try {
     if (!$timbrado) {
         throw new Exception("No se encontró un timbrado válido para la empresa.");
     }
-
-    $nro_timbrado = $timbrado["nro_timbrado"];
-    $fecha_vencimiento = $timbrado["fecha_vencimiento"];
+    $id_timbrado = $timbrado["id_timbrado"];
 
     // Obtener la numeración de la factura
-    $sqlnumeracion = "SELECT ultimo_numero FROM numeracion_factura 
-                      WHERE id_empresa = :id_empresa 
-                      AND id_sucursal = :id_sucursal 
-                      AND id_caja = :id_caja";
+    $sqlnumeracion = "SELECT * FROM `numeracion_factura` nf
+                    INNER JOIN timbrado tr ON nf.id_timbrado=tr.id_timbrado
+                      WHERE nf.id_empresa = :id_empresa 
+                      AND nf.id_sucursal = :id_sucursal 
+                      AND nf.id_caja = :id_caja
+                      AND nf.id_timbrado = :id_timbrado";
     $stmt = $connect->prepare($sqlnumeracion);
     $stmt->bindParam(':id_empresa', $id_empresa, PDO::PARAM_INT);
     $stmt->bindParam(':id_sucursal', $id_sucursal, PDO::PARAM_INT);
     $stmt->bindParam(':id_caja', $id_caja, PDO::PARAM_INT);
+    $stmt->bindParam(':id_timbrado', $id_timbrado, PDO::PARAM_INT);
     $stmt->execute();
-    $numeracion = $stmt->fetch(PDO::FETCH_ASSOC);
+    $datosfactura = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$numeracion) {
+    if (!$datosfactura) {
         throw new Exception("No se encontró la numeración de factura para la empresa, sucursal y caja seleccionadas.");
+        exit;
     }
 
-    $ultimo_numero = $numeracion['ultimo_numero'];
+    $ultimo_numero = $datosfactura['ultimo_numero'];
+
+    $nro_timbrado = $datosfactura["nro_timbrado"];
+    $fecha_vencimiento = $datosfactura["fecha_vencimiento"];
+
     $proximonumero = $ultimo_numero + 1;
     $parte3 = str_pad($proximonumero, 7, '0', STR_PAD_LEFT);  // 7 dígitos, rellena con ceros a la izquierda
 
@@ -63,6 +85,7 @@ try {
 
     if (!$resultado) {
         throw new Exception("No se encontró la sucursal o caja seleccionada.");
+        exit;
     }
 
     $nrosucursal = $resultado['nro_sucursal'];
@@ -72,17 +95,25 @@ try {
     $formatproximonumero = $nrosucursal . '-' . $nrocaja . '-' . $parte3;
 
     // Devolver respuesta JSON
-    // echo json_encode([
-    //     'success' => true,
-    //     'nro_factura' => $formatproximonumero,
-    //     'nro_timbrado' => $nro_timbrado,
-    //     'fecha_vencimiento' => $fecha_vencimiento
-    // ]);
+    header('Content-Type: application/json');
+    echo json_encode([
+        'success' => true,
+        'nro_factura' => $formatproximonumero,
+        'nro_timbrado' => $nro_timbrado,
+        'fecha_vencimiento' => $fecha_vencimiento,
+        'prefijosucursal' => $nrosucursal,
+        'prefijocaja' => $nrocaja
+    ]);
 } catch (Exception $e) {
-    // Devolver error en formato JSON
+    header('Content-Type: application/json');
     echo json_encode([
         'success' => false,
-        'message' => $e->getMessage()
+        'message' => $e->getMessage(),
+        'nro_factura' => 'VACIO',
+        'nro_timbrado' => 'VACIO',
+        'fecha_vencimiento' => 'VACIO',
+        'prefijosucursal' => $nro_sucursal ?? 'VACIO',
+        'prefijocaja' => $nro_caja ?? 'VACIO'
     ]);
 } finally {
     // Cerrar la conexión

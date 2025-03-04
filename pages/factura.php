@@ -29,9 +29,6 @@ include "../functions/conexion.php";
     <div class="ctnpage">
         <div class="ctnfact" id="targetcenter">
             <form action="" method="POST" class="row" id="formfactura">
-                <?php
-                include "../backend/datosfactura.php";
-                ?>
                 <div class="col-12 m-0 titlefact">
                     <div class="col-md-6 d-grid mx-auto">
                         <p class="col-12 display-8 d-flex justify-content-center">
@@ -42,9 +39,9 @@ include "../functions/conexion.php";
                 <div class="col-12 d-flex justify-content-around m-0 p-0 headerfact">
                     <div class="datosfactura">
                         <div class="form-label mb-0 lablefact">N° de Factura</div>
-                        <div type="text" class="form-control form-control-sm inputform"><?php echo $formatproximonumero ?></div>
+                        <div type="text" id="factura_numeracion" class="form-control form-control-sm inputform"></div>
                         <div class="form-label mb-0 lablefact">Timbrado</div>
-                        <div type="date" class="form-control form-control-sm inputform"><?php echo $nro_timbrado; ?></div>
+                        <div type="date" id="factura_timbrado" class="form-control form-control-sm inputform"></div>
                     </div>
                     <div class="datosfactura">
                         <div class="form-label mb-0 lablefact">Fecha</div>
@@ -185,13 +182,19 @@ include "../functions/conexion.php";
 
         </div>
     </div>
+
+    <!-- Seccion Modal para agregar timbrado -->
+    <?php
+    include "../include/view/add_timbrado_numeracionmodal.php"; ?>
+
     <footer class="ctnfooter">
         <?php
         include "../include/footer.php"; ?>
     </footer>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../assets/js/factura.js"></script>
     <script src="../scripts/factura.js"></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
     <script src="../assets/js/verificarfactura.js"></script>
 </body>
 

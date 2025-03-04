@@ -68,6 +68,15 @@ $pdf = new TCPDF();
 $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
 $pdf->AddPage();
+$style = array(
+    'border' => 0,
+    'vpadding' => 2,
+    'hpadding' => 2,
+    'fgcolor' => array(0, 0, 0),
+    'bgcolor' => false
+);
+
+$pdf->write2DBarcode('../../pages/invoice/invoice.php?id=' . $id_factura, 'QRCODE,H', 113, 11, 25, 25, $style);
 function cabecera($pdf,  $nombre_empresa, $ruc_empresa, $direccion_empresa, $tel_empresa, $nombre_ciudad, $email_empresa, $nro_timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email)
 {
     $pdf->SetFont('helvetica', 'B', 12);
@@ -176,7 +185,7 @@ $pdf->Cell(0, 1, 'Original', 0, 1, 'L');
 //Sección duplicado
 $pdf->SetY(152);
 $pdf->Image('../assets/img/empresa_' . $id_empresa . '.png', 11, 152, 25);
-
+$pdf->write2DBarcode('../../pages/invoice/invoice.php?id=' . $id_factura, 'QRCODE,H', 113, 153, 25, 25, $style);
 cabecera($pdf, $nombre_empresa, $ruc_empresa, $direccion_empresa, $tel_empresa, $nombre_ciudad, $email_empresa, $nro_timbrado, $fecha_inicio, $fecha_vencimiento, $nro_factura, $fecha_horas, $condicion, $nombres, $apellidos, $nroci, $direccion, $phonenumber, $email);
 $pdf->Ln(5);
 agregarDetallesFactura($pdf, $connect, $id_factura);

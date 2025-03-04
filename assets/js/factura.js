@@ -7,7 +7,63 @@ let subtotalTotal = document.getElementById('subtotaltotal'),
     iva10 = document.getElementById('iva10'),
     totaliva = document.getElementById('totaliva'),
     btnaddservice = document.getElementById('addservice'),
+    nrofactura = document.getElementById('nro_factura'),
+    timbrado = document.getElementById('nrotimbrado'),
+    fecha_inicio = document.getElementById('fecha_inicio'),
+    fecha_vencimiento = document.getElementById('fecha_vencimiento'),
     subt = '';
+//Seccion para depurar los datos en el 
+//Modal de añadir timbrado y numeracion
+//funcion para no permitir letras en el numero de timbrado
+function limpiarYValidarCampo(campo, minLength, maxLength) {
+    let value = campo.value.replace(/[^0-9]/g, '');
+
+    if (value.length > maxLength) {
+        value = value.slice(0, maxLength);
+    }
+
+    campo.value = value;
+    if (value.length >= minLength) {
+        campo.classList.remove('is-invalid');
+        campo.classList.add('is-valid');
+        btn_insert_timbrado.disabled = false;
+        return true;
+    } else {
+        campo.classList.remove('is-valid');
+        campo.classList.add('is-invalid');
+        btn_insert_timbrado.disabled = true;
+        return false;
+    }
+}
+
+timbrado.addEventListener('input', () => {
+    limpiarYValidarCampo(timbrado, 7, 7);
+});
+
+fecha_vencimiento.addEventListener('blur', function () {
+    const hoy = new Date();
+    const fechaHoy = hoy.toISOString().split('T')[0];
+    const fechaIngresada = fecha_vencimiento.value;
+    if (fechaIngresada < fechaHoy) {
+        fecha_vencimiento.value = fechaHoy;
+    }
+})
+
+nrofactura.addEventListener('input', function () {
+    let value = this.value.replace(/[^0-9-]/g, '');
+    if (value.length > 3 && value.charAt(3) !== '-') {
+        value = value.slice(0, 3) + '-' + value.slice(3);
+    }
+    if (value.length > 7 && value.charAt(7) !== '-') {
+        value = value.slice(0, 7) + '-' + value.slice(7);
+    }
+    if (value.length > 15) {
+        value = value.slice(0, 15);
+    }
+    this.value = value;
+});
+
+//Fin seccion modal y depuración
 
 function calcularTotal() {
     let gravada5 = document.querySelectorAll('.gravada5'),
@@ -51,8 +107,7 @@ function calculariva() {
     iva10.textContent = diezporciento;
     // sendiva.value = ivaredondeado;
 }
-
-
+//Boton para añadir el servicio a la factura
 btnaddservice.addEventListener('click', (e) => {
     e.preventDefault();
     const table = document.getElementById('table');

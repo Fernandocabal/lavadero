@@ -460,6 +460,18 @@
     width: 99%;
 }
 
+#form_timbrado,
+#form_timbrado input {
+    font-size: 12px;
+}
+
+
+#form_timbrado .required::after {
+    content: " *";
+    color: red;
+}
+
+
 .datosfactura {
     display: flex;
     flex-direction: column;
@@ -720,6 +732,43 @@
 }
 
 /*Fin seccion pagina no permission */
+/* Seccion Invoice */
+.invoice-container {
+    max-width: 600px;
+    margin: auto;
+    border: 1px solid #ddd;
+    padding: 20px;
+}
+
+.invoice-container img {
+    width: 150px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.invoice-header,
+.invoice-details {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.invoice-header th,
+.invoice-header td,
+.invoice-details th,
+.invoice-details td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.invoice-header th {
+    background-color: #f2f2f2;
+}
+
+/* Fin seccion Invoice */
+
 
 /*Estilos para smartphones*/
 @media screen and (min-width:320px) and (max-width: 768px) {
@@ -745,6 +794,12 @@
     }
 
     /* Fin Seccion dashboard */
+    #form_timbrado div {
+        flex-direction: column;
+        /* width: 90vw; */
+        padding: 2px;
+    }
+
 
 
     .ctnproducto {
