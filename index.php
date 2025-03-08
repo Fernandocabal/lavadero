@@ -18,7 +18,6 @@ if (estalogueado()) {
     <script src="./node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="./node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="icon" href="./assets/img/Logo.png">
     <title>Inicio</title>
 </head>
 
