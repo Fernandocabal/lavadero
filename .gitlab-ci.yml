@@ -1,0 +1,11 @@
+image: alpine
+
+before_script:
+  - apk add --no-cache lftp  
+
+deploy:
+  stage: deploy
+  script:
+    - lftp -c "set ftp:ssl-allow no; open -u $FTP_USER,$FTP_PASS $FTP_HOST; mirror -R ./ $FTP_DIR"
+  only:
+    - beta 
