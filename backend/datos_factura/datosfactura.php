@@ -33,9 +33,12 @@ try {
 
 
     // // Obtener el timbrado vigente
-    $sqltimbrado = "SELECT * FROM timbrado WHERE id_empresa = :id";
+    $sqltimbrado = "SELECT * FROM timbrado WHERE id_empresa = :id_empresa AND id_sucursal = :id_sucursal 
+    AND id_caja = :id_caja";
     $stmt = $connect->prepare($sqltimbrado);
-    $stmt->bindParam(':id', $id_empresa, PDO::PARAM_INT);
+    $stmt->bindParam(':id_empresa', $id_empresa, PDO::PARAM_INT);
+    $stmt->bindParam(':id_sucursal', $id_sucursal, PDO::PARAM_INT);
+    $stmt->bindParam(':id_caja', $id_caja, PDO::PARAM_INT);
     $stmt->execute();
     $timbrado = $stmt->fetch(PDO::FETCH_ASSOC);
 
