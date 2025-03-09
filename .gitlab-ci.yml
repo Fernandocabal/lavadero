@@ -7,4 +7,4 @@ deploy_to_ftp:
     - apt-get update -y && apt-get install lftp -y  # Instalar lftp si es necesario
     - lftp -c "set ftp:ssl-allow no; open -u $FTP_USER,$FTP_PASS $FTP_HOST; mirror -R ./ $FTP_DIR"
   only:
-    - beta  # Ejecutar solo en la 
+    - beta  # Ejecutar solo en la rama
